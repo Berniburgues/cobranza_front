@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { fetchData } from './services/obtenerData';
-import TablaCliente from './components/Tabla General/TablaCliente';
-import Loader from './components/Loader';
-import FiltroCodigo from './components/Filtros/FiltroCodigo';
-import FiltroCBU from './components/Filtros/FiltroCBU';
-import FiltroPago from './components/Filtros/FiltroPago';
+import { fetchData } from '../../services/obtenerData';
+import TablaCliente from '../Tabla General/TablaCliente';
+import Loader from './Loader';
 
 const App = () => {
   const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
-  const [filtroCodigo, setFiltroCodigo] = useState('');
-  const [filtroCBU, setFiltroCBU] = useState('');
-  const [filtroPago, setFiltroPago] = useState('');
+  const [primerCarga, setPrimerCarga] = useState(true);
 
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
@@ -26,7 +20,7 @@ const App = () => {
         // Verificar si es la primera página
         if (currentPage === 1) {
           setData(responseData);
-          setFilteredData(responseData);
+          setPrimerCarga(false);
         } else {
           // Verificar si la página ya ha sido cargada previamente
           const hasPageBeenLoaded = responseData.some((item) =>
@@ -54,20 +48,21 @@ const App = () => {
     fetchDataAndUpdateState();
   }, [currentPage]);
 
-  const handleFiltroCodigoChange = (event) => {
-    setFiltroCodigo(event.target.value);
-  };
+  const handleLoadMore = async () => {
+    setIsLoading(true);
 
-  const handleFiltroCBUChange = (event) => {
-    setFiltroCBU(event.target.value);
-  };
+    try {
+      const nextPage = currentPage + 1; // Obtener el número de la próxima página
+      const response = await fetchData(nextPage);
+      const { responseData } = response;
 
-  const handleFiltroPagoChange = (event) => {
-    setFiltroPago(event.target.value);
-  };
+      setData((prevData) => [...prevData, ...responseData]);
+      setCurrentPage(nextPage); // Actualizar currentPage con el número de la próxima página
+    } catch (error) {
+      console.error(error);
+    }
 
-  const handleLoadMore = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    setIsLoading(false);
   };
 
   return (
@@ -76,26 +71,13 @@ const App = () => {
         CONTROL DE COBRANZA DE CLIENTES
       </h1>
 
-      <div className="flex justify-center mb-4">
-        <div className="flex items-center space-x-4">
-          <FiltroCodigo value={filtroCodigo} onChange={handleFiltroCodigoChange} />
-          <FiltroCBU value={filtroCBU} onChange={handleFiltroCBUChange} />
-          <FiltroPago value={filtroPago} onChange={handleFiltroPagoChange} />
-        </div>
-      </div>
-
       <section className="overflow-x-auto overflow-y-auto flex flex-col justify-center items-center h-full">
-        <TablaCliente
-          data={data}
-          filtroCodigo={filtroCodigo}
-          filtroCBU={filtroCBU}
-          filtroPago={filtroPago}
-          filteredData={filteredData}
-        />
+        <TablaCliente data={data} primerCarga={primerCarga} />
+
         {hasMore && !isLoading && (
           <button
             onClick={handleLoadMore}
-            className="my-4 bg-blue-500 text-white px-4 py-2"
+            className="my-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2"
           >
             Cargar más
           </button>

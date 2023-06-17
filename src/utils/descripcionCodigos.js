@@ -1,4 +1,4 @@
-export const showCodigoDescription = (codigo) => {
+export const descripcionCodigo = (codigo) => {
   let description = '';
   switch (codigo) {
     case 'ACE':
