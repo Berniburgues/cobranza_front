@@ -30,5 +30,5 @@ export const formatFecha = (fecha) => {
     return '';
   }
   const [año, mes, dia] = fecha.split('-');
-  return `${dia}-${mes}`;
+  return `${dia}/${mes}`;
 };

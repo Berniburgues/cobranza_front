@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { fetchData } from '../../services/obtenerData';
-import TablaCliente from '../Tabla General/TablaCliente';
+import TablaCliente from './TablaCliente';
 import Loader from './Loader';
+import Filtros from '../Filtros/Filtros';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -9,6 +10,9 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [primerCarga, setPrimerCarga] = useState(true);
+  const [filtroCBU, setFiltroCBU] = useState('');
+  const [filtroPago, setFiltroPago] = useState('');
+  const [filtroCodigo, setFiltroCodigo] = useState('');
 
   useEffect(() => {
     const fetchDataAndUpdateState = async () => {
@@ -71,8 +75,23 @@ const App = () => {
         CONTROL DE COBRANZA DE CLIENTES
       </h1>
 
+      <Filtros
+        filtroCBU={filtroCBU}
+        filtroCodigo={filtroCodigo}
+        filtroPago={filtroPago}
+        setFiltroCBU={setFiltroCBU}
+        setFiltroPago={setFiltroPago}
+        setFiltroCodigo={setFiltroCodigo}
+      />
+
       <section className="overflow-x-auto overflow-y-auto flex flex-col justify-center items-center h-full">
-        <TablaCliente data={data} primerCarga={primerCarga} />
+        <TablaCliente
+          data={data}
+          primerCarga={primerCarga}
+          filtroCBU={filtroCBU}
+          filtroCodigo={filtroCodigo}
+          filtroPago={filtroPago}
+        />
 
         {hasMore && !isLoading && (
           <button

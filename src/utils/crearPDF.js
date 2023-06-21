@@ -1,22 +1,22 @@
-import domtoimage from 'dom-to-image';
+import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-export const crearPDF = (tableRef) => {
+export const crearPDF = async (tableRef) => {
   if (!tableRef.current) {
     return;
   }
 
-  domtoimage
-    .toPng(tableRef.current)
-    .then((dataUrl) => {
-      const doc = new jsPDF();
-      const width = doc.internal.pageSize.getWidth();
-      const height =
-        (tableRef.current.offsetHeight * width) / tableRef.current.offsetWidth;
-      doc.addImage(dataUrl, 'PNG', 0, 0, width, height);
-      doc.save('tabla.pdf');
-    })
-    .catch((error) => {
-      console.error('Error al exportar a PDF:', error);
-    });
+  try {
+    const canvas = await html2canvas(tableRef.current);
+    const imageData = canvas.toDataURL('image/png');
+
+    const pdf = new jsPDF();
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imageData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('tabla.pdf');
+  } catch (error) {
+    console.error('Error al exportar a PDF:', error);
+  }
 };
