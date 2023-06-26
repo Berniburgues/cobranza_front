@@ -6,7 +6,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro }) => {
     <>
       {fechasCobro.map((fecha, index) => {
         const cobranzas = cobranzasByDate[fecha] || [];
-        const uniqueCodigos = [...new Set(cobranzas.map((cobranza) => cobranza.Codigo))];
+        const uniqueCodigos = cobranzas.length > 0 ? cobranzas[0].Codigo.split('-') : [];
         const hasACE = uniqueCodigos.includes('ACE');
         const isR10 = uniqueCodigos.includes('R10');
 

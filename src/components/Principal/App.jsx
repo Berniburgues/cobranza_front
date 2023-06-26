@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchData } from '../../services/obtenerData';
 import TablaCliente from './TablaCliente';
 import Loader from './Loader';
-import Filtros from '../Filtros/Filtros';
+import Filtros from './Filtros';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -50,7 +50,7 @@ const App = () => {
     };
 
     fetchDataAndUpdateState();
-  }, [currentPage]);
+  }, [currentPage]); 
 
   const handleLoadMore = async () => {
     setIsLoading(true);
@@ -70,8 +70,8 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold my-5 text-center">
+    <div className="">
+      <h1 className="text-5xl font-bold mb-10 text-center">
         CONTROL DE COBRANZA DE CLIENTES
       </h1>
 
@@ -82,6 +82,7 @@ const App = () => {
         setFiltroCBU={setFiltroCBU}
         setFiltroPago={setFiltroPago}
         setFiltroCodigo={setFiltroCodigo}
+        currentPage={setCurrentPage}
       />
 
       <section className="overflow-x-auto overflow-y-auto flex flex-col justify-center items-center h-full">
@@ -96,7 +97,7 @@ const App = () => {
         {hasMore && !isLoading && (
           <button
             onClick={handleLoadMore}
-            className="my-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2"
+            className="my-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 border-2 border-black"
           >
             Cargar más
           </button>

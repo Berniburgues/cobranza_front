@@ -6,6 +6,7 @@ export const fetchData = async (page, limit) => {
       `http://localhost:8080/clientes/pagos?page=${page}&limit=500`,
     );
     const { data: responseData, totalPages: responseTotalPages } = response.data;
+    console.log(response.data);
     return { responseData, responseTotalPages };
   } catch (error) {
     console.error(error);
