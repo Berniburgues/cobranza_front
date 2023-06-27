@@ -1,21 +1,11 @@
 import React from 'react';
+import aplicarFiltros from '../../utils/aplicarFiltros';
 
 const Recuento = ({ fechasCobro, fechasDesde, data, filtros }) => {
   // Aplicar filtros para obtener los datos filtrados
-  const datosFiltrados = data.filter((item) => {
-    // Verificar los filtros aplicados a cada elemento
-    const filtroCBU = !filtros.filtroCBU || item.CBU.includes(filtros.filtroCBU);
-    const filtroCodigo =
-      !filtros.filtroCodigo ||
-      (item.Codigo &&
-        item.Codigo.toString()
-          .toLowerCase()
-          .includes(filtros.filtroCodigo.toLowerCase()));
-    const filtroPago = !filtros.filtroPago || item.Pago.includes(filtros.filtroPago);
-
-    // Retornar true solo si todos los filtros coinciden
-    return filtroCBU && filtroCodigo && filtroPago;
-  });
+  const datosFiltrados = data.filter((cliente) =>
+    aplicarFiltros(cliente, filtros.filtroCBU, filtros.filtroPago, filtros.filtroCodigo),
+  );
 
   return (
     <tr>

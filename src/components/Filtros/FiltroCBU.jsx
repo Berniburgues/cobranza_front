@@ -15,7 +15,7 @@ const FiltroCBU = ({ filtroCBU, setFiltroCBU }) => {
         >
           <option value="">Todos</option>
           <option value="027">Supervielle</option>
-          <option value="OTROS">Otros bancos</option>
+          <option value="OTROS">Otros Bancos</option>
           <option value="011">Nación</option>
           <option value="014">Provincia</option>
           <option value="072">Santander</option>

@@ -37,12 +37,6 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   return (
     <table className="w-5/6 border-collapse text-center" ref={tableRef}>
       <thead>
-        <Recuento
-          fechasCobro={fechasCobro}
-          fechasDesde={fechasDesde}
-          data={data}
-          filtros={filtros}
-        />
         <Columnas fechasCobro={fechasCobro} fechasDesde={fechasDesde} />
       </thead>
       <Celdas

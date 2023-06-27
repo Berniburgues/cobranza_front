@@ -3,7 +3,7 @@ import axios from 'axios';
 export const fetchData = async (page, limit) => {
   try {
     const response = await axios.get(
-      `https://cobranza-back.onrender.com/clientes/pagos?page=${page}&limit=500`,
+      `http://localhost:8080/clientes/pagos?page=${page}&limit=500`,
     );
     const { data: responseData, totalPages: responseTotalPages } = response.data;
     console.log(response.data);

@@ -1,26 +1,31 @@
 const aplicarFiltros = (cliente, filtroCBU, filtroPago, filtroCodigo) => {
-  if (filtroCodigo === 'NO_ACE') {
-    if (
-      cliente.CBU.includes(filtroCBU) &&
-      cliente.Pago.includes(filtroPago) &&
-      !cliente.Cobranzas.some((cobranza) => cobranza.Codigo.includes('ACE'))
-    ) {
-      return true;
-    }
-  } else if (filtroCBU === 'OTROS') {
-    if (cliente.Pago.includes(filtroPago) && cliente.CBU !== '027') {
-      return true;
+  const cumpleCondicionPago = cliente.Pago.includes(filtroPago);
+
+  if (filtroCBU === 'OTROS') {
+    if (filtroCodigo === 'NO_ACE') {
+      return (
+        cliente.CBU !== '027' &&
+        cumpleCondicionPago &&
+        !cliente.Cobranzas.some((cobranza) => cobranza.Codigo.includes('ACE'))
+      );
+    } else {
+      return cliente.CBU !== '027' && cumpleCondicionPago;
     }
   } else {
-    if (
-      cliente.CBU.includes(filtroCBU) &&
-      cliente.Pago.includes(filtroPago) &&
-      cliente.Cobranzas.some((cobranza) => cobranza.Codigo.includes(filtroCodigo))
-    ) {
-      return true;
+    if (filtroCodigo === 'NO_ACE') {
+      return (
+        cliente.CBU.includes(filtroCBU) &&
+        cumpleCondicionPago &&
+        !cliente.Cobranzas.some((cobranza) => cobranza.Codigo.includes('ACE'))
+      );
+    } else {
+      return (
+        cliente.CBU.includes(filtroCBU) &&
+        cumpleCondicionPago &&
+        cliente.Cobranzas.some((cobranza) => cobranza.Codigo.includes(filtroCodigo))
+      );
     }
   }
-  return false;
 };
 
 export default aplicarFiltros;

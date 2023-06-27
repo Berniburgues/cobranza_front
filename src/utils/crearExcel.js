@@ -13,7 +13,7 @@ export const crearExcel = (tableRef, fechasCobro, fechasDesde) => {
 
     // Obtener la posición de las columnas de fecha de cobro y fecha desde
     const fechaCobroColumnStart = 4; // Columna de inicio para las fechas de cobro (por ejemplo, columna E)
-    const fechaDesdeColumnStart = fechaCobroColumnStart + fechasCobro.length + 1; // Columna siguiente a las fechas de cobro
+    const fechaDesdeColumnStart = fechaCobroColumnStart + fechasCobro.length; // Columna siguiente a las fechas de cobro
 
     // Establecer los encabezados de las columnas de fecha de cobro
     fechasCobro.forEach((fecha, index) => {
@@ -47,7 +47,7 @@ export const crearExcel = (tableRef, fechasCobro, fechasDesde) => {
     const excelUrl = URL.createObjectURL(excelData);
     const link = document.createElement('a');
     link.href = excelUrl;
-    link.download = 'tabla.xlsx';
+    link.download = 'Cobranza Clientes.xlsx';
     link.click();
 
     // Liberar recursos
