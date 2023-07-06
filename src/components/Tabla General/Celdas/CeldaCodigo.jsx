@@ -24,7 +24,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro }) => {
         return (
           <td
             key={index}
-            className={`border-2 border-gray-800 px-1 py-2 text-sm font-bold w-1/12 ${cellColorClass}`}
+            className={`border-2 border-gray-800 px-1 py-2 text-xs font-bold w-1/12 ${cellColorClass}`}
             title={uniqueCodigos.length > 0 && descripcionCodigo(uniqueCodigos[0])}
           >
             {uniqueCodigos.length > 0 && uniqueCodigos.join('-')}
