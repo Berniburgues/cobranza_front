@@ -5,8 +5,8 @@ const Loader = ({ loading }) => {
   return (
     <>
       {loading && (
-        <div className="flex flex-col justify-center items-center mt-5 h-32">
-          <ClipLoader color="#3B82F6" loading={loading} size={100} />
+        <div className="flex flex-col justify-center items-center mt-1 h-20">
+          <ClipLoader color="#3B82F6" loading={loading} size={50} />
         </div>
       )}
     </>

@@ -3,6 +3,7 @@ import { fetchData } from '../../services/obtenerData';
 import TablaCliente from './TablaCliente';
 import Loader from './Loader';
 import Filtros from './Filtros';
+import Periodo from './Periodo';
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -14,8 +15,6 @@ const App = () => {
   const [filtroCBU, setFiltroCBU] = useState('');
   const [filtroPago, setFiltroPago] = useState('');
   const [filtroCodigo, setFiltroCodigo] = useState('');
-
-  const periodosDisponibles = ['2023-06-01', '2023-07-01']; // Períodos disponibles para seleccionar
 
   const fetchDataAndUpdateState = async () => {
     setIsLoading(true);
@@ -51,13 +50,10 @@ const App = () => {
     setIsLoading(false);
   };
 
-  const handlePeriodoChange = (event) => {
-    const selectedPeriodo = event.target.value;
-    setPeriodo(selectedPeriodo);
-  };
-
   useEffect(() => {
-    fetchDataAndUpdateState();
+    if (periodo) {
+      fetchDataAndUpdateState();
+    }
   }, [currentPage, periodo]);
 
   const handleLoadMore = async () => {
@@ -83,18 +79,12 @@ const App = () => {
         CONTROL DE COBRANZA DE CLIENTES
       </h1>
       <section className="overflow-x-auto overflow-y-auto flex flex-col justify-center items-center h-full">
-        <select
-          value={periodo}
-          onChange={handlePeriodoChange}
-          className="border-2 border-black p-1 rounded-md bg-red-400 font-bold hover:bg-red-500 hover:cursor-pointer"
-        >
-          <option value="">Seleccione un periodo</option>
-          {periodosDisponibles.map((periodo) => (
-            <option key={periodo} value={periodo}>
-              {periodo}
-            </option>
-          ))}
-        </select>
+        <Periodo
+          periodo={periodo}
+          setPeriodo={setPeriodo}
+          data={data}
+          setData={setData}
+        />
 
         <Filtros
           filtroCBU={filtroCBU}
@@ -105,6 +95,8 @@ const App = () => {
           setFiltroCodigo={setFiltroCodigo}
           currentPage={setCurrentPage}
         />
+
+        <Loader loading={isLoading} />
 
         <TablaCliente
           data={data}
@@ -123,7 +115,6 @@ const App = () => {
           </button>
         )}
       </section>
-      <Loader loading={isLoading} />
     </div>
   );
 };

@@ -16,26 +16,37 @@ const Celdas = ({
   filtroCBU,
   filtroPago,
 }) => {
+  // Crear un objeto Set vacío
+  const sociosRenderizados = new Set();
+
   return (
     <tbody>
       {data.map((cliente) => {
-        if (aplicarFiltros(cliente, filtroCBU, filtroPago, filtroCodigo)) {
-          const cobranzasByDate = getCobranzasByDate(cliente.Cobranzas);
+        // Obtener el número de socio del cliente
+        const numeroSocio = cliente.Socio;
+        // Verificar si el número de socio ya está en el Set
+        if (!sociosRenderizados.has(numeroSocio)) {
+          // Si no está, agregarlo al Set
+          sociosRenderizados.add(numeroSocio);
+          // Aplicar los filtros y renderizar el cliente
+          if (aplicarFiltros(cliente, filtroCBU, filtroPago, filtroCodigo)) {
+            const cobranzasByDate = getCobranzasByDate(cliente.Cobranzas);
 
-          return (
-            <tr key={cliente.Socio}>
-              <CeldaSocio cliente={cliente} />
-              <CeldaCBU cliente={cliente} filtroCBU={filtroCBU} />
-              <CeldaImporte cliente={cliente} />
-              <CeldaPago cliente={cliente} filtroPago={filtroPago} />
-              <CeldaCodigo
-                cobranzasByDate={cobranzasByDate}
-                fechasCobro={fechasCobro}
-                filtroCodigo={filtroCodigo}
-              />
-              <CeldaFeDesde cliente={cliente} fechasDesde={fechasDesde} />
-            </tr>
-          );
+            return (
+              <tr key={cliente.Socio}>
+                <CeldaSocio cliente={cliente} />
+                <CeldaCBU cliente={cliente} filtroCBU={filtroCBU} />
+                <CeldaImporte cliente={cliente} />
+                <CeldaPago cliente={cliente} filtroPago={filtroPago} />
+                <CeldaCodigo
+                  cobranzasByDate={cobranzasByDate}
+                  fechasCobro={fechasCobro}
+                  filtroCodigo={filtroCodigo}
+                />
+                <CeldaFeDesde cliente={cliente} fechasDesde={fechasDesde} />
+              </tr>
+            );
+          }
         }
 
         return null;
