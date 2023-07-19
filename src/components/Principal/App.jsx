@@ -19,7 +19,7 @@ const App = () => {
   const fetchDataAndUpdateState = async () => {
     setIsLoading(true);
     try {
-      const response = await fetchData(currentPage, 500, periodo);
+      const response = await fetchData(currentPage, 1000, periodo);
       const { responseData, responseTotalPages } = response;
 
       // Verificar si es la primera página
@@ -61,7 +61,7 @@ const App = () => {
 
     try {
       const nextPage = currentPage + 1; // Obtener el número de la próxima página
-      const response = await fetchData(nextPage, 500, periodo);
+      const response = await fetchData(nextPage, 1000, periodo);
       const { responseData } = response;
 
       setData((prevData) => [...prevData, ...responseData]);

@@ -16,18 +16,26 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro }) => {
         } else if (hasACE) {
           cellColorClass = 'bg-green-500';
         } else if (isR10) {
-          cellColorClass = 'bg-yellow-400';
+          if (index === fechasCobro.length - 1) {
+            // Si es el último R10, se pintará de naranja.
+            cellColorClass = 'bg-orange-400';
+          } else {
+            cellColorClass = 'bg-yellow-400';
+          }
         } else if (uniqueCodigos.length > 0) {
           cellColorClass = 'bg-red-500';
         }
+
+        const lastUniqueCodigo = uniqueCodigos[uniqueCodigos.length - 1];
+        const codigoDescripcion = descripcionCodigo(lastUniqueCodigo);
 
         return (
           <td
             key={index}
             className={`border-2 border-gray-800 px-1 py-2 text-xs font-bold w-1/12 ${cellColorClass}`}
-            title={uniqueCodigos.length > 0 && descripcionCodigo(uniqueCodigos[0])}
+            title={codigoDescripcion}
           >
-            {uniqueCodigos.length > 0 && uniqueCodigos.join('-')}
+            {uniqueCodigos.join('-')}
           </td>
         );
       })}
