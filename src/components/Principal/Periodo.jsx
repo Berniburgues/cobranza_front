@@ -17,7 +17,7 @@ const Periodo = ({ periodo, setPeriodo, data, setData }) => {
     <select
       value={periodo}
       onChange={handlePeriodoChange}
-      className="border-2 border-black p-1 rounded-md  hover:cursor-pointer"
+      className="border-2 border-gray-800 px-2 py-2 text-base rounded-md focus:outline-none focus:border-blue-500 w-32"
     >
       <option value="">Seleccione un período</option>
       {periodosDisponibles.map((periodo) => (
