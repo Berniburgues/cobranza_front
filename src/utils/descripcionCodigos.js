@@ -107,7 +107,7 @@ export const descripcionCodigo = (codigo) => {
       description = 'Solicitud entidad originante';
       break;
     default:
-      description = 'Descripción para otros códigos';
+      description = '';
       break;
   }
   return description;
