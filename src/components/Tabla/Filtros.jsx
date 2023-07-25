@@ -26,7 +26,7 @@ const Filtros = ({
   };
 
   return (
-    <section className="flex justify-center my-5 h-14">
+    <section className="flex justify-center mt-5 h-12">
       <div className="flex items-end gap-5">
         <button
           onClick={toggleFilters}

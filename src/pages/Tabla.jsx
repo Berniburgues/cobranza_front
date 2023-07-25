@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { fetchData } from '../../services/obtenerData';
-import TablaCliente from './TablaCliente';
-import Loader from './Loader';
-import Filtros from './Filtros';
-import Periodo from './Periodo';
+import { fetchData } from '../services/obtenerData';
+import TablaCliente from '../components/Tabla/TablaCliente';
+import Loader from '../components/Tabla/Loader';
+import Filtros from '../components/Tabla/Filtros';
+import Periodo from '../components/Tabla/Periodo';
 
-const App = () => {
+const Tabla = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [periodo, setPeriodo] = useState(null);
@@ -15,12 +15,16 @@ const App = () => {
   const [filtroCBU, setFiltroCBU] = useState('');
   const [filtroPago, setFiltroPago] = useState('');
   const [filtroCodigo, setFiltroCodigo] = useState('');
+  const [totalCount, setTotalCount] = useState(0); // Agregar el estado totalCount
 
   const fetchDataAndUpdateState = async () => {
     setIsLoading(true);
     try {
       const response = await fetchData(currentPage, 1000, periodo);
-      const { responseData, responseTotalPages } = response;
+      const { responseData, responseTotalPages, responseTotalCount } = response; // Obtener totalCount de la respuesta del servidor
+
+      // Actualizar totalCount con el valor recibido del servidor
+      setTotalCount(responseTotalCount);
 
       // Verificar si es la primera página
       if (currentPage === 1) {
@@ -74,49 +78,46 @@ const App = () => {
   };
 
   return (
-    <div className="m-0 p-0">
-      <h1 className="text-5xl font-bold my-10 text-center">
-        CONTROL DE COBRANZA DE CLIENTES
-      </h1>
-      <section className="overflow-x-auto overflow-y-auto flex flex-col justify-center items-center h-full">
-        <Periodo
-          periodo={periodo}
-          setPeriodo={setPeriodo}
-          data={data}
-          setData={setData}
-        />
+    <section className="overflow-x-auto overflow-y-auto flex flex-col justify-center items-center h-screen">
+      <Periodo periodo={periodo} setPeriodo={setPeriodo} data={data} setData={setData} />
 
-        <Filtros
-          filtroCBU={filtroCBU}
-          filtroCodigo={filtroCodigo}
-          filtroPago={filtroPago}
-          setFiltroCBU={setFiltroCBU}
-          setFiltroPago={setFiltroPago}
-          setFiltroCodigo={setFiltroCodigo}
-          currentPage={setCurrentPage}
-        />
+      <Filtros
+        filtroCBU={filtroCBU}
+        filtroCodigo={filtroCodigo}
+        filtroPago={filtroPago}
+        setFiltroCBU={setFiltroCBU}
+        setFiltroPago={setFiltroPago}
+        setFiltroCodigo={setFiltroCodigo}
+        currentPage={setCurrentPage}
+      />
 
-        <Loader loading={isLoading} />
+      <Loader loading={isLoading} />
 
-        <TablaCliente
-          data={data}
-          primerCarga={primerCarga}
-          filtroCBU={filtroCBU}
-          filtroCodigo={filtroCodigo}
-          filtroPago={filtroPago}
-        />
+      {/* Mostrar información sobre cuántos socios se están mostrando y cuántos hay en total */}
+      <div className="text-center my-4">
+        <p>
+          Mostrando {data.length} socios de un total de {totalCount}
+        </p>
+      </div>
 
-        {hasMore && !isLoading && (
-          <button
-            onClick={handleLoadMore}
-            className="my-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 border-2 border-black"
-          >
-            Cargar más
-          </button>
-        )}
-      </section>
-    </div>
+      <TablaCliente
+        data={data}
+        primerCarga={primerCarga}
+        filtroCBU={filtroCBU}
+        filtroCodigo={filtroCodigo}
+        filtroPago={filtroPago}
+      />
+
+      {hasMore && !isLoading && (
+        <button
+          onClick={handleLoadMore}
+          className="my-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 border-2 border-black"
+        >
+          Cargar más
+        </button>
+      )}
+    </section>
   );
 };
 
-export default App;
+export default Tabla;

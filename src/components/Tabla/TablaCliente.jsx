@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { obtenerFechasCobranza, obtenerFechasDesde } from '../../utils/fechas';
 import { getCobranzasByDate } from '../../utils/cobranzas';
-import Recuento from '../Tabla General/Recuento';
 import Columnas from '../Tabla General/Columnas';
 import Celdas from '../Tabla General/Celdas';
 import PDFBoton from '../Tabla General/PDFBoton';
@@ -35,38 +34,34 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   }, [filtroCBU, filtroCodigo, filtroPago]);
 
   return (
-    <table className="w-10/12 border-collapse text-center" ref={tableRef}>
-      <thead>
-        <Columnas fechasCobro={fechasCobro} fechasDesde={fechasDesde} />
-      </thead>
-      <Celdas
-        data={data}
-        getCobranzasByDate={getCobranzasByDate}
-        fechasCobro={fechasCobro}
-        fechasDesde={fechasDesde}
-        filtroCBU={filtros.filtroCBU}
-        filtroCodigo={filtros.filtroCodigo}
-        filtroPago={filtros.filtroPago}
-      />
-      <tfoot>
-        <Recuento
-          fechasCobro={fechasCobro}
-          fechasDesde={fechasDesde}
+    <div className="overflow-x-auto">
+      <table className="w-full border-collapse text-center" ref={tableRef}>
+        <thead>
+          <Columnas fechasCobro={fechasCobro} fechasDesde={fechasDesde} />
+        </thead>
+        <Celdas
           data={data}
-          filtros={filtros}
-        />
-        <PDFBoton
+          getCobranzasByDate={getCobranzasByDate}
           fechasCobro={fechasCobro}
           fechasDesde={fechasDesde}
-          tableRef={tableRef}
+          filtroCBU={filtros.filtroCBU}
+          filtroCodigo={filtros.filtroCodigo}
+          filtroPago={filtros.filtroPago}
         />
-        <ExcelBoton
-          tableRef={tableRef}
-          fechasCobro={fechasCobro}
-          fechasDesde={fechasDesde}
-        />
-      </tfoot>
-    </table>
+        <tfoot>
+          <PDFBoton
+            fechasCobro={fechasCobro}
+            fechasDesde={fechasDesde}
+            tableRef={tableRef}
+          />
+          <ExcelBoton
+            tableRef={tableRef}
+            fechasCobro={fechasCobro}
+            fechasDesde={fechasDesde}
+          />
+        </tfoot>
+      </table>
+    </div>
   );
 };
 

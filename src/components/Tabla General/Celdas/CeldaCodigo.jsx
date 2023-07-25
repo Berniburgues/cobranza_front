@@ -32,7 +32,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro }) => {
         return (
           <td
             key={index}
-            className={`border-2 border-gray-800 px-1 py-2 text-xs font-bold w-1/12 ${cellColorClass}`}
+            className={`border-2 border-gray-800 px-1 py-2 text-xs font-bold w-1/12 whitespace-nowrap ${cellColorClass}`}
             title={codigoDescripcion}
           >
             {uniqueCodigos.join('-')}
