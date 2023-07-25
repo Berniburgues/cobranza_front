@@ -1,7 +1,9 @@
 import React from 'react';
 import { descripcionCodigo } from '../../../utils/descripcionCodigos';
 
-const CeldaCodigo = ({ cobranzasByDate, fechasCobro }) => {
+const CeldaCodigo = ({ cobranzasByDate, fechasCobro, cliente }) => {
+  const CBU = cliente.CBU; // Acceder directamente a la propiedad CBU del cliente
+
   return (
     <>
       {fechasCobro.map((fecha, index) => {
@@ -17,13 +19,19 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro }) => {
           cellColorClass = 'bg-green-500';
         } else if (isR10) {
           if (index === fechasCobro.length - 1) {
-            // Si es el último R10, se pintará de naranja.
             cellColorClass = 'bg-orange-400';
           } else {
             cellColorClass = 'bg-yellow-400';
           }
         } else if (uniqueCodigos.length > 0) {
           cellColorClass = 'bg-red-500';
+        }
+
+        const hasNoCodigo = uniqueCodigos.length === 0; // Verificar si no hay códigos en este día
+        const isNotCBU027 = CBU !== '027'; // Verificar si CBU no es '027'
+
+        if (hasNoCodigo && isNotCBU027) {
+          cellColorClass = 'bg-gray-400'; // Si no hay códigos y CBU no es '027', pintar la celda de gris
         }
 
         const lastUniqueCodigo = uniqueCodigos[uniqueCodigos.length - 1];

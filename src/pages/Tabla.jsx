@@ -93,10 +93,10 @@ const Tabla = () => {
 
       <Loader loading={isLoading} />
 
-      {/* Mostrar información sobre cuántos socios se están mostrando y cuántos hay en total */}
       <div className="text-center my-4">
-        <p>
-          Mostrando {data.length} socios de un total de {totalCount}
+        <p className="text-lg font-semibold">
+          Mostrando <span className="text-blue-500">{data.length}</span> socios de un
+          total de <span className="text-blue-500">{totalCount}</span>
         </p>
       </div>
 
@@ -111,7 +111,7 @@ const Tabla = () => {
       {hasMore && !isLoading && (
         <button
           onClick={handleLoadMore}
-          className="my-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 border-2 border-black"
+          className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 border-2 border-black"
         >
           Cargar más
         </button>

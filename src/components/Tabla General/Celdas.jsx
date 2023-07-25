@@ -42,6 +42,7 @@ const Celdas = ({
                   cobranzasByDate={cobranzasByDate}
                   fechasCobro={fechasCobro}
                   filtroCodigo={filtroCodigo}
+                  cliente={cliente}
                 />
                 <CeldaFeDesde cliente={cliente} fechasDesde={fechasDesde} />
               </tr>

@@ -5,6 +5,7 @@ import Columnas from '../Tabla General/Columnas';
 import Celdas from '../Tabla General/Celdas';
 import PDFBoton from '../Tabla General/PDFBoton';
 import ExcelBoton from '../Tabla General/ExcelBoton';
+import '../Tabla/tabla.css';
 
 const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   const [fechasCobro, setFechasCobro] = useState([]);
@@ -34,8 +35,11 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   }, [filtroCBU, filtroCodigo, filtroPago]);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-center" ref={tableRef}>
+    <div className="overflow-x-scroll min-w-full h-screen">
+      <table
+        className="w-full border-collapse text-center mx-auto table-fixed"
+        ref={tableRef}
+      >
         <thead>
           <Columnas fechasCobro={fechasCobro} fechasDesde={fechasDesde} />
         </thead>
