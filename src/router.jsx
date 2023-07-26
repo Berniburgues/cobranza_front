@@ -2,7 +2,7 @@ import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../src/components/Common/Layout';
 import Home from './pages/Home';
-import Graficos from './pages/Graficos';
+import Reportes from './pages/Reportes';
 import Tabla from './pages/Tabla';
 
 export const router = createBrowserRouter([
@@ -23,10 +23,10 @@ export const router = createBrowserRouter([
     ), // Renderiza Tabla dentro del Layout
   },
   {
-    path: '/graficos',
+    path: '/reportes',
     element: (
       <Layout>
-        <Graficos />
+        <Reportes />
       </Layout>
     ), // Renderiza Graficos dentro del Layout
   },

@@ -4,14 +4,14 @@ const FiltroCBU = ({ filtroCBU, setFiltroCBU }) => {
   return (
     <>
       <div className="flex flex-col items-center">
-        <label htmlFor="filtroCBU" className="text-base font-medium  rounded-md">
-          Banco:
+        <label htmlFor="filtroCBU" className="text-sm rounded-md font-semibold">
+          Banco
         </label>
         <select
           id="filtroCBU"
           value={filtroCBU}
           onChange={(e) => setFiltroCBU(e.target.value)}
-          className="border-2 border-gray-800 px-2 py-2 text-base rounded-md focus:outline-none focus:border-blue-500 w-32"
+          className="border-2 border-gray-800 p-1 text-sm rounded-md focus:outline-none focus:border-blue-500 w-24"
         >
           <option value="">Todos</option>
           <option value="027">Supervielle</option>

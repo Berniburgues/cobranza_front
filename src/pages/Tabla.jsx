@@ -60,6 +60,16 @@ const Tabla = () => {
     }
   }, [currentPage, periodo]);
 
+  useEffect(() => {
+    // Verificar si hay un periodo seleccionado antes de cargar los datos
+    if (periodo) {
+      // Restaurar currentPage a 1 para cargar desde la primera página
+      setCurrentPage(1);
+      // Hacer la llamada a la API con el nuevo periodo seleccionado
+      fetchDataAndUpdateState();
+    }
+  }, [periodo]);
+
   const handleLoadMore = async () => {
     setIsLoading(true);
 
@@ -78,23 +88,37 @@ const Tabla = () => {
   };
 
   return (
-    <section className="overflow-x-auto overflow-y-auto flex flex-col justify-center items-center h-screen">
-      <Periodo periodo={periodo} setPeriodo={setPeriodo} data={data} setData={setData} />
+    <section className="overflow-y-auto flex flex-col justify-center items-center h-screen">
+      <div className="flex space-x-5 h-8 mt-5 text-center">
+        <Periodo
+          periodo={periodo}
+          setPeriodo={setPeriodo}
+          data={data}
+          setData={setData}
+        />
 
-      <Filtros
-        filtroCBU={filtroCBU}
-        filtroCodigo={filtroCodigo}
-        filtroPago={filtroPago}
-        setFiltroCBU={setFiltroCBU}
-        setFiltroPago={setFiltroPago}
-        setFiltroCodigo={setFiltroCodigo}
-        currentPage={setCurrentPage}
-      />
+        <Filtros
+          filtroCBU={filtroCBU}
+          filtroCodigo={filtroCodigo}
+          filtroPago={filtroPago}
+          setFiltroCBU={setFiltroCBU}
+          setFiltroPago={setFiltroPago}
+          setFiltroCodigo={setFiltroCodigo}
+          currentPage={setCurrentPage}
+        />
+        {hasMore && !isLoading && (
+          <button
+            onClick={handleLoadMore}
+            className="rounded-md bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center"
+          >
+            Cargar más
+          </button>
+        )}
+        <Loader loading={isLoading} />
+      </div>
 
-      <Loader loading={isLoading} />
-
-      <div className="text-center my-4">
-        <p className="text-lg font-semibold">
+      <div className="text-center my-2">
+        <p className="text-base font-semibold">
           Mostrando <span className="text-blue-500">{data.length}</span> socios de un
           total de <span className="text-blue-500">{totalCount}</span>
         </p>
@@ -107,15 +131,6 @@ const Tabla = () => {
         filtroCodigo={filtroCodigo}
         filtroPago={filtroPago}
       />
-
-      {hasMore && !isLoading && (
-        <button
-          onClick={handleLoadMore}
-          className="mt-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 border-2 border-black"
-        >
-          Cargar más
-        </button>
-      )}
     </section>
   );
 };

@@ -14,7 +14,7 @@ const CeldaImporte = ({ cliente }) => {
 
   return (
     <td
-      className={`border-2 border-gray-800 px-1 py-2 text-sm font-semibold ${colorClass}`}
+      className={`border-2 border-gray-800 text-xs font-semibold ${colorClass}`}
     >
       ${cliente.Importe}
     </td>

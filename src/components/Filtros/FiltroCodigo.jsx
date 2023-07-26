@@ -3,14 +3,14 @@ import React from 'react';
 const FiltroCodigo = ({ filtroCodigo, setFiltroCodigo }) => {
   return (
     <div className="flex flex-col items-center">
-      <label htmlFor="filtroCodigo" className="text-base font-medium rounded-md">
-        Código:
+      <label htmlFor="filtroCBU" className="text-sm rounded-md font-semibold">
+        Código
       </label>
       <select
         id="filtroCodigo"
         value={filtroCodigo}
         onChange={(e) => setFiltroCodigo(e.target.value)}
-        className="border-2 border-gray-800 px-2 py-2 text-base rounded-md focus:outline-none focus:border-blue-500 w-32"
+        className="border-2 border-gray-800 p-1 text-sm rounded-md focus:outline-none focus:border-blue-500 w-24"
       >
         <option value="">Todos</option>
         <option value="ACE">ACE</option>

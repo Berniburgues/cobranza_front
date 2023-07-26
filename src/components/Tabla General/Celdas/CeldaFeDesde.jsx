@@ -12,7 +12,7 @@ const CeldaFeDesde = ({ cliente, fechasDesde }) => {
         return (
           <td
             key={index}
-            className={`border-2 border-gray-800 px-1 py-2 text-sm ${cellColorClass}`}
+            className={`border-2 border-gray-800 p-1 text-sm ${cellColorClass}`}
           ></td>
         );
       })}

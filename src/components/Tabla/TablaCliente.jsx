@@ -3,9 +3,6 @@ import { obtenerFechasCobranza, obtenerFechasDesde } from '../../utils/fechas';
 import { getCobranzasByDate } from '../../utils/cobranzas';
 import Columnas from '../Tabla General/Columnas';
 import Celdas from '../Tabla General/Celdas';
-import PDFBoton from '../Tabla General/PDFBoton';
-import ExcelBoton from '../Tabla General/ExcelBoton';
-import '../Tabla/tabla.css';
 
 const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   const [fechasCobro, setFechasCobro] = useState([]);
@@ -35,9 +32,9 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   }, [filtroCBU, filtroCodigo, filtroPago]);
 
   return (
-    <div className="overflow-x-scroll min-w-full h-screen">
+    <div className="overflow-x-scroll min-w-full">
       <table
-        className="w-full border-collapse text-center mx-auto table-fixed"
+        className="w-full border-collapse text-center mx-auto table-fixed text-xs"
         ref={tableRef}
       >
         <thead>
@@ -52,18 +49,6 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
           filtroCodigo={filtros.filtroCodigo}
           filtroPago={filtros.filtroPago}
         />
-        <tfoot>
-          <PDFBoton
-            fechasCobro={fechasCobro}
-            fechasDesde={fechasDesde}
-            tableRef={tableRef}
-          />
-          <ExcelBoton
-            tableRef={tableRef}
-            fechasCobro={fechasCobro}
-            fechasDesde={fechasDesde}
-          />
-        </tfoot>
       </table>
     </div>
   );

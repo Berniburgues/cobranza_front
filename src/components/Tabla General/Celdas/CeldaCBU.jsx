@@ -9,7 +9,7 @@ const CeldaCBU = ({ cliente, filtroCBU }) => {
 
   return (
     <td
-      className={`border-2 border-gray-800 px-1 py-2 text-sm ${
+      className={`border-2 border-gray-800  text-sm ${
         isCbuAzul ? 'bg-blue-500 text-black font-semibold' : ''
       }`}
       title={`${nombreBanco}`}

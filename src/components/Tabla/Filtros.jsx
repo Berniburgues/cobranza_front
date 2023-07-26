@@ -26,11 +26,11 @@ const Filtros = ({
   };
 
   return (
-    <section className="flex justify-center mt-5 h-12">
+    <section className="flex justify-center">
       <div className="flex items-end gap-5">
         <button
           onClick={toggleFilters}
-          className={`border-2 border-black px-2 py-2 w-32 text-base font-bold rounded-md bg-yellow-500 hover:bg-yellow-600 text-black ${
+          className={`border-2 border-black p-1 w-24 text-sm font-semibold rounded-md bg-yellow-500 hover:bg-yellow-600 text-black ${
             showFilters ? 'ml-0' : 'ml-auto'
           }`}
         >
@@ -57,9 +57,9 @@ const Filtros = ({
               <div className="self-end">
                 <button
                   onClick={reiniciarFiltros}
-                  className="border-2 border-black px-2 py-2 text-base rounded-md bg-blue-500 hover:bg-blue-600 text-white w-36"
+                  className="border-2 border-black p-1 text-sm rounded-md bg-blue-500 hover:bg-blue-600 text-white w-24"
                 >
-                  Reiniciar Filtros
+                  Reiniciar
                 </button>
               </div>
             </div>

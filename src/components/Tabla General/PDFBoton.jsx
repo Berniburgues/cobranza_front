@@ -7,7 +7,7 @@ const PDFBoton = ({ fechasCobro, fechasDesde, tableRef }) => {
       <td colSpan={fechasCobro.length + fechasDesde.length + 4}>
         <button
           onClick={() => crearPDF(tableRef)}
-          className="border-2 border-gray-800 p-1 text-sm font-semibold bg-red-200 hover:bg-red-300 w-full"
+          className="border-2 border-gray-800 text-xs font-semibold bg-red-200 hover:bg-red-300 w-full"
         >
           Descargar PDF
         </button>
