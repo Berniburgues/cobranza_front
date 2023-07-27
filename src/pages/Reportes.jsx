@@ -7,8 +7,9 @@ const Reportes = () => {
         title="Cobranza"
         width="100%"
         height="525"
-        src="https://app.powerbi.com/view?r=eyJrIjoiZjFlMDk3YWYtYmY4Yy00ZWEyLWIwMzQtNTRiYTA2M2E4MTVjIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9"
-        allowFullScreen
+        src="https://app.powerbi.com/view?r=eyJrIjoiNzJkZGQwZGMtYjgzMS00YjQ5LTkxNjQtMWNmZDYwNzRiMjBiIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9&pageName=ReportSection"
+        frameborder="0"
+        allowFullScreen="true"
       ></iframe>
     </div>
   );
