@@ -2,7 +2,7 @@ import React from 'react';
 import { getNombrePeriodo } from '../../utils/fechas';
 
 const Periodo = ({ periodo, setPeriodo, data, setData }) => {
-  const periodosDisponibles = ['2023-06-01', '2023-07-01']; // Períodos disponibles para seleccionar
+  const periodosDisponibles = ['2023-06-01', '2023-07-01', '2023-08-01']; // Períodos disponibles para seleccionar
 
   const handlePeriodoChange = (event) => {
     const selectedPeriodo = event.target.value;
