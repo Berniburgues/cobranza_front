@@ -33,6 +33,14 @@ export const formatFecha = (fecha) => {
   return `${dia}/${mes}`;
 };
 
+export const formatFechaSocio = (fecha) => {
+  if (!fecha) {
+    return '';
+  }
+  const [año, mes, dia] = fecha.split('-');
+  return `${dia}/${mes}/${año}`;
+};
+
 // Función que recibe una fecha en formato YYYY-MM-DD y devuelve un nombre de mes y año
 export const getNombrePeriodo = (fecha) => {
   // Crear un objeto Date a partir de la fecha

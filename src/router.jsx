@@ -4,6 +4,7 @@ import Layout from '../src/components/Common/Layout';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
 import Tabla from './pages/Tabla';
+import Socio from './pages/Socio';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,14 @@ export const router = createBrowserRouter([
       <Layout>
         <Reportes />
       </Layout>
-    ), // Renderiza Graficos dentro del Layout
+    ), // Renderiza Reportes dentro del Layout
+  },
+  {
+    path: '/socio',
+    element: (
+      <Layout>
+        <Socio />
+      </Layout>
+    ), // Renderiza Socio dentro del Layout
   },
 ]);

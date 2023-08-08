@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Obtener Datos para Tabla de Cobranza
 export const fetchData = async (page, limit, periodo) => {
   try {
     const response = await axios.get(
@@ -9,10 +10,27 @@ export const fetchData = async (page, limit, periodo) => {
       data: responseData,
       totalPages: responseTotalPages,
       totalCount: responseTotalCount,
-    } = response.data; // Agregar totalCount a la desestructuración
+    } = response.data;
     return { responseData, responseTotalPages, responseTotalCount }; // Incluir totalCount en el objeto de retorno
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+// Obtener Datos de Socio individual
+export const fetchSocioData = async (numeroSocio) => {
+  try {
+    // Realizar la solicitud GET al servidor
+    const response = await axios.get(
+      `http://localhost:8080/clientes/socio?numeroSocio=${numeroSocio}`,
+    );
+
+    // Devolver los datos obtenidos
+    return response.data.data[0];
+  } catch (error) {
+    // Manejar cualquier error que ocurra durante la solicitud
+    console.error('Error al obtener los datos del socio:', error);
+    return null;
   }
 };

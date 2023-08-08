@@ -46,7 +46,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro, cliente }) => {
         }
 
         // Contenido de la celda
-        const cellContent = hasNoCodigo ? '' : uniqueCodigos.join('-');
+        const cellContent = hasNoCodigo ? '-' : uniqueCodigos.join('-');
         // Descripción de la celda (aparecerá solo si hay códigos)
         const codigoDescripcion = hasNoCodigo ? '' : descripcionCodigo(lastUniqueCodigo);
 

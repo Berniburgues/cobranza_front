@@ -11,10 +11,13 @@ const Layout = ({ children }) => {
           </Link>
         </div>
         <div className="space-x-4">
-          <Link to="/tabla" className="hover:text-gray-300">
+          <Link to="/tabla" className="hover:text-gray-300" target="_blank">
             Tabla
           </Link>
-          <Link to="/reportes" className="hover:text-gray-300">
+          <Link to="/socio" className="hover:text-gray-300" target="_blank">
+            Historial Socio
+          </Link>
+          <Link to="/reportes" className="hover:text-gray-300" target="_blank">
             Reportes
           </Link>
         </div>
