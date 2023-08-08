@@ -23,7 +23,7 @@ export const fetchSocioData = async (numeroSocio) => {
   try {
     // Realizar la solicitud GET al servidor
     const response = await axios.get(
-      `http://localhost:8080/clientes/socio?numeroSocio=${numeroSocio}`,
+      `https://cobranza-hent-dev.fl0.io/clientes/socio?numeroSocio=${numeroSocio}`,
     );
 
     // Devolver los datos obtenidos
