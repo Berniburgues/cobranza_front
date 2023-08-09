@@ -74,11 +74,19 @@ const Historial = ({ datosFijos }) => {
                     cellColorClass = 'bg-red-500';
                   }
 
+                  // Agregar fecha de cobro al título
+                  const fechaCobro = cobroDia.length > 0 ? cobroDia[0].fecCobro : '';
+                  const fechaCobroFormateada = fechaCobro
+                    ? fechaCobro.split('-').slice(1).reverse().join('/')
+                    : '';
+
+                  const titleText = `${fechaCobroFormateada} - ${descripcion}`;
+
                   return (
                     <td
                       key={index}
-                      className={`border-2 border-black text-center  text-[0.50rem] md:text-sm font-bold truncate whitespace-nowrap ${cellColorClass}`}
-                      title={descripcion}
+                      className={`border-2 border-black text-center text-[0.50rem] md:text-sm font-bold truncate whitespace-nowrap ${cellColorClass}`}
+                      title={titleText}
                     >
                       {codigos || '-'}
                     </td>
