@@ -8,10 +8,12 @@ const Historial = ({ datosFijos }) => {
       <h2 className="text-2xl underline font-semibold mb-2 text-center">
         Historial de Cobro
       </h2>
-      <table className="w-full border-collapse text-center table-fixed text-sm">
+      <table className="w-full border-collapse text-center table-fixed text-xs md:text-sm">
         <thead>
           <tr>
-            <th className="border-2 border-gray-800 py-1 bg-black text-white">Período</th>
+            <th className="border-2 border-gray-800  bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold">
+              Período
+            </th>
             {[
               ...new Set(
                 Object.values(datosFijos.cobranza).flatMap((periodoData) =>
@@ -23,7 +25,7 @@ const Historial = ({ datosFijos }) => {
               .map((dia, index) => (
                 <th
                   key={index}
-                  className="border-2 border-gray-800 py-1 bg-black text-white"
+                  className="border-2 border-gray-800  bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold"
                 >
                   Día {dia}
                 </th>
@@ -33,7 +35,7 @@ const Historial = ({ datosFijos }) => {
         <tbody>
           {Object.keys(datosFijos.cobranza).map((periodo) => (
             <tr key={periodo}>
-              <td className="border-2 border-black p-1 font-semibold italic">
+              <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs  truncate whitespace-nowrap italic">
                 {getNombrePeriodo(periodo)}
               </td>
               {[
@@ -54,13 +56,19 @@ const Historial = ({ datosFijos }) => {
                   const descripcion = ultimoCodigo ? descripcionCodigo(ultimoCodigo) : '';
 
                   const hasACE = codigos.includes('ACE');
-                  const hasR10 = codigos.includes('R10');
+                  const isR10 = codigos.includes('R10');
+                  const hasTwoR =
+                    codigos.split('-').filter((codigo) => codigo.startsWith('R'))
+                      .length === 2;
+
                   let cellColorClass = '';
-                  if (hasACE && hasR10) {
+                  if (hasACE && isR10) {
                     cellColorClass = 'bg-gradient-to-b from-yellow-400 to-green-500';
+                  } else if (hasTwoR) {
+                    cellColorClass = 'bg-gradient-to-b from-yellow-500 to-red-500';
                   } else if (hasACE) {
                     cellColorClass = 'bg-green-500';
-                  } else if (hasR10) {
+                  } else if (isR10) {
                     cellColorClass = 'bg-yellow-400';
                   } else if (ultimoCodigo) {
                     cellColorClass = 'bg-red-500';
@@ -69,7 +77,7 @@ const Historial = ({ datosFijos }) => {
                   return (
                     <td
                       key={index}
-                      className={`border-2 border-black p-1 font-bold ${cellColorClass}`}
+                      className={`border-2 border-black text-center  text-[0.50rem] md:text-sm font-bold truncate whitespace-nowrap ${cellColorClass}`}
                       title={descripcion}
                     >
                       {codigos || '-'}

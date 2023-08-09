@@ -13,12 +13,16 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro, cliente }) => {
         const uniqueCodigos = cobranzas.length > 0 ? cobranzas[0].Codigo.split('-') : [];
         const hasACE = uniqueCodigos.includes('ACE');
         const isR10 = uniqueCodigos.includes('R10');
+        const hasTwoR =
+          uniqueCodigos.filter((codigo) => codigo.startsWith('R')).length === 2; // Cambio aquí
 
         let cellColorClass = '';
         if (hasACE && isR10) {
           cellColorClass = 'bg-gradient-to-b from-yellow-400 to-green-500';
         } else if (hasACE) {
           cellColorClass = 'bg-green-500';
+        } else if (hasTwoR) {
+          cellColorClass = 'bg-gradient-to-b from-yellow-500 to-red-500';
         } else if (isR10) {
           if (cliente.Pago === 'P') {
             cellColorClass = 'bg-orange-400'; // Si el Pago es 'P', pintar la celda de naranja

@@ -45,8 +45,8 @@ export const formatFechaSocio = (fecha) => {
 export const getNombrePeriodo = (fecha) => {
   // Crear un objeto Date a partir de la fecha
   const date = new Date(fecha);
-  // Obtener el año de la fecha
-  const year = date.getFullYear();
+  // Obtener el año de la fecha y obtener solo los dos últimos dígitos
+  const year = date.getFullYear().toString().slice(-2);
   // Obtener el mes de la fecha (0-11)
   const month = date.getMonth() + 1;
   // Crear un arreglo con los nombres de los meses en español

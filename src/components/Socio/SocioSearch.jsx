@@ -1,11 +1,19 @@
-import React from 'react';
+// SocioSearch.js
+import React, { useEffect } from 'react';
 
 const SocioSearch = ({
   numeroSocio,
   handleNumeroSocioChange,
   handleBuscarClick,
   isLoading,
+  initialNumeroSocio,
 }) => {
+  useEffect(() => {
+    if (numeroSocio && isLoading && numeroSocio === initialNumeroSocio) {
+      handleBuscarClick();
+    }
+  }, [numeroSocio, isLoading, initialNumeroSocio]);
+
   return (
     <div className="flex flex-col items-center my-3">
       <h2 className="text-2xl font-semibold mb-2 text-center underline">Nº Socio:</h2>

@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+// Socio.js
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { fetchSocioData } from '../services/obtenerData';
 import DatosFijos from '../components/Socio/DatosFijos';
 import Historial from '../components/Socio/Historial';
 import SocioSearch from '../components/Socio/SocioSearch';
 
 const Socio = () => {
-  const [numeroSocio, setNumeroSocio] = useState('');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialNumeroSocio = searchParams.get('numeroSocio') || '';
+
+  const [numeroSocio, setNumeroSocio] = useState(initialNumeroSocio);
   const [datosFijos, setDatosFijos] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -37,6 +43,12 @@ const Socio = () => {
     }
   };
 
+  useEffect(() => {
+    if (initialNumeroSocio) {
+      handleBuscarClick();
+    }
+  }, [initialNumeroSocio]);
+
   return (
     <section className="flex flex-col items-center justify-center">
       <SocioSearch
@@ -44,6 +56,7 @@ const Socio = () => {
         handleNumeroSocioChange={handleNumeroSocioChange}
         handleBuscarClick={handleBuscarClick}
         isLoading={isLoading}
+        initialNumeroSocio={initialNumeroSocio}
       />
       {errorMessage && (
         <p className="text-red-500 text-center font-semibold">{errorMessage}</p>
