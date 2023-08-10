@@ -32,23 +32,11 @@ const DatosFijos = ({ datosFijos }) => {
           <p className="font-bold underline text-lg">CUIL:</p>
           <p>{cuilFormateado}</p>
         </div>
-        <div className="col-span-2 md:col-span-1">
-          <p className="font-bold underline text-lg">Nacimiento:</p>
-          <p>
-            {datosFijos.nacimiento ? (
-              formatFechaSocio(
-                new Date(datosFijos.nacimiento).toISOString().split('T')[0],
-              )
-            ) : (
-              <span className="italic">No hay registro</span>
-            )}
-          </p>
-        </div>
-        <div className="col-span-2 md:col-span-1">
+        <div>
           <p className="font-bold underline text-lg">Banco:</p>
           <p>{determinarBancoPorCBU(datosFijos.banco)}</p>
         </div>
-        <div className="col-span-2 md:col-span-2">
+        <div>
           <p className="font-bold underline text-lg">CBU:</p>
           <p>{datosFijos.CBU}</p>
         </div>
