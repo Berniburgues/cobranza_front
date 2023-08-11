@@ -16,7 +16,7 @@ const Reportes = () => {
     },
     {
       title: 'Códigos por Día Hábil',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiNDQyYjhmN2UtYWI0ZC00Y2UzLWE3ZWMtNzc3OWE0M2MxMmYzIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiNDQyYjhmN2UtYWI0ZC00Y2UzLWE3ZWMtNzc3OWE0M2MxMmYzIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9&pageName=ReportSectione828bf90b0b55e7ed03b',
     },
   ];
 
