@@ -34,3 +34,16 @@ export const fetchSocioData = async (numeroSocio) => {
     return null;
   }
 };
+
+//Servicio para el Login
+export const loginService = async (email, password) => {
+  try {
+    const res = await axios.post('https://cobranza-hent-dev.fl0.io/users/login', {
+      email,
+      password,
+    });
+    return res.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};

@@ -80,7 +80,7 @@ const Historial = ({ datosFijos }) => {
                     ? fechaCobro.split('-').slice(1).reverse().join('/')
                     : '';
 
-                  const titleText = `${fechaCobroFormateada} - ${descripcion}`;
+                  const titleText = `${fechaCobroFormateada} ${descripcion}`;
 
                   return (
                     <td

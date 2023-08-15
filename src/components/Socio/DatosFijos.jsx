@@ -1,14 +1,7 @@
 import React from 'react';
 import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
-import { formatFechaSocio } from '../../utils/fechas';
 
 const DatosFijos = ({ datosFijos }) => {
-  // Formatear el CUIL (xx-xxxxxxxx-x)
-  const cuilFormateado = `${datosFijos.cuil.substring(0, 2)}-${datosFijos.cuil.substring(
-    2,
-    datosFijos.cuil.length - 1,
-  )}-${datosFijos.cuil.substring(datosFijos.cuil.length - 1)}`;
-
   // Formatear el documento con puntos (xx.xxx.xx)
   const documentoFormateado = `${datosFijos.documento.substring(
     0,
@@ -18,10 +11,12 @@ const DatosFijos = ({ datosFijos }) => {
   return (
     <article className="bg-black rounded-md text-white shadow-lg p-3 mx-auto my-4">
       <div className="text-center mb-4">
-        <h2 className="text-2xl font-bold">
+        <h2 className="text-base md:text-2xl font-bold">
           {datosFijos.nombre} {datosFijos.apellido}
         </h2>
-        <p className="text-base italic text-gray-400">Socio #{datosFijos.socio}</p>
+        <p className="text-sm md:text-base italic text-gray-400">
+          Socio #{datosFijos.socio}
+        </p>
       </div>
       <div className="grid grid-cols-2 gap-6 text-center">
         <div>
@@ -30,7 +25,7 @@ const DatosFijos = ({ datosFijos }) => {
         </div>
         <div>
           <p className="font-bold underline text-lg">CUIL:</p>
-          <p>{cuilFormateado}</p>
+          <p>{datosFijos.cuil}</p>
         </div>
         <div>
           <p className="font-bold underline text-lg">Banco:</p>

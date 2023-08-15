@@ -3,6 +3,7 @@ import { obtenerFechasCobranza, obtenerFechasDesde } from '../../utils/fechas';
 import { getCobranzasByDate } from '../../utils/cobranzas';
 import Columnas from '../Tabla General/Columnas';
 import Celdas from '../Tabla General/Celdas';
+import ExcelBoton from '../Tabla General/ExcelBoton';
 
 const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   const [fechasCobro, setFechasCobro] = useState([]);
@@ -34,7 +35,7 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
   return (
     <div className="overflow-x-scroll min-w-full">
       <table
-        className="w-full border-collapse text-center mx-auto table-fixed text-xs"
+        className="w-full border-collapse text-center mx-auto table-fixed text-[0.50rem] md:text-xs"
         ref={tableRef}
       >
         <thead>
@@ -49,6 +50,16 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
           filtroCodigo={filtros.filtroCodigo}
           filtroPago={filtros.filtroPago}
         />
+      </table>
+
+      <table className="w-full border-collapse text-center mx-auto table-fixed text-xs">
+        <tbody>
+          <ExcelBoton
+            tableRef={tableRef}
+            fechasCobro={fechasCobro}
+            fechasDesde={fechasDesde}
+          />
+        </tbody>
       </table>
     </div>
   );

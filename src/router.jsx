@@ -5,38 +5,56 @@ import Home from './pages/Home';
 import Reportes from './pages/Reportes';
 import Tabla from './pages/Tabla';
 import Socio from './pages/Socio';
+import Login from './pages/Login';
+import ProtectedRoute from './components/Common/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: (
       <Layout>
-        <Home />
+        <Login />
       </Layout>
-    ), // Renderiza Home dentro del Layout
+    ),
+  },
+  {
+    path: '/home',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      </Layout>
+    ),
   },
   {
     path: '/tabla',
     element: (
       <Layout>
-        <Tabla />
+        <ProtectedRoute>
+          <Tabla />
+        </ProtectedRoute>
       </Layout>
-    ), // Renderiza Tabla dentro del Layout
+    ),
   },
   {
     path: '/reportes',
     element: (
       <Layout>
-        <Reportes />
+        <ProtectedRoute>
+          <Reportes />
+        </ProtectedRoute>
       </Layout>
-    ), // Renderiza Reportes dentro del Layout
+    ),
   },
   {
     path: '/socio',
     element: (
       <Layout>
-        <Socio />
+        <ProtectedRoute>
+          <Socio />
+        </ProtectedRoute>
       </Layout>
-    ), // Renderiza Socio dentro del Layout
+    ),
   },
 ]);
