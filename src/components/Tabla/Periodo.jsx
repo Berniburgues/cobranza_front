@@ -15,7 +15,7 @@ const Periodo = ({ periodo, setPeriodo, data, setData }) => {
 
   return (
     <select
-      value={periodo}
+      value={periodo || ''}
       onChange={handlePeriodoChange}
       className="border-2 border-gray-800 p-1 text-sm w-24 rounded-md focus:outline-none focus:border-blue-500"
     >

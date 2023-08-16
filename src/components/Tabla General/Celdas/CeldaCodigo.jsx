@@ -57,7 +57,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro, cliente }) => {
         return (
           <td
             key={index}
-            className={`border-2 border-gray-800 py-1 text-center text-[0.7rem] md:font-bold w-1/12 whitespace-nowrap ${cellColorClass}`}
+            className={`border-2 border-gray-800 py-1 text-center text-[0.5rem] md:text-[0.7rem] font-bold w-1/12 whitespace-nowrap truncate ${cellColorClass}`}
             title={codigoDescripcion}
           >
             {cellContent}
