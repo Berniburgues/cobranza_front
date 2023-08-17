@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ReportesVarios = () => {
+const ReportesIndirectos = () => {
   const informes = [
     {
       title: 'Totales',
@@ -12,7 +12,7 @@ const ReportesVarios = () => {
       {informes.map((informe, index) => (
         <div key={index} className="mb-4">
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold p-2 italic rounded-md w-96"
+            className="bg-red-500 hover:bg-red-700 text-white font-bold font-mono p-2 italic rounded-md w-96"
             onClick={() => window.open(informe.url, '_blank')}
           >
             {informe.title}
@@ -23,4 +23,4 @@ const ReportesVarios = () => {
   );
 };
 
-export default ReportesVarios;
+export default ReportesIndirectos;

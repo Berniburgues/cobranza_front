@@ -8,16 +8,16 @@ const Reportes = () => {
       <h2 className="text-2xl font-bold mb-4 font-mono">Reportes</h2>
       <div className="space-x-5">
         <Link
-          to="internos"
-          className="bg-green-500 hover:bg-green-700 text-white font-bold p-2 font-mono rounded-md w-52 text-center"
+          to="directos"
+          className="bg-green-500 hover:bg-green-700 text-white font-bold p-2 font-mono rounded-md w-72 text-center"
         >
-          Reportes Internos
+          Reportes Directos
         </Link>
         <Link
-          to="varios"
-          className="bg-red-500 hover:bg-red-700 text-white font-bold p-2 font-mono rounded-md w-52 text-center"
+          to="indirectos"
+          className="bg-red-500 hover:bg-red-700 text-white font-bold p-2 font-mono rounded-md w-72 text-center"
         >
-          Reportes Varios
+          Reportes Indirectos
         </Link>
       </div>
       <Outlet />

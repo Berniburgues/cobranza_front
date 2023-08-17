@@ -3,8 +3,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../src/components/Common/Layout';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
-import ReportesInternos from './components/Reportes/ReportesInternos';
-import ReportesVarios from './components/Reportes/ReportesVarios';
+import ReportesDirectos from './components/Reportes/ReportesDirectos';
+import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
 import Tabla from './pages/Tabla';
 import Socio from './pages/Socio';
 import Login from './pages/Login';
@@ -50,12 +50,12 @@ export const router = createBrowserRouter([
     ),
     children: [
       {
-        path: 'internos',
-        element: <ReportesInternos />,
+        path: 'directos',
+        element: <ReportesDirectos />,
       },
       {
-        path: 'varios',
-        element: <ReportesVarios />,
+        path: 'indirectos',
+        element: <ReportesIndirectos />,
       },
     ],
   },
