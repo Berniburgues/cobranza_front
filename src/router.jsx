@@ -1,14 +1,15 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../src/components/Common/Layout';
-import Home from './pages/Home';
-import Reportes from './pages/Reportes';
+import ProtectedRoute from './components/Common/ProtectedRoute';
 import ReportesDirectos from './components/Reportes/ReportesDirectos';
 import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
+import Home from './pages/Home';
+import Reportes from './pages/Reportes';
 import Tabla from './pages/Tabla';
 import Socio from './pages/Socio';
 import Login from './pages/Login';
-import ProtectedRoute from './components/Common/ProtectedRoute';
+import Denegado from './pages/Denegado';
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,14 @@ export const router = createBrowserRouter([
     element: (
       <Layout>
         <Login />
+      </Layout>
+    ),
+  },
+  {
+    path: '/denegado',
+    element: (
+      <Layout>
+        <Denegado />
       </Layout>
     ),
   },
