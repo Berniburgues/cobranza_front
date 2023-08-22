@@ -3,7 +3,10 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        '3xl': '2000px', // Establece el ancho máximo para la clase '3xl'
+        '3xl': '2000px',
+      },
+      fontFamily: {
+        libre: ['Libre Franklin'],
       },
     },
   },

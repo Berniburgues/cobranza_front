@@ -19,12 +19,12 @@ const Reportes = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <h2 className="text-2xl font-bold mb-4 font-mono">Reportes</h2>
+      <h2 className="text-3xl font-bold mb-4 underline font-libre">Reportes</h2>
       <div className="space-x-5">
         {accesoDirecto && (
           <Link
             to="directos"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold p-2 font-mono rounded-md w-72 text-center"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 font-libre rounded-md w-72 text-center"
           >
             Reportes Directos
           </Link>
@@ -32,7 +32,7 @@ const Reportes = () => {
         {accesoIndirecto && (
           <Link
             to="indirectos"
-            className="bg-red-500 hover:bg-red-700 text-white font-bold p-2 font-mono rounded-md w-72 text-center"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold p-2 font-libre rounded-md w-72 text-center"
           >
             Reportes Indirectos
           </Link>

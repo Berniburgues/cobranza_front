@@ -24,7 +24,7 @@ const ReportesIndirectos = () => {
       {informes.map((informe, index) => (
         <div key={index} className="mb-4">
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold font-mono p-2 italic rounded-md w-96"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold font-libre p-2  rounded-md w-96"
             onClick={() => window.open(informe.url, '_blank')}
           >
             {informe.title}
