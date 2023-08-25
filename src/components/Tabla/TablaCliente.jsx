@@ -5,14 +5,9 @@ import Columnas from '../Tabla General/Columnas';
 import Celdas from '../Tabla General/Celdas';
 import ExcelBoton from '../Tabla General/ExcelBoton';
 
-const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
+const TablaCliente = ({ data }) => {
   const [fechasCobro, setFechasCobro] = useState([]);
   const [fechasDesde, setFechasDesde] = useState([]);
-  const [filtros, setFiltros] = useState({
-    filtroCBU,
-    filtroCodigo,
-    filtroPago,
-  });
 
   const tableRef = useRef(null);
 
@@ -23,14 +18,6 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
     setFechasDesde(fechasDesde);
     setFechasCobro(fechasCobro);
   }, [data]);
-
-  useEffect(() => {
-    setFiltros({
-      filtroCBU,
-      filtroCodigo,
-      filtroPago,
-    });
-  }, [filtroCBU, filtroCodigo, filtroPago]);
 
   return (
     <div className="overflow-x-scroll min-w-full">
@@ -46,9 +33,6 @@ const TablaCliente = ({ data, filtroCodigo, filtroPago, filtroCBU }) => {
           getCobranzasByDate={getCobranzasByDate}
           fechasCobro={fechasCobro}
           fechasDesde={fechasDesde}
-          filtroCBU={filtros.filtroCBU}
-          filtroCodigo={filtros.filtroCodigo}
-          filtroPago={filtros.filtroPago}
         />
       </table>
 

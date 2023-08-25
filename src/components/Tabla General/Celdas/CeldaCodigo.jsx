@@ -14,7 +14,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro, cliente }) => {
         const hasACE = uniqueCodigos.includes('ACE');
         const isR10 = uniqueCodigos.includes('R10');
         const hasTwoR =
-          uniqueCodigos.filter((codigo) => codigo.startsWith('R')).length === 2; // Cambio aquí
+          uniqueCodigos.filter((codigo) => codigo.startsWith('R')).length === 2;
 
         let cellColorClass = '';
         if (hasACE && isR10) {

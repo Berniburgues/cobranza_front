@@ -4,85 +4,85 @@ export function determinarBancoPorCBU(cbu) {
 
   // Comparar con las secuencias iniciales de cada Banco
   if (primerosDigitos === '011') {
-    return 'Banco Nación';
+    return 'Nación';
   } else if (primerosDigitos === '072') {
-    return 'Banco Santander Río';
+    return 'Santander Río';
   } else if (primerosDigitos === '007') {
-    return 'Banco Galicia';
+    return 'Galicia';
   } else if (primerosDigitos === '017') {
-    return 'Banco Francés (BBVA)';
+    return 'Francés (BBVA)';
   } else if (primerosDigitos === '034') {
-    return 'Banco Patagonia';
+    return 'Patagonia';
   } else if (primerosDigitos === '027') {
-    return 'Banco Supervielle';
+    return 'Supervielle';
   } else if (primerosDigitos === '014') {
-    return 'Banco Provincia';
+    return 'Provincia';
   } else if (primerosDigitos === '015') {
-    return 'Banco ICBC';
+    return 'ICBC';
   } else if (primerosDigitos === '020') {
-    return 'Banco de la Provincia de Córdoba';
+    return 'Provincia de Córdoba';
   } else if (primerosDigitos === '016') {
     return 'Citibank';
   } else if (primerosDigitos === '029') {
-    return 'Banco de la Ciudad de Bs.As';
+    return 'Ciudad de Bs.As';
   } else if (primerosDigitos === '044') {
-    return 'Banco Hipotecario';
+    return 'Hipotecario';
   } else if (primerosDigitos === '045') {
-    return 'Banco de San Juan';
+    return 'San Juan';
   } else if (primerosDigitos === '065') {
-    return 'Banco Municipal de Rosario';
+    return 'Municipal de Rosario';
   } else if (primerosDigitos === '083') {
-    return 'Banco del Chubut';
+    return 'Chubut';
   } else if (primerosDigitos === '086') {
-    return 'Banco de Santa Cruz';
+    return 'Santa Cruz';
   } else if (primerosDigitos === '093') {
-    return 'Banco de la Pampa';
+    return 'La Pampa';
   } else if (primerosDigitos === '094') {
-    return 'Banco de Corrientes';
+    return 'Corrientes';
   } else if (primerosDigitos === '097') {
-    return 'Banco Provincia del Neuquén';
+    return 'Neuquén';
   } else if (primerosDigitos === '143') {
     return 'Brubank';
   } else if (primerosDigitos === '147') {
-    return 'Banco Interfinanzas';
+    return 'Interfinanzas';
   } else if (primerosDigitos === '150') {
-    return 'Banco HSBC';
+    return 'HSBC';
   } else if (primerosDigitos === '158') {
     return 'Open Bank';
   } else if (primerosDigitos === '191') {
-    return 'Banco CREDICOOP';
+    return 'CREDICOOP';
   } else if (primerosDigitos === '259') {
-    return 'Banco ITAU';
+    return 'ITAU';
   } else if (primerosDigitos === '268') {
-    return 'Banco Provincia Tierra del Fuego';
+    return 'Tierra del Fuego';
   } else if (primerosDigitos === '269') {
-    return 'Banco del Uruguay';
+    return 'Del Uruguay';
   } else if (primerosDigitos === '281') {
-    return 'Banco Meridian';
+    return 'Meridian';
   } else if (primerosDigitos === '285') {
-    return 'Banco Macro';
+    return 'Macro';
   } else if (primerosDigitos === '299') {
-    return 'Banco COMAFI';
+    return 'COMAFI';
   } else if (primerosDigitos === '389') {
-    return 'Banco Columbia';
+    return 'Columbia';
   } else if (primerosDigitos === '321') {
-    return 'Banco Santiago del Estero';
+    return 'Santiago del Estero';
   } else if (primerosDigitos === '301') {
-    return 'Banco Piano';
+    return 'Piano';
   } else if (primerosDigitos === '322') {
-    return 'Banco Industrial';
+    return 'Industrial';
   } else if (primerosDigitos === '386') {
-    return 'Banco Entre Ríos';
+    return 'Entre Ríos';
   } else if (primerosDigitos === '330') {
-    return 'Banco Santa Fé';
+    return 'Santa Fé';
   } else if (primerosDigitos === '311') {
-    return 'Banco del Chaco';
+    return 'Chaco';
   } else if (primerosDigitos === '315') {
-    return 'Banco de Formosa';
+    return 'Formosa';
   } else if (primerosDigitos === '310') {
-    return 'Banco del Sol';
+    return 'Del Sol';
   } else if (primerosDigitos === '309') {
-    return 'Banco de la Rioja';
+    return 'La Rioja';
   } else if (primerosDigitos === '408') {
     return 'Compañía Financiera Argentina';
   } else if (primerosDigitos === '453') {

@@ -2,7 +2,7 @@ import React from 'react';
 import { getNombrePeriodo } from '../../utils/fechas';
 
 const Periodo = ({ periodo, setPeriodo, data, setData }) => {
-  const periodosDisponibles = ['2023-06-01', '2023-07-01', '2023-08-01']; // Períodos disponibles para seleccionar
+  const periodosDisponibles = ['2023-06-01', '2023-07-01', '2023-08-01', '2023-09-01']; // Períodos disponibles para seleccionar
 
   const handlePeriodoChange = (event) => {
     const selectedPeriodo = event.target.value;
@@ -17,7 +17,7 @@ const Periodo = ({ periodo, setPeriodo, data, setData }) => {
     <select
       value={periodo || ''}
       onChange={handlePeriodoChange}
-      className="border-2 border-gray-800 p-1 text-sm w-24 rounded-md focus:outline-none focus:border-blue-500"
+      className="border-2 border-gray-800 p-1 text-xs md:text-sm w-16 md:w-24 rounded-md focus:outline-none focus:border-blue-500"
     >
       <option value="">Período</option>
       {periodosDisponibles.map((periodo) => (

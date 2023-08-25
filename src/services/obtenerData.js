@@ -1,17 +1,25 @@
 import axios from 'axios';
 
 // Obtener Datos para Tabla de Cobranza
-export const fetchData = async (page, limit, periodo) => {
+export const fetchData = async (page, limit, periodo, codigo, cbu) => {
   try {
-    const response = await axios.get(
-      `https://cobranza-hent-dev.fl0.io/clientes/pagos?page=${page}&limit=${limit}&periodo=${periodo}`,
-    );
+    let url = `https://cobranza-hent-dev.fl0.io/clientes/pagos?page=${page}&limit=${limit}&periodo=${periodo}`;
+
+    if (codigo) {
+      url += `&codigo=${codigo}`;
+    }
+
+    if (cbu) {
+      url += `&CBU=${cbu}`;
+    }
+
+    const response = await axios.get(url);
     const {
       data: responseData,
       totalPages: responseTotalPages,
       totalCount: responseTotalCount,
     } = response.data;
-    return { responseData, responseTotalPages, responseTotalCount }; // Incluir totalCount en el objeto de retorno
+    return { responseData, responseTotalPages, responseTotalCount };
   } catch (error) {
     console.error(error);
     throw error;

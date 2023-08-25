@@ -4,7 +4,7 @@ const CeldaPago = ({ cliente, filtroPago }) => {
   return (
     <td
       className={`border-2 border-gray-800 text-[0.5rem] md:text-sm truncate font-bold ${
-        cliente.Pago.includes(filtroPago)
+        cliente.Pago
           ? cliente.Pago === 'OK'
             ? 'bg-green-400'
             : cliente.Pago === 'NO'

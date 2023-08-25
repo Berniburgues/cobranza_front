@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { fetchData } from '../services/obtenerData';
 import TablaCliente from '../components/Tabla/TablaCliente';
 import Loader from '../components/Tabla/Loader';
-import Filtros from '../components/Tabla/Filtros';
 import Periodo from '../components/Tabla/Periodo';
+import CBU from '../components/Tabla/CBU';
+import Codigo from '../components/Tabla/Codigo';
 
 const Tabla = () => {
   const [data, setData] = useState([]);
@@ -12,26 +13,23 @@ const Tabla = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(false);
   const [primerCarga, setPrimerCarga] = useState(true);
-  const [filtroCBU, setFiltroCBU] = useState('');
-  const [filtroPago, setFiltroPago] = useState('');
-  const [filtroCodigo, setFiltroCodigo] = useState('');
-  const [totalCount, setTotalCount] = useState(0); // Agregar el estado totalCount
+  const [cbu, setCBU] = useState('');
+  const [codigo, setCodigo] = useState('');
+  const [totalCount, setTotalCount] = useState(0);
+  const [filtrosActivos, setFiltrosActivos] = useState(false); // Estado para los filtros activos
 
   const fetchDataAndUpdateState = async () => {
     setIsLoading(true);
     try {
-      const response = await fetchData(currentPage, 1000, periodo);
-      const { responseData, responseTotalPages, responseTotalCount } = response; // Obtener totalCount de la respuesta del servidor
+      const response = await fetchData(currentPage, 1000, periodo, codigo, cbu);
+      const { responseData, responseTotalPages, responseTotalCount } = response;
 
-      // Actualizar totalCount con el valor recibido del servidor
       setTotalCount(responseTotalCount);
 
-      // Verificar si es la primera página
       if (currentPage === 1) {
         setData(responseData);
         setPrimerCarga(false);
       } else {
-        // Verificar si la página ya ha sido cargada previamente
         const hasPageBeenLoaded = responseData.some((item) =>
           data.some((existingItem) => existingItem.Socio === item.Socio),
         );
@@ -41,7 +39,6 @@ const Tabla = () => {
         }
       }
 
-      // Verificar si hay más páginas para cargar
       if (currentPage >= responseTotalPages) {
         setHasMore(false);
       } else {
@@ -54,32 +51,32 @@ const Tabla = () => {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    if (periodo) {
-      fetchDataAndUpdateState();
-    }
-  }, [currentPage, periodo]);
+  const handleSearch = () => {
+    setCurrentPage(1);
+    fetchDataAndUpdateState();
+    setFiltrosActivos(true); // Marcar los filtros como activos
+  };
 
-  useEffect(() => {
-    // Verificar si hay un periodo seleccionado antes de cargar los datos
-    if (periodo) {
-      // Restaurar currentPage a 1 para cargar desde la primera página
-      setCurrentPage(1);
-      // Hacer la llamada a la API con el nuevo periodo seleccionado
-      fetchDataAndUpdateState();
-    }
-  }, [periodo]);
+  const handleResetFilters = () => {
+    setData([]);
+    setCurrentPage(1);
+    setPeriodo(null);
+    setCBU('');
+    setCodigo('');
+    setFiltrosActivos(false); // Marcar los filtros como inactivos
+    setTotalCount(0);
+  };
 
   const handleLoadMore = async () => {
     setIsLoading(true);
 
     try {
-      const nextPage = currentPage + 1; // Obtener el número de la próxima página
-      const response = await fetchData(nextPage, 1000, periodo);
+      const nextPage = currentPage + 1;
+      const response = await fetchData(nextPage, 1000, periodo, codigo, cbu);
       const { responseData } = response;
 
       setData((prevData) => [...prevData, ...responseData]);
-      setCurrentPage(nextPage); // Actualizar currentPage con el número de la próxima página
+      setCurrentPage(nextPage);
     } catch (error) {
       console.error(error);
     }
@@ -89,29 +86,36 @@ const Tabla = () => {
 
   return (
     <section className="overflow-y-auto flex flex-col justify-center items-center h-screen">
-      <div className="flex space-x-5 h-8 mt-5 text-center">
+      <div className="flex space-x-3 md:h-8 mt-3 text-center">
         <Periodo
           periodo={periodo}
           setPeriodo={setPeriodo}
           data={data}
           setData={setData}
         />
-
-        <Filtros
-          filtroCBU={filtroCBU}
-          filtroCodigo={filtroCodigo}
-          filtroPago={filtroPago}
-          setFiltroCBU={setFiltroCBU}
-          setFiltroPago={setFiltroPago}
-          setFiltroCodigo={setFiltroCodigo}
-          currentPage={setCurrentPage}
-        />
+        <CBU cbu={cbu} setCBU={setCBU} />
+        <Codigo codigo={codigo} setCodigo={setCodigo} />
+      </div>
+      <div className="flex space-x-3 md:h-8 mt-3 text-center">
+        <button
+          onClick={handleSearch}
+          className="md:w-24 w-16 rounded-md bg-green-500 hover:bg-green-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+        >
+          Buscar
+        </button>
+        <button
+          onClick={handleResetFilters}
+          className="md:w-24 w-16 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+          disabled={!filtrosActivos}
+        >
+          Reiniciar
+        </button>
         {hasMore && !isLoading && (
           <button
             onClick={handleLoadMore}
-            className="rounded-md bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center"
+            className="md:w-24 w-16 rounded-md bg-blue-500 hover:bg-blue-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
           >
-            Cargar más
+            Cargar +
           </button>
         )}
         <Loader loading={isLoading} />
@@ -124,13 +128,7 @@ const Tabla = () => {
         </p>
       </div>
 
-      <TablaCliente
-        data={data}
-        primerCarga={primerCarga}
-        filtroCBU={filtroCBU}
-        filtroCodigo={filtroCodigo}
-        filtroPago={filtroPago}
-      />
+      <TablaCliente data={data} primerCarga={primerCarga} />
     </section>
   );
 };
