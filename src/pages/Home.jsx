@@ -9,17 +9,17 @@ const Home = () => {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-3xl font-libre">
         <Link to="/tabla">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white p-2 rounded-lg text-lg shadow-md w-full">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black p-2 rounded-lg text-lg shadow-md w-full">
             Tabla
           </button>
         </Link>
         <Link to="/socio">
-          <button className="bg-gray-500 hover:bg-gray-700 text-white p-2 rounded-lg text-lg shadow-md w-full mt-3 md:mt-0">
+          <button className="bg-yellow-500 hover:bg-yellow-700 text-white border-2 border-black p-2 rounded-lg text-lg shadow-md w-full mt-3 md:mt-0">
             Historial de Socio
           </button>
         </Link>
         <Link to="/reportes">
-          <button className="bg-green-500 hover:bg-green-700 text-white p-2 rounded-lg text-lg shadow-md w-full mt-3 md:mt-0">
+          <button className="bg-green-500 hover:bg-green-700 text-white border-2 border-black p-2 rounded-lg text-lg shadow-md w-full mt-3 md:mt-0">
             Reportes
           </button>
         </Link>

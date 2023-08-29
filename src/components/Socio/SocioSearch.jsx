@@ -25,7 +25,7 @@ const SocioSearch = ({
           onChange={handleNumeroSocioChange}
         />
         <button
-          className={`w-24 rounded-md bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
+          className={`w-24 rounded-md justify-center bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
             isLoading ? 'cursor-not-allowed opacity-50' : ''
           }`}
           onClick={handleBuscarClick}

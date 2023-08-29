@@ -24,7 +24,7 @@ const Reportes = () => {
         {accesoDirecto && (
           <Link
             to="directos"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 font-libre rounded-md w-72 text-center"
+            className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-2 font-libre rounded-md w-72 text-center"
           >
             Reportes Directos
           </Link>
@@ -32,7 +32,7 @@ const Reportes = () => {
         {accesoIndirecto && (
           <Link
             to="indirectos"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold p-2 font-libre rounded-md w-72 text-center"
+            className="bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold p-2 font-libre rounded-md w-72 text-center"
           >
             Reportes Indirectos
           </Link>
