@@ -25,8 +25,8 @@ const ReportesIndirectos = () => {
   ];
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      {informes.map((informe, index) => (
-        <div key={index} className="mb-4">
+      {informes.map((informe, title) => (
+        <div key={title} className="mb-4">
           <button
             className="bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold font-libre p-2  rounded-md w-96"
             onClick={() => window.open(informe.url, '_blank')}

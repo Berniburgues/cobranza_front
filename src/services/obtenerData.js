@@ -26,6 +26,16 @@ export const fetchData = async (page, limit, periodo, codigo, cbu) => {
   }
 };
 
+//Obtener Datos para Filtros
+export const fetchFiltros = async () => {
+  try {
+    const res = await axios.get('https://cobranza-hent-dev.fl0.io/filtros');
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Obtener Datos de Socio individual
 export const fetchSocioData = async (numeroSocio) => {
   try {

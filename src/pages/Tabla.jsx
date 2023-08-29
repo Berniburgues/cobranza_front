@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { fetchData } from '../services/obtenerData';
+import React, { useState, useEffect } from 'react';
+import { fetchData, fetchFiltros } from '../services/obtenerData';
 import TablaCliente from '../components/Tabla/TablaCliente';
 import Loader from '../components/Tabla/Loader';
 import Periodo from '../components/Tabla/Periodo';
@@ -16,7 +16,21 @@ const Tabla = () => {
   const [cbu, setCBU] = useState('');
   const [codigo, setCodigo] = useState('');
   const [totalCount, setTotalCount] = useState(0);
-  const [filtrosActivos, setFiltrosActivos] = useState(false); // Estado para los filtros activos
+  const [filtrosActivos, setFiltrosActivos] = useState(false);
+  const [filtrosData, setFiltrosData] = useState([]);
+
+  useEffect(() => {
+    async function fetchInitialData() {
+      try {
+        const data = await fetchFiltros();
+        setFiltrosData(data);
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+      }
+    }
+
+    fetchInitialData();
+  }, []);
 
   const fetchDataAndUpdateState = async () => {
     setIsLoading(true);
