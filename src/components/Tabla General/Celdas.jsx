@@ -1,6 +1,7 @@
 import React from 'react';
 import CeldaSocio from './Celdas/CeldaSocio';
 import CeldaCBU from './Celdas/CeldaCBU';
+import CeldaDNI from './Celdas/CeldaDNI';
 import CeldaImporte from './Celdas/CeldaImporte';
 import CeldaPago from './Celdas/CeldaPago';
 import CeldaCodigo from './Celdas/CeldaCodigo';
@@ -15,6 +16,7 @@ const Celdas = ({ data, getCobranzasByDate, fechasCobro, fechasDesde }) => {
         return (
           <tr key={cliente.Socio}>
             <CeldaSocio cliente={cliente} />
+            <CeldaDNI cliente={cliente} />
             <CeldaCBU cliente={cliente} />
             <CeldaImporte cliente={cliente} />
             <CeldaPago cliente={cliente} />
