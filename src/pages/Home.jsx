@@ -1,7 +1,22 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import EnviosFuturos from '../components/Reportes/EnviosFuturos';
 
 const Home = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(true); // Abre el modal al principio
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+  // Llamamos a openModal en el efecto, después de que el componente se haya montado
+  useEffect(() => {
+    const openModal = () => {
+      setModalIsOpen(true);
+    };
+
+    openModal();
+  }, []);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-3xl font-bold font-libre mb-4 text-center">
@@ -23,6 +38,7 @@ const Home = () => {
             Reportes
           </button>
         </Link>
+        {modalIsOpen && <EnviosFuturos isOpen={modalIsOpen} closeModal={closeModal} />}
       </div>
     </div>
   );

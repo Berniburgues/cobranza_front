@@ -5,6 +5,7 @@ import Loader from '../components/Tabla/Loader';
 import Periodo from '../components/Tabla/Periodo';
 import CBU from '../components/Tabla/CBU';
 import Codigo from '../components/Tabla/Codigo';
+import DNI from '../components/Tabla/DNI';
 
 const Tabla = () => {
   const [data, setData] = useState([]);
@@ -15,6 +16,7 @@ const Tabla = () => {
   const [primerCarga, setPrimerCarga] = useState(true);
   const [cbu, setCBU] = useState('');
   const [codigo, setCodigo] = useState('');
+  const [includeDNI, setIncludeDNI] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [filtrosActivos, setFiltrosActivos] = useState(false);
   const [filtrosData, setFiltrosData] = useState([]);
@@ -35,7 +37,14 @@ const Tabla = () => {
   const fetchDataAndUpdateState = async () => {
     setIsLoading(true);
     try {
-      const response = await fetchData(currentPage, 1000, periodo, codigo, cbu);
+      const response = await fetchData(
+        currentPage,
+        1000,
+        periodo,
+        codigo,
+        cbu,
+        includeDNI,
+      );
       const { responseData, responseTotalPages, responseTotalCount } = response;
 
       setTotalCount(responseTotalCount);
@@ -69,6 +78,10 @@ const Tabla = () => {
     setCurrentPage(1);
     fetchDataAndUpdateState();
     setFiltrosActivos(true); // Marcar los filtros como activos
+  };
+
+  const handleIncludeDNIToggle = () => {
+    setIncludeDNI(!includeDNI);
   };
 
   const handleResetFilters = () => {
@@ -109,17 +122,22 @@ const Tabla = () => {
         />
         <CBU cbu={cbu} setCBU={setCBU} />
         <Codigo codigo={codigo} setCodigo={setCodigo} />
+        <DNI
+          includeDNI={includeDNI}
+          setIncludeDNI={setIncludeDNI}
+          handleIncludeDNIToggle={handleIncludeDNIToggle}
+        />
       </div>
-      <div className="flex space-x-3 md:h-8 mt-3 text-center">
+      <div className="flex justify-between space-x-3 md:h-8 mt-3 text-center">
         <button
           onClick={handleSearch}
-          className="md:w-24 w-16 rounded-md bg-green-500 hover:bg-green-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+          className="w-20 md:w-24 rounded-md bg-green-500 hover:bg-green-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
         >
           Buscar
         </button>
         <button
           onClick={handleResetFilters}
-          className="md:w-24 w-16 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+          className="w-20 md:w-24 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
           disabled={!filtrosActivos}
         >
           Reiniciar
@@ -127,7 +145,7 @@ const Tabla = () => {
         {hasMore && !isLoading && (
           <button
             onClick={handleLoadMore}
-            className="md:w-24 w-16 rounded-md bg-blue-500 hover:bg-blue-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+            className="w-20 md:w-24 rounded-md bg-blue-500 hover:bg-blue-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
           >
             Cargar +
           </button>
