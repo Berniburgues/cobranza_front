@@ -19,7 +19,7 @@ const ExcelBoton = ({ tableRef, fechasCobro, fechasDesde }) => {
 
   return (
     <tr>
-      <td colSpan={fechasCobro.length + fechasDesde.length + 4}>
+      <td colSpan={fechasCobro.length + 4}>
         <button
           onClick={handleDownload}
           className="border-2 border-gray-800 text-xs font-semibold bg-green-200 hover:bg-green-300 w-full"

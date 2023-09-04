@@ -1,17 +1,9 @@
 import React from 'react';
 import { getNombrePeriodo } from '../../utils/fechas';
 
-const Periodo = ({ periodo, setPeriodo, data, setData }) => {
-  const periodosDisponibles = ['2023-06-01', '2023-07-01', '2023-08-01', '2023-09-01']; // Períodos disponibles para seleccionar
-
-  const handlePeriodoChange = (event) => {
-    const selectedPeriodo = event.target.value;
-    setPeriodo(selectedPeriodo);
-    // Si el período seleccionado es vacío, poner el estado data en un arreglo vacío
-    if (selectedPeriodo === '') {
-      setData([]);
-    }
-  };
+const Periodo = ({ periodo, handlePeriodoChange, filtrosData }) => {
+  const periodosDisponibles =
+    filtrosData && filtrosData.data ? Object.keys(filtrosData.data) : [];
 
   return (
     <select

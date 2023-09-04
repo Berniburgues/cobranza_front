@@ -5,7 +5,6 @@ import CeldaDNI from './Celdas/CeldaDNI';
 import CeldaImporte from './Celdas/CeldaImporte';
 import CeldaPago from './Celdas/CeldaPago';
 import CeldaCodigo from './Celdas/CeldaCodigo';
-import CeldaFeDesde from './Celdas/CeldaFeDesde';
 
 const Celdas = ({ data, getCobranzasByDate, fechasCobro, fechasDesde }) => {
   return (
@@ -25,7 +24,6 @@ const Celdas = ({ data, getCobranzasByDate, fechasCobro, fechasDesde }) => {
               fechasCobro={fechasCobro}
               cliente={cliente}
             />
-            <CeldaFeDesde cliente={cliente} fechasDesde={fechasDesde} />
           </tr>
         );
       })}

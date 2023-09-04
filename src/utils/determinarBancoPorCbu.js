@@ -71,8 +71,12 @@ export function determinarBancoPorCBU(cbu) {
     return 'Piano';
   } else if (primerosDigitos === '322') {
     return 'Industrial';
+  } else if (primerosDigitos === '384') {
+    return 'WILOBANK';
   } else if (primerosDigitos === '386') {
     return 'Entre Ríos';
+  } else if (primerosDigitos === '340') {
+    return 'BACS';
   } else if (primerosDigitos === '330') {
     return 'Santa Fé';
   } else if (primerosDigitos === '311') {
@@ -89,6 +93,12 @@ export function determinarBancoPorCBU(cbu) {
     return 'Naranja X';
   } else if (primerosDigitos === '415') {
     return 'Trasatlántico';
+  } else if (primerosDigitos === '431') {
+    return 'COINAG';
+  } else if (primerosDigitos === '448') {
+    return 'DINO';
+  } else if (primerosDigitos === '000') {
+    return 'Billetera Virtual';
   }
   // Si no se encuentra el banco, retornar un valor por defecto
   return 'Desconocido';

@@ -3,7 +3,7 @@ import React from 'react';
 const DNI = ({ includeDNI, setIncludeDNI, handleIncludeDNIToggle }) => {
   return (
     <div className="flex items-center">
-      <span className="mr-2 text-sm text-black">DNI</span>
+      <span className="mr-2 text-xs text-black">DNI</span>
       <input
         type="checkbox"
         checked={includeDNI}

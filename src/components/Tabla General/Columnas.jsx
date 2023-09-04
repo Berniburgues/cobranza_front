@@ -5,7 +5,6 @@ import ColumnaCBU from './Columnas/ColumnaCBU';
 import ColumnaImporte from './Columnas/ColumnaImporte';
 import ColumnaPago from './Columnas/ColumnaPago';
 import ColumnaFechaCobro from './Columnas/ColumnaFechaCobro';
-import ColumnaFeDesde from './Columnas/ColumnaFeDesde';
 
 const Columnas = ({ fechasCobro, fechasDesde }) => {
   return (
@@ -16,7 +15,6 @@ const Columnas = ({ fechasCobro, fechasDesde }) => {
       <ColumnaImporte />
       <ColumnaPago />
       <ColumnaFechaCobro fechasCobro={fechasCobro} />
-      <ColumnaFeDesde fechasDesde={fechasDesde} />
     </tr>
   );
 };

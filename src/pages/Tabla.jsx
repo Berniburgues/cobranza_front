@@ -20,6 +20,8 @@ const Tabla = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [filtrosActivos, setFiltrosActivos] = useState(false);
   const [filtrosData, setFiltrosData] = useState([]);
+  const [periodoSeleccionado, setPeriodoSeleccionado] = useState('');
+  const [cbuSeleccionado, setCbuSeleccionado] = useState('');
 
   useEffect(() => {
     async function fetchInitialData() {
@@ -39,7 +41,7 @@ const Tabla = () => {
     try {
       const response = await fetchData(
         currentPage,
-        1000,
+        500,
         periodo,
         codigo,
         cbu,
@@ -99,7 +101,7 @@ const Tabla = () => {
 
     try {
       const nextPage = currentPage + 1;
-      const response = await fetchData(nextPage, 1000, periodo, codigo, cbu);
+      const response = await fetchData(nextPage, 500, periodo, codigo, cbu);
       const { responseData } = response;
 
       setData((prevData) => [...prevData, ...responseData]);
@@ -111,17 +113,49 @@ const Tabla = () => {
     setIsLoading(false);
   };
 
+  const handlePeriodoChange = (event) => {
+    const selectedPeriodo = event.target.value;
+    setPeriodo(selectedPeriodo);
+
+    // Filtrar la respuesta de filtrosData para obtener la data del período seleccionado
+    const dataForSelectedPeriodo = filtrosData.data[selectedPeriodo] || {};
+
+    // Ahora, dataForSelectedPeriodo contiene la información del período seleccionado
+    setPeriodoSeleccionado(dataForSelectedPeriodo);
+
+    // Si el período seleccionado es vacío, poner el estado data en un arreglo vacío
+    if (selectedPeriodo === '') {
+      setData([]);
+    }
+  };
+
+  const handleCBUChange = (event) => {
+    const selectedCBU = event.target.value;
+    setCBU(selectedCBU);
+    setCbuSeleccionado(selectedCBU); // Actualiza cbuSeleccionado con el valor seleccionado
+  };
+
   return (
     <section className="overflow-y-auto flex flex-col justify-center items-center h-screen">
       <div className="flex space-x-3 md:h-8 mt-3 text-center">
         <Periodo
           periodo={periodo}
-          setPeriodo={setPeriodo}
-          data={data}
-          setData={setData}
+          filtrosData={filtrosData}
+          handlePeriodoChange={handlePeriodoChange}
         />
-        <CBU cbu={cbu} setCBU={setCBU} />
-        <Codigo codigo={codigo} setCodigo={setCodigo} />
+        <CBU
+          cbu={cbu}
+          periodoSeleccionado={periodoSeleccionado}
+          handleCBUChange={handleCBUChange}
+        />
+        <Codigo
+          codigo={codigo}
+          setCodigo={setCodigo}
+          filtrosData={filtrosData}
+          cbuSeleccionado={cbuSeleccionado}
+          periodoSeleccionado={periodoSeleccionado}
+        />
+
         <DNI
           includeDNI={includeDNI}
           setIncludeDNI={setIncludeDNI}

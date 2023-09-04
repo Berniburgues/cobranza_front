@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { obtenerFechasCobranza, obtenerFechasDesde } from '../../utils/fechas';
+import { obtenerFechasCobranza } from '../../utils/fechas';
 import { getCobranzasByDate } from '../../utils/cobranzas';
 import Columnas from '../Tabla General/Columnas';
 import Celdas from '../Tabla General/Celdas';
@@ -12,7 +12,6 @@ const TablaCliente = ({ data }) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
-    const fechasDesde = obtenerFechasDesde(data);
     const fechasCobro = obtenerFechasCobranza(data);
 
     setFechasDesde(fechasDesde);
@@ -26,23 +25,18 @@ const TablaCliente = ({ data }) => {
         ref={tableRef}
       >
         <thead>
-          <Columnas fechasCobro={fechasCobro} fechasDesde={fechasDesde} />
+          <Columnas fechasCobro={fechasCobro} />
         </thead>
         <Celdas
           data={data}
           getCobranzasByDate={getCobranzasByDate}
           fechasCobro={fechasCobro}
-          fechasDesde={fechasDesde}
         />
       </table>
 
       <table className="w-full border-collapse text-center mx-auto table-fixed text-xs">
         <tbody>
-          <ExcelBoton
-            tableRef={tableRef}
-            fechasCobro={fechasCobro}
-            fechasDesde={fechasDesde}
-          />
+          <ExcelBoton tableRef={tableRef} fechasCobro={fechasCobro} />
         </tbody>
       </table>
     </div>
