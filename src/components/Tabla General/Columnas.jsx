@@ -13,8 +13,8 @@ const Columnas = ({ fechasCobro, fechasDesde }) => {
       <ColumnaSocio />
       <ColumnaDNI />
       <ColumnaCL />
-      <ColumnaCBU />
       <ColumnaExB />
+      <ColumnaCBU />
       <ColumnaPago />
       <ColumnaFechaCobro fechasCobro={fechasCobro} />
     </tr>

@@ -18,8 +18,8 @@ const Celdas = ({ data, getCobranzasByDate, fechasCobro, fechasDesde }) => {
             <CeldaSocio cliente={cliente} />
             <CeldaDNI cliente={cliente} />
             <CeldaCL cliente={cliente} />
-            <CeldaCBU cliente={cliente} />
             <CeldaExB cliente={cliente} />
+            <CeldaCBU cliente={cliente} />
             <CeldaPago cliente={cliente} />
             <CeldaCodigo
               cobranzasByDate={cobranzasByDate}
