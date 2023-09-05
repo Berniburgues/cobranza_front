@@ -38,11 +38,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro, cliente }) => {
 
         if (hasNoCodigo && isNotCBU027 && !foundACE) {
           cellColorClass = 'bg-slate-500'; // Si no hay códigos y CBU no es '027', pintar la celda de gris
-        } else if (hasNoCodigo && foundACE) {
-          // Si no hay códigos, CBU no es '027' y se encontró 'ACE' antes, pintar la celda de color 'ACE'
-          cellColorClass = 'bg-green-500';
         }
-
         // Actualizar el último código encontrado y la variable 'foundACE'
         if (uniqueCodigos.length > 0) {
           lastUniqueCodigo = uniqueCodigos[uniqueCodigos.length - 1];
@@ -57,7 +53,7 @@ const CeldaCodigo = ({ cobranzasByDate, fechasCobro, cliente }) => {
         return (
           <td
             key={index}
-            className={`border-2 border-gray-800 py-1 text-center text-[0.5rem] md:text-[0.7rem] font-bold w-1/12 whitespace-nowrap truncate ${cellColorClass}`}
+            className={`border-2 border-gray-800 py-1 text-center text-[0.5rem] md:text-[0.6rem] font-bold w-1/12 whitespace-nowrap truncate ${cellColorClass}`}
             title={codigoDescripcion}
           >
             {cellContent}

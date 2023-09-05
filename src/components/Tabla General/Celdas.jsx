@@ -2,9 +2,10 @@ import React from 'react';
 import CeldaSocio from './Celdas/CeldaSocio';
 import CeldaCBU from './Celdas/CeldaCBU';
 import CeldaDNI from './Celdas/CeldaDNI';
-import CeldaImporte from './Celdas/CeldaImporte';
 import CeldaPago from './Celdas/CeldaPago';
 import CeldaCodigo from './Celdas/CeldaCodigo';
+import CeldaCL from './Celdas/CeldaCL';
+import CeldaExB from './Celdas/CeldaExB';
 
 const Celdas = ({ data, getCobranzasByDate, fechasCobro, fechasDesde }) => {
   return (
@@ -13,11 +14,12 @@ const Celdas = ({ data, getCobranzasByDate, fechasCobro, fechasDesde }) => {
         const cobranzasByDate = getCobranzasByDate(cliente.Cobranzas);
 
         return (
-          <tr key={cliente.Socio}>
+          <tr key={cliente.Identificador}>
             <CeldaSocio cliente={cliente} />
             <CeldaDNI cliente={cliente} />
+            <CeldaCL cliente={cliente} />
             <CeldaCBU cliente={cliente} />
-            <CeldaImporte cliente={cliente} />
+            <CeldaExB cliente={cliente} />
             <CeldaPago cliente={cliente} />
             <CeldaCodigo
               cobranzasByDate={cobranzasByDate}

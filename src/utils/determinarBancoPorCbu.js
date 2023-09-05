@@ -89,6 +89,8 @@ export function determinarBancoPorCBU(cbu) {
     return 'La Rioja';
   } else if (primerosDigitos === '408') {
     return 'Compañía Financiera Argentina';
+  } else if (primerosDigitos === '438') {
+    return 'CORDIAL Compañía Financiera';
   } else if (primerosDigitos === '453') {
     return 'Naranja X';
   } else if (primerosDigitos === '415') {
@@ -99,6 +101,10 @@ export function determinarBancoPorCBU(cbu) {
     return 'DINO';
   } else if (primerosDigitos === '000') {
     return 'Billetera Virtual';
+  } else if (primerosDigitos === 'TAR') {
+    return 'First Data';
+  } else if (primerosDigitos === 'PRI') {
+    return 'Prisma';
   }
   // Si no se encuentra el banco, retornar un valor por defecto
   return 'Desconocido';

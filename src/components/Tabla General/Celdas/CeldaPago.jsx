@@ -3,7 +3,7 @@ import React from 'react';
 const CeldaPago = ({ cliente, filtroPago }) => {
   return (
     <td
-      className={`border-2 border-gray-800 text-[0.5rem] md:text-sm truncate font-bold ${
+      className={`border-2 border-gray-800 text-[0.5rem] md:text-xs truncate font-bold ${
         cliente.Pago
           ? cliente.Pago === 'OK'
             ? 'bg-green-400'

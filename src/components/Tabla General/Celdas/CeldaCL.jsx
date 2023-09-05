@@ -1,14 +1,14 @@
 import React from 'react';
 
-const CeldaDNI = ({ cliente }) => {
+const CeldaCL = ({ cliente }) => {
   return (
     <td
       className="border-2 border-gray-800 text-[0.5rem] truncate md:text-xs font-semibold"
-      title={cliente.DNI}
+      title={cliente.CL}
     >
-      {cliente.DNI}
+      {cliente.CL}
     </td>
   );
 };
 
-export default CeldaDNI;
+export default CeldaCL;
