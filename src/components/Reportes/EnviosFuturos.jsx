@@ -9,7 +9,7 @@ const EnviosFuturos = ({ isOpen, closeModal }) => {
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-white w-96 rounded-lg shadow-lg p-6 relative text-center">
         <img
-          src="https://i.ibb.co/MGwCsCf/Envios-a-futuro.png"
+          src="https://i.ibb.co/9q9R3YN/enviados-a-futuro.png"
           alt="Reporte"
           className="mx-auto mb-4"
         />
