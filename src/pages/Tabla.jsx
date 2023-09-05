@@ -3,6 +3,7 @@ import { fetchData, fetchFiltros } from '../services/obtenerData';
 import TablaCliente from '../components/Tabla/TablaCliente';
 import Loader from '../components/Tabla/Loader';
 import Periodo from '../components/Tabla/Periodo';
+import FiltroLoader from '../components/Tabla/FiltroLoader';
 import CBU from '../components/Tabla/CBU';
 import Codigo from '../components/Tabla/Codigo';
 import DNI from '../components/Tabla/DNI';
@@ -11,7 +12,7 @@ const Tabla = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [periodo, setPeriodo] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Loader para la carga de datos de la tabla
   const [hasMore, setHasMore] = useState(false);
   const [primerCarga, setPrimerCarga] = useState(true);
   const [cbu, setCBU] = useState('');
@@ -22,12 +23,14 @@ const Tabla = () => {
   const [filtrosData, setFiltrosData] = useState([]);
   const [periodoSeleccionado, setPeriodoSeleccionado] = useState('');
   const [cbuSeleccionado, setCbuSeleccionado] = useState('');
+  const [isLoadingFiltros, setIsLoadingFiltros] = useState(true); // Loader para la carga de filtros
 
   useEffect(() => {
     async function fetchInitialData() {
       try {
         const data = await fetchFiltros();
         setFiltrosData(data);
+        setIsLoadingFiltros(false); // Establecer isLoadingFiltros en false una vez que se ha completado la carga de filtros
       } catch (error) {
         console.error('Error fetching initial data:', error);
       }
@@ -37,7 +40,7 @@ const Tabla = () => {
   }, []);
 
   const fetchDataAndUpdateState = async () => {
-    setIsLoading(true);
+    setIsLoading(true); // Establecer isLoading en true al iniciar la búsqueda
     try {
       const response = await fetchData(
         currentPage,
@@ -73,7 +76,7 @@ const Tabla = () => {
       console.error(error);
     }
 
-    setIsLoading(false);
+    setIsLoading(false); // Establecer isLoading en false una vez que se ha completado la carga de datos de la tabla
   };
 
   const handleSearch = () => {
@@ -110,7 +113,7 @@ const Tabla = () => {
       console.error(error);
     }
 
-    setIsLoading(false);
+    setIsLoading(false); // Establecer isLoading en false una vez que se ha completado la carga de más datos de la tabla
   };
 
   const handlePeriodoChange = (event) => {
@@ -137,64 +140,72 @@ const Tabla = () => {
 
   return (
     <section className="overflow-y-auto flex flex-col justify-center items-center h-screen">
-      <div className="flex space-x-3 md:h-8 mt-3 text-center">
-        <Periodo
-          periodo={periodo}
-          filtrosData={filtrosData}
-          handlePeriodoChange={handlePeriodoChange}
-        />
-        <CBU
-          cbu={cbu}
-          periodoSeleccionado={periodoSeleccionado}
-          handleCBUChange={handleCBUChange}
-        />
-        <Codigo
-          codigo={codigo}
-          setCodigo={setCodigo}
-          filtrosData={filtrosData}
-          cbuSeleccionado={cbuSeleccionado}
-          periodoSeleccionado={periodoSeleccionado}
-        />
+      {isLoadingFiltros ? ( // Mostrar el FiltroLoader mientras isLoadingFiltros sea true
+        <FiltroLoader loading={isLoadingFiltros} />
+      ) : (
+        <>
+          {/* Contenido de la página Tabla después de cargar los filtros */}
+          <div className="flex space-x-3 md:h-8 mt-3 text-center">
+            <Periodo
+              periodo={periodo}
+              filtrosData={filtrosData}
+              handlePeriodoChange={handlePeriodoChange}
+            />
+            <CBU
+              cbu={cbu}
+              periodoSeleccionado={periodoSeleccionado}
+              handleCBUChange={handleCBUChange}
+            />
+            <Codigo
+              codigo={codigo}
+              setCodigo={setCodigo}
+              filtrosData={filtrosData}
+              cbuSeleccionado={cbuSeleccionado}
+              periodoSeleccionado={periodoSeleccionado}
+            />
 
-        <DNI
-          includeDNI={includeDNI}
-          setIncludeDNI={setIncludeDNI}
-          handleIncludeDNIToggle={handleIncludeDNIToggle}
-        />
-      </div>
-      <div className="flex justify-between space-x-3 md:h-8 mt-3 text-center">
-        <button
-          onClick={handleSearch}
-          className="w-20 md:w-24 rounded-md bg-green-500 hover:bg-green-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
-        >
-          Buscar
-        </button>
-        <button
-          onClick={handleResetFilters}
-          className="w-20 md:w-24 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
-          disabled={!filtrosActivos}
-        >
-          Reiniciar
-        </button>
-        {hasMore && !isLoading && (
-          <button
-            onClick={handleLoadMore}
-            className="w-20 md:w-24 rounded-md bg-blue-500 hover:bg-blue-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
-          >
-            Cargar +
-          </button>
-        )}
-        <Loader loading={isLoading} />
-      </div>
+            <DNI
+              includeDNI={includeDNI}
+              setIncludeDNI={setIncludeDNI}
+              handleIncludeDNIToggle={handleIncludeDNIToggle}
+            />
+          </div>
+          <div className="flex justify-between space-x-3 md:h-8 mt-3 text-center">
+            <button
+              onClick={handleSearch}
+              className="w-20 md:w-24 rounded-md bg-green-500 hover:bg-green-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+            >
+              Buscar
+            </button>
+            <button
+              onClick={handleResetFilters}
+              className="w-20 md:w-24 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+              disabled={!filtrosActivos}
+            >
+              Reiniciar
+            </button>
+            {hasMore && !isLoading && (
+              <button
+                onClick={handleLoadMore}
+                className="w-20 md:w-24 rounded-md bg-blue-500 hover:bg-blue-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
+              >
+                Cargar +
+              </button>
+            )}
+            <Loader loading={isLoading} />{' '}
+            {/* Este Loader se utiliza para la carga de datos de la tabla */}
+          </div>
 
-      <div className="text-center my-2">
-        <p className="text-base font-semibold">
-          Mostrando <span className="text-blue-500">{data.length}</span> socios de un
-          total de <span className="text-blue-500">{totalCount}</span>
-        </p>
-      </div>
+          <div className="text-center my-2">
+            <p className="text-base font-semibold">
+              Mostrando <span className="text-blue-500">{data.length}</span> socios de un
+              total de <span className="text-blue-500">{totalCount}</span>
+            </p>
+          </div>
 
-      <TablaCliente data={data} primerCarga={primerCarga} />
+          <TablaCliente data={data} primerCarga={primerCarga} />
+        </>
+      )}
     </section>
   );
 };

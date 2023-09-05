@@ -4,6 +4,20 @@ import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 const CBU = ({ cbu, periodoSeleccionado, handleCBUChange }) => {
   const clavesBancos = periodoSeleccionado ? Object.keys(periodoSeleccionado) : [];
 
+  // Define el orden de prioridad deseado
+  const prioridadCBU = ['027', '011', '014'];
+
+  // Ordena las claves bancarias según la prioridad definida
+  clavesBancos.sort((a, b) => {
+    const indexA = prioridadCBU.indexOf(a);
+    const indexB = prioridadCBU.indexOf(b);
+
+    if (indexA === -1) return 1; // Si no está en la lista de prioridad, colócalo al final
+    if (indexB === -1) return -1; // Si no está en la lista de prioridad, colócalo al final
+
+    return indexA - indexB;
+  });
+
   return (
     <select
       value={cbu}
