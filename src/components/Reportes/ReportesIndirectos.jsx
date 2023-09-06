@@ -20,7 +20,7 @@ const ReportesIndirectos = () => {
     },
     {
       title: 'Cobranza Mes',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiMTM3ZmExNGMtYzA2ZS00OGQxLTljZGUtYmM2NWI2NWUyM2RlIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiOTg1YTFhYzEtZWYwOS00YjBmLWFjZDEtNTRkYWE5NmFjOTM4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
   ];
   return (
