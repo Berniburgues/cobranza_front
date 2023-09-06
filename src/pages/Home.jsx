@@ -28,11 +28,14 @@ const Home = () => {
             Tabla
           </button>
         </Link>
-        <Link to="/historialDNI">
-          <button className="bg-violet-500 hover:bg-violet-700 text-white border-2 border-black p-2 rounded-lg text-lg shadow-md w-full">
-            Historial DNI
-          </button>
-        </Link>
+        {/* 
+<Link to="/historialDNI">
+  <button className="bg-violet-500 hover:bg-violet-700 text-white border-2 border-black p-2 rounded-lg text-lg shadow-md w-full">
+    Historial DNI
+  </button>
+</Link>
+*/}
+
         <Link to="/socio">
           <button className="bg-yellow-500 hover:bg-yellow-700 text-white border-2 border-black p-2 rounded-lg text-lg shadow-md w-full mt-3 md:mt-0">
             Historial de Socio
