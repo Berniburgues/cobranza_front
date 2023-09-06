@@ -22,7 +22,7 @@ const Home = () => {
       <h1 className="text-3xl font-bold font-libre mb-4 text-center">
         ATSAPRA: Control de Cobranza y Reportes
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full max-w-3xl font-libre">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-3xl font-libre">
         <Link to="/tabla">
           <button className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black p-2 rounded-lg text-lg shadow-md w-full">
             Tabla
