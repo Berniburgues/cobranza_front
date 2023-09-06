@@ -10,6 +10,7 @@ import Tabla from './pages/Tabla';
 import Socio from './pages/Socio';
 import Login from './pages/Login';
 import Denegado from './pages/Denegado';
+import HistorialDNI from './pages/HistorialDNI';
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute>
           <Socio />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: '/historialDNI',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <HistorialDNI />
         </ProtectedRoute>
       </Layout>
     ),

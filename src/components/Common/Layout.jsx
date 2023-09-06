@@ -31,8 +31,11 @@ const Layout = ({ children }) => {
           <Link to="/tabla" className="hover:text-gray-300" target="_blank">
             Tabla
           </Link>
+          <Link to="/historialDNI" className="hover:text-gray-300" target="_blank">
+            Historial DNI
+          </Link>
           <Link to="/socio" className="hover:text-gray-300" target="_blank">
-            Historial Socio
+            Socio
           </Link>
           <Link to="/reportes" className="hover:text-gray-300" target="_blank">
             Reportes

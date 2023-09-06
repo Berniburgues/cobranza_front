@@ -13,7 +13,7 @@ const CheckboxFilter = ({
       <label className="flex items-center space-x-1 cursor-pointer">
         <input
           type="checkbox"
-          className="form-checkbox h-4 w-4"
+          className="form-checkbox h-4 w-4 cursor-pointer"
           checked={DNI}
           onChange={handleIncludeDNI}
         />
@@ -22,7 +22,7 @@ const CheckboxFilter = ({
       <label className="flex items-center space-x-1 cursor-pointer">
         <input
           type="checkbox"
-          className="form-checkbox h-4 w-4"
+          className="form-checkbox h-4 w-4 cursor-pointer"
           checked={CL}
           onChange={handleIncludeCL}
         />
@@ -31,7 +31,7 @@ const CheckboxFilter = ({
       <label className="flex items-center space-x-1 cursor-pointer">
         <input
           type="checkbox"
-          className="form-checkbox h-4 w-4"
+          className="form-checkbox h-4 w-4 cursor-pointer"
           checked={EXB}
           onChange={handleIncludeEXB}
         />

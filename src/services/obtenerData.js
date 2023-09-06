@@ -77,3 +77,25 @@ export const loginService = async (email, password) => {
     throw error.response.data;
   }
 };
+
+//Obtener Datos para Historial de DNI
+export const fetchHistorialDNI = async (banco) => {
+  try {
+    // Realizar la solicitud GET al servidor
+    const response = await axios.get(
+      `https://cobranza-hent-dev.fl0.io/clientes/historialDNI?banco=${banco}`,
+    );
+
+    // Verificar si la respuesta tiene datos
+    if (response.data && response.data.data) {
+      return response.data.data;
+    } else {
+      // Si la respuesta está vacía o no tiene datos, devuelve un arreglo vacío o maneja el caso según lo necesites
+      return [];
+    }
+  } catch (error) {
+    // Manejar cualquier error que ocurra durante la solicitud
+    console.error('Error al obtener los datos del historial:', error);
+    return null;
+  }
+};
