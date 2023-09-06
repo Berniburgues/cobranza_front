@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 // Obtener Datos para Tabla de Cobranza
-export const fetchData = async (page, limit, periodo, codigo, cbu, includeDNI) => {
+export const fetchData = async (page, limit, periodo, codigo, cbu, DNI, CL, ExB) => {
   try {
-    let url = `https://cobranza-hent-dev.fl0.io/clientes/pagos?page=${page}&limit=${limit}&periodo=${periodo}&includeDNI=${includeDNI}`;
+    let url = `https://cobranza-hent-dev.fl0.io/clientes/pagos?page=${page}&limit=${limit}&periodo=${periodo}`;
 
     if (codigo) {
       url += `&codigo=${codigo}`;
@@ -11,6 +11,18 @@ export const fetchData = async (page, limit, periodo, codigo, cbu, includeDNI) =
 
     if (cbu) {
       url += `&CBU=${cbu}`;
+    }
+
+    if (DNI) {
+      url += `&DNI=true`;
+    }
+
+    if (CL) {
+      url += `&CL=true`;
+    }
+
+    if (ExB) {
+      url += `&Envio=true`;
     }
 
     const response = await axios.get(url);

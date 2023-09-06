@@ -6,7 +6,7 @@ import Periodo from '../components/Tabla/Periodo';
 import FiltroLoader from '../components/Tabla/FiltroLoader';
 import CBU from '../components/Tabla/CBU';
 import Codigo from '../components/Tabla/Codigo';
-import DNI from '../components/Tabla/DNI';
+import CheckboxFilter from '../components/Tabla/CheckboxFilter';
 
 const Tabla = () => {
   const [data, setData] = useState([]);
@@ -17,7 +17,9 @@ const Tabla = () => {
   const [primerCarga, setPrimerCarga] = useState(true);
   const [cbu, setCBU] = useState('');
   const [codigo, setCodigo] = useState('');
-  const [includeDNI, setIncludeDNI] = useState(false);
+  const [DNI, setDNI] = useState(false);
+  const [CL, setCL] = useState(false);
+  const [EXB, setEXB] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const [filtrosActivos, setFiltrosActivos] = useState(false);
   const [filtrosData, setFiltrosData] = useState([]);
@@ -48,7 +50,9 @@ const Tabla = () => {
         periodo,
         codigo,
         cbu,
-        includeDNI,
+        DNI,
+        CL,
+        EXB,
       );
       const { responseData, responseTotalPages, responseTotalCount } = response;
 
@@ -85,8 +89,16 @@ const Tabla = () => {
     setFiltrosActivos(true); // Marcar los filtros como activos
   };
 
-  const handleIncludeDNIToggle = () => {
-    setIncludeDNI(!includeDNI);
+  const handleIncludeDNI = () => {
+    setDNI(!DNI);
+  };
+
+  const handleIncludeCL = () => {
+    setCL(!CL);
+  };
+
+  const handleIncludeEXB = () => {
+    setEXB(!EXB);
   };
 
   const handleResetFilters = () => {
@@ -97,6 +109,9 @@ const Tabla = () => {
     setCodigo('');
     setFiltrosActivos(false); // Marcar los filtros como inactivos
     setTotalCount(0);
+    setDNI(false);
+    setEXB(false);
+    setCL(false);
   };
 
   const handleLoadMore = async () => {
@@ -104,7 +119,7 @@ const Tabla = () => {
 
     try {
       const nextPage = currentPage + 1;
-      const response = await fetchData(nextPage, 500, periodo, codigo, cbu);
+      const response = await fetchData(nextPage, 500, periodo, codigo, cbu, DNI, CL, EXB);
       const { responseData } = response;
 
       setData((prevData) => [...prevData, ...responseData]);
@@ -144,33 +159,39 @@ const Tabla = () => {
         <FiltroLoader loading={isLoadingFiltros} />
       ) : (
         <>
-          {/* Contenido de la página Tabla después de cargar los filtros */}
-          <div className="flex space-x-3 md:h-8 mt-3 text-center">
-            <Periodo
-              periodo={periodo}
-              filtrosData={filtrosData}
-              handlePeriodoChange={handlePeriodoChange}
-            />
-            <CBU
-              cbu={cbu}
-              periodoSeleccionado={periodoSeleccionado}
-              handleCBUChange={handleCBUChange}
-            />
-            <Codigo
-              codigo={codigo}
-              setCodigo={setCodigo}
-              filtrosData={filtrosData}
-              cbuSeleccionado={cbuSeleccionado}
-              periodoSeleccionado={periodoSeleccionado}
-            />
-
-            <DNI
-              includeDNI={includeDNI}
-              setIncludeDNI={setIncludeDNI}
-              handleIncludeDNIToggle={handleIncludeDNIToggle}
+          <div className="flex flex-wrap md:h-8 mt-3 text-center">
+            <div className="flex space-x-3">
+              <Periodo
+                periodo={periodo}
+                filtrosData={filtrosData}
+                handlePeriodoChange={handlePeriodoChange}
+              />
+              <CBU
+                cbu={cbu}
+                periodoSeleccionado={periodoSeleccionado}
+                handleCBUChange={handleCBUChange}
+              />
+              <Codigo
+                codigo={codigo}
+                setCodigo={setCodigo}
+                filtrosData={filtrosData}
+                cbuSeleccionado={cbuSeleccionado}
+                periodoSeleccionado={periodoSeleccionado}
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap my-2 text-center">
+            <CheckboxFilter
+              DNI={DNI}
+              CL={CL}
+              EXB={EXB}
+              handleIncludeDNI={handleIncludeDNI}
+              handleIncludeCL={handleIncludeCL}
+              handleIncludeEXB={handleIncludeEXB}
             />
           </div>
-          <div className="flex justify-between space-x-3 md:h-8 mt-3 text-center">
+
+          <div className="flex justify-between space-x-3 md:h-8 text-center">
             <button
               onClick={handleSearch}
               className="w-20 md:w-24 rounded-md bg-green-500 hover:bg-green-600 text-white p-1 md:px-2 md:py-1 text-center md:text-sm text-xs border-2 border-black flex items-center justify-center"
@@ -192,8 +213,7 @@ const Tabla = () => {
                 Cargar +
               </button>
             )}
-            <Loader loading={isLoading} />{' '}
-            {/* Este Loader se utiliza para la carga de datos de la tabla */}
+            <Loader loading={isLoading} />
           </div>
 
           <div className="text-center my-2">
