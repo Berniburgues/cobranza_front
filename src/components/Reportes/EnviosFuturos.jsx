@@ -14,7 +14,7 @@ const EnviosFuturos = ({ isOpen, closeModal }) => {
           CRUZAR DEVOLUCIÓN CON BAJAS
         </p>
         <img
-          src="https://i.ibb.co/Wn9dF6Z/Enviados-a-futuro.png"
+          src="https://i.ibb.co/t3Px12V/Enviados-a-futuro.png"
           alt="Reporte"
           className="mx-auto mb-4"
         />
