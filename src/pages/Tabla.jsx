@@ -6,7 +6,7 @@ import Periodo from '../components/Tabla/Periodo';
 import FiltroLoader from '../components/Tabla/FiltroLoader';
 import CBU from '../components/Tabla/CBU';
 import Codigo from '../components/Tabla/Codigo';
-import CheckboxFilter from '../components/Tabla/CheckboxFilter';
+import Condiciones from '../components/Tabla/Condiciones';
 
 const Tabla = () => {
   const [data, setData] = useState([]);
@@ -150,16 +150,16 @@ const Tabla = () => {
   const handleCBUChange = (event) => {
     const selectedCBU = event.target.value;
     setCBU(selectedCBU);
-    setCbuSeleccionado(selectedCBU); // Actualiza cbuSeleccionado con el valor seleccionado
+    setCbuSeleccionado(selectedCBU);
   };
 
   return (
     <section className="overflow-y-auto flex flex-col justify-center items-center h-screen">
-      {isLoadingFiltros ? ( // Mostrar el FiltroLoader mientras isLoadingFiltros sea true
+      {isLoadingFiltros ? (
         <FiltroLoader loading={isLoadingFiltros} />
       ) : (
         <>
-          <div className="flex flex-wrap md:h-8 mt-3 text-center">
+          <div className="flex flex-wrap md:h-8 my-1 text-center">
             <div className="flex space-x-3">
               <Periodo
                 periodo={periodo}
@@ -179,18 +179,17 @@ const Tabla = () => {
                 periodoSeleccionado={periodoSeleccionado}
               />
             </div>
+            <div className="ml-3">
+              <Condiciones
+                DNI={DNI}
+                CL={CL}
+                EXB={EXB}
+                handleIncludeDNI={handleIncludeDNI}
+                handleIncludeCL={handleIncludeCL}
+                handleIncludeEXB={handleIncludeEXB}
+              />
+            </div>
           </div>
-          <div className="flex flex-wrap my-2 text-center">
-            <CheckboxFilter
-              DNI={DNI}
-              CL={CL}
-              EXB={EXB}
-              handleIncludeDNI={handleIncludeDNI}
-              handleIncludeCL={handleIncludeCL}
-              handleIncludeEXB={handleIncludeEXB}
-            />
-          </div>
-
           <div className="flex justify-between space-x-3 md:h-8 text-center">
             <button
               onClick={handleSearch}

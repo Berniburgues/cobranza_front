@@ -22,7 +22,7 @@ const HistorialDNI = () => {
         }
       } catch (error) {
         console.error('Error al cargar los datos:', error);
-        setErrorMessage('Error al cargar los datos en el servidor.');
+        setErrorMessage('Error al cargar los datos en el servidor');
       }
       setIsLoading(false);
     }
@@ -49,9 +49,9 @@ const HistorialDNI = () => {
       </div>
       <div>
         {isLoading ? (
-          <p>Cargando...</p>
+          <p className="italic font-semibold">Cargando...</p>
         ) : errorMessage ? (
-          <p>{errorMessage}</p>
+          <p className="italic font-semibold text-red-500">{errorMessage}</p>
         ) : (
           <HistorialDNITable data={data} />
         )}

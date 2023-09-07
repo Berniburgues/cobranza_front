@@ -2,12 +2,6 @@ import React from 'react';
 import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 
 const DatosFijos = ({ datosFijos }) => {
-  // Formatear el documento con puntos (xx.xxx.xx)
-  const documentoFormateado = `${datosFijos.documento.substring(
-    0,
-    2,
-  )}.${datosFijos.documento.substring(2, 5)}.${datosFijos.documento.substring(5)}`;
-
   return (
     <article className="bg-black rounded-md text-white shadow-lg p-3 mx-auto my-4">
       <div className="text-center mb-4">
@@ -21,7 +15,7 @@ const DatosFijos = ({ datosFijos }) => {
       <div className="grid grid-cols-2 gap-6 text-center">
         <div>
           <p className="font-bold underline text-lg">Documento:</p>
-          <p>{documentoFormateado}</p>
+          <p>{datosFijos.documento}</p>
         </div>
         <div>
           <p className="font-bold underline text-lg">CUIL:</p>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { getNombrePeriodo } from '../../utils/fechas';
+import { formatFecha, getNombrePeriodo } from '../../utils/fechas';
+import { Link } from 'react-router-dom';
 
 const HistorialDNITable = ({ data }) => {
   if (!data || data.length === 0) {
@@ -7,18 +8,18 @@ const HistorialDNITable = ({ data }) => {
   }
 
   // Obtener la lista de todos los días presentes en los pagos
-  const allDias = new Set();
+  const dias = new Set();
 
   // Obtener los días únicos y ordenarlos
   data.forEach((socio) => {
     Object.values(socio.Pagos).forEach((periodo) => {
       Object.keys(periodo).forEach((dia) => {
-        allDias.add(periodo[dia].dia);
+        dias.add(periodo[dia].dia);
       });
     });
   });
 
-  const uniqueDias = [...allDias].sort((a, b) => a - b);
+  const diasOrdenados = [...dias].sort((a, b) => a - b);
 
   return (
     <table className="w-full border-collapse text-center table-fixed text-xs md:text-sm">
@@ -33,7 +34,7 @@ const HistorialDNITable = ({ data }) => {
           <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky inset-0">
             Período
           </th>
-          {uniqueDias.map((dia) => (
+          {diasOrdenados.map((dia) => (
             <th
               key={dia}
               className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky inset-0"
@@ -51,9 +52,11 @@ const HistorialDNITable = ({ data }) => {
               {periodoIndex === 0 && (
                 <td
                   rowSpan={Object.keys(socio.Pagos).length}
-                  className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap"
+                  className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white cursor-pointer"
                 >
-                  {socio.Socio}
+                  <Link to={`/socio?numeroSocio=${socio.Socio}`} target="_blank">
+                    {socio.Socio}
+                  </Link>
                 </td>
               )}
               {periodoIndex === 0 && (
@@ -67,11 +70,15 @@ const HistorialDNITable = ({ data }) => {
               <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap italic">
                 {getNombrePeriodo(periodo)}
               </td>
-              {uniqueDias.map((dia) => {
+              {diasOrdenados.map((dia) => {
                 const diaColumnData = socio.Pagos[periodo]
                   .filter((pago) => pago.dia === dia)
                   .map((pago, index) => (
-                    <div key={index} title={pago.FechaCobro} className="bg-green-500">
+                    <div
+                      key={index}
+                      title={formatFecha(pago.FechaCobro)}
+                      className="bg-green-500"
+                    >
                       {pago.Codigo}
                     </div>
                   ));
