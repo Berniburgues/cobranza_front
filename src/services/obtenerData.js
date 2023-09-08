@@ -38,7 +38,7 @@ export const fetchData = async (page, limit, periodo, codigo, cbu, DNI, CL, ExB)
   }
 };
 
-//Obtener Datos para Filtros
+//Obtener Filtros para Tabla Madre
 export const fetchFiltros = async () => {
   try {
     const res = await axios.get('https://cobranza-hent-dev.fl0.io/filtros');
@@ -65,6 +65,38 @@ export const fetchSocioData = async (numeroSocio) => {
   }
 };
 
+//Obtener Datos para Historial de DNI
+export const fetchHistorialDNI = async (banco, periodo) => {
+  try {
+    // Realizar la solicitud GET al servidor con los parámetros banco y periodo
+    const response = await axios.get(
+      `https://cobranza-hent-dev.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}`,
+    );
+
+    // Verificar si la respuesta tiene datos
+    if (response.data && response.data.data) {
+      return response.data; // Devuelve tanto el count como los datos
+    } else {
+      // Si la respuesta está vacía o no tiene datos, devuelve un objeto vacío
+      return { count: 0, data: [] };
+    }
+  } catch (error) {
+    // Manejar cualquier error que ocurra durante la solicitud
+    console.error('Error al obtener los datos del historial:', error);
+    return { count: 0, data: [] }; // Devuelve un objeto vacío en caso de error
+  }
+};
+
+//Obtener Filtros para Tabla Historial DNI
+export const fetchFiltrosDNI = async () => {
+  try {
+    const res = await axios.get('https://cobranza-hent-dev.fl0.io/filtros/DNI');
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 //Servicio para el Login
 export const loginService = async (email, password) => {
   try {
@@ -75,27 +107,5 @@ export const loginService = async (email, password) => {
     return res.data;
   } catch (error) {
     throw error.response.data;
-  }
-};
-
-//Obtener Datos para Historial de DNI
-export const fetchHistorialDNI = async (banco) => {
-  try {
-    // Realizar la solicitud GET al servidor
-    const response = await axios.get(
-      `https://cobranza-hent-dev.fl0.io/clientes/historialDNI?banco=${banco}`,
-    );
-
-    // Verificar si la respuesta tiene datos
-    if (response.data && response.data.data) {
-      return response.data.data;
-    } else {
-      // Si la respuesta está vacía o no tiene datos, devuelve un arreglo vacío o maneja el caso según lo necesites
-      return [];
-    }
-  } catch (error) {
-    // Manejar cualquier error que ocurra durante la solicitud
-    console.error('Error al obtener los datos del historial:', error);
-    return null;
   }
 };
