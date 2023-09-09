@@ -30,32 +30,43 @@ const HistorialDNI = () => {
   }, []);
 
   const handleBuscarClick = async () => {
-    if (banco && periodo.length > 0) {
-      setIsLoading(true);
-      try {
-        const historialData = await fetchHistorialDNI(
-          banco.value,
-          periodo.map((p) => p.value),
-        );
-        if (historialData) {
-          setData(historialData);
-          setErrorMessage(null);
-        } else {
-          setData([]);
-          setErrorMessage(
-            'No se encontraron datos para el Banco y período proporcionados',
-          );
-        }
-      } catch (error) {
-        console.error('Error al cargar los datos:', error);
-        setErrorMessage('Error al cargar los datos en el servidor');
+    if (!banco || periodo.length === 0) {
+      setErrorMessage('Seleccione un banco y al menos un período');
+      return;
+    }
+
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    try {
+      const historialData = await fetchHistorialDNI(
+        banco.value,
+        periodo.map((p) => p.value),
+      );
+      if (historialData) {
+        setData(historialData);
+      } else {
+        setData([]);
+        setErrorMessage('No se encontraron datos para el Banco y período proporcionados');
       }
+    } catch (error) {
+      console.error('Error al cargar los datos:', error);
+      setErrorMessage('Error al cargar los datos en el servidor');
+    } finally {
       setIsLoading(false);
     }
   };
 
+  const handleResetClick = () => {
+    // Función para reiniciar la tabla
+    setBanco(null);
+    setPeriodo([]);
+    setData([]);
+    setErrorMessage(null);
+  };
+
   return (
-    <section className="flex flex-col items-center justify-center">
+    <section className="flex flex-col items-center justify-center mt-2">
       {isLoadingFiltros ? (
         <FiltroLoader loading={isLoadingFiltros} />
       ) : (
@@ -72,7 +83,7 @@ const HistorialDNI = () => {
               placeholder="Seleccione un banco"
             />
           </div>
-          <div className="w-64 text-xs">
+          <div className="relative w-auto text-xs">
             <Select
               value={periodo}
               onChange={(selectedOptions) => setPeriodo(selectedOptions)}
@@ -82,26 +93,42 @@ const HistorialDNI = () => {
               }))}
               isMulti
               placeholder="Seleccione período(s)"
+              className="max-h-40 min-w-[64px] "
             />
           </div>
           <button
             onClick={handleBuscarClick}
             className={`w-24 rounded-md justify-center bg-green-500 hover:bg-green-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
-              isLoading ? 'cursor-not-allowed opacity-50' : ''
+              isLoading || !banco || periodo.length === 0
+                ? 'cursor-not-allowed opacity-50'
+                : ''
             }`}
+            disabled={isLoading || !banco || periodo.length === 0}
           >
-            Buscar
+            {isLoading ? 'Cargando...' : 'Buscar'}
+          </button>
+          <button
+            onClick={handleResetClick}
+            className={`w-24 rounded-md justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
+              isLoading || data.length === !0 || !banco
+                ? 'cursor-not-allowed opacity-50'
+                : ''
+            }`}
+            disabled={isLoading || data.length === !0 || !banco}
+          >
+            Reiniciar
           </button>
         </div>
       )}
       <div>
-        {isLoading ? (
-          <p className="italic font-semibold">Cargando...</p>
-        ) : errorMessage ? (
+        {errorMessage ? (
           <p className="italic font-semibold text-red-500">{errorMessage}</p>
         ) : (
           <>
-            <p>Total de socios: {data.count}</p>
+            <p className="font-semibold text-center text-sm mb-2">
+              Socios encontrados:
+              <span className="font-bold text-blue-500"> {data.count}</span>
+            </p>
             <HistorialDNITable data={data.data} />
           </>
         )}
