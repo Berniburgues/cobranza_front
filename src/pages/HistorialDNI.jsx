@@ -8,7 +8,7 @@ import { getNombrePeriodo } from '../utils/fechas';
 
 const HistorialDNI = () => {
   const [banco, setBanco] = useState(null);
-  const [periodo, setPeriodo] = useState([]);
+  const [periodo, setPeriodo] = useState([{ value: 'todos', label: 'Todos' }]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [data, setData] = useState([]);
@@ -30,8 +30,8 @@ const HistorialDNI = () => {
   }, []);
 
   const handleBuscarClick = async () => {
-    if (!banco || periodo.length === 0) {
-      setErrorMessage('Seleccione un banco y al menos un período');
+    if (!banco) {
+      setErrorMessage('Seleccione un banco');
       return;
     }
 
@@ -39,10 +39,12 @@ const HistorialDNI = () => {
     setErrorMessage(null);
 
     try {
-      const historialData = await fetchHistorialDNI(
-        banco.value,
-        periodo.map((p) => p.value),
-      );
+      const selectedPeriodos = periodo.includes('todos')
+        ? filtrosData.data.periodos.map((p) => p.value) // Si se selecciona 'todos', usar todos los periodos
+        : periodo.map((p) => p.value); // De lo contrario, usar los periodos seleccionados
+
+      const historialData = await fetchHistorialDNI(banco.value, selectedPeriodos);
+
       if (historialData) {
         setData(historialData);
       } else {
@@ -60,7 +62,7 @@ const HistorialDNI = () => {
   const handleResetClick = () => {
     // Función para reiniciar la tabla
     setBanco(null);
-    setPeriodo([]);
+    setPeriodo(['todos']); // Restablecer a 'todos'
     setData([]);
     setErrorMessage(null);
   };
@@ -71,7 +73,7 @@ const HistorialDNI = () => {
         <FiltroLoader loading={isLoadingFiltros} />
       ) : (
         <div className="mb-2 flex flex-wrap gap-2">
-          <div className="w-64 text-xs">
+          <div className="w-40 text-xs">
             <Select
               value={banco}
               onChange={(selectedOption) => setBanco(selectedOption)}
@@ -80,41 +82,42 @@ const HistorialDNI = () => {
                 label: determinarBancoPorCBU(banco),
               }))}
               isSearchable={false}
-              placeholder="Seleccione un banco"
+              placeholder="Banco"
             />
           </div>
           <div className="relative w-auto text-xs">
             <Select
               value={periodo}
               onChange={(selectedOptions) => setPeriodo(selectedOptions)}
-              options={filtrosData.data.periodos.map((periodo) => ({
-                value: periodo,
-                label: getNombrePeriodo(periodo),
-              }))}
+              options={[
+                { value: 'todos', label: 'Todos' },
+                ...filtrosData.data.periodos.map((periodo) => ({
+                  value: periodo,
+                  label: getNombrePeriodo(periodo),
+                })),
+              ]}
               isMulti
-              placeholder="Seleccione período(s)"
+              placeholder="Período(s)"
               className="max-h-40 min-w-[64px] "
             />
           </div>
           <button
             onClick={handleBuscarClick}
             className={`w-24 rounded-md justify-center bg-green-500 hover:bg-green-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
-              isLoading || !banco || periodo.length === 0
-                ? 'cursor-not-allowed opacity-50'
-                : ''
+              isLoading || !banco ? 'cursor-not-allowed opacity-50' : ''
             }`}
-            disabled={isLoading || !banco || periodo.length === 0}
+            disabled={isLoading || !banco}
           >
             {isLoading ? 'Cargando...' : 'Buscar'}
           </button>
           <button
             onClick={handleResetClick}
             className={`w-24 rounded-md justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
-              isLoading || data.length === !0 || !banco
+              isLoading || data.length === 0 || !banco
                 ? 'cursor-not-allowed opacity-50'
                 : ''
             }`}
-            disabled={isLoading || data.length === !0 || !banco}
+            disabled={isLoading || data.length === 0 || !banco}
           >
             Reiniciar
           </button>
@@ -126,8 +129,9 @@ const HistorialDNI = () => {
         ) : (
           <>
             <p className="font-semibold text-center text-sm mb-2">
-              Socios encontrados:
-              <span className="font-bold text-blue-500"> {data.count}</span>
+              Socios encontrados con pagos{' '}
+              <span className="italic text-green-500 underline">aceptados:</span>
+              <span className="font-bold text-green-500"> {data.count}</span>
             </p>
             <HistorialDNITable data={data.data} />
           </>
