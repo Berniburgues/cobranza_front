@@ -1,4 +1,3 @@
-// Socio.js
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { fetchSocioData } from '../services/obtenerData';
@@ -24,11 +23,12 @@ const Socio = () => {
   const handleBuscarClick = async () => {
     if (numeroSocio) {
       setIsLoading(true);
+      setErrorMessage(null); // Limpiar cualquier mensaje de error anterior
+
       try {
         const socioData = await fetchSocioData(numeroSocio);
         if (socioData) {
           setDatosFijos(socioData);
-          setErrorMessage(null);
         } else {
           setDatosFijos(null);
           setErrorMessage(
@@ -37,9 +37,11 @@ const Socio = () => {
         }
       } catch (error) {
         console.error('Error al cargar los datos:', error);
+        setDatosFijos(null);
         setErrorMessage('Error al cargar los datos en el servidor.');
+      } finally {
+        setIsLoading(false); // Siempre restablecer isLoading, independientemente del resultado
       }
-      setIsLoading(false);
     }
   };
 
