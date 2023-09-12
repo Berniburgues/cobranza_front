@@ -8,7 +8,7 @@ import { getNombrePeriodo } from '../utils/fechas';
 
 const HistorialDNI = () => {
   const [banco, setBanco] = useState(null);
-  const [periodo, setPeriodo] = useState([{ value: 'todos', label: 'Todos' }]);
+  const [periodo, setPeriodo] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [data, setData] = useState([]);
@@ -77,10 +77,30 @@ const HistorialDNI = () => {
             <Select
               value={banco}
               onChange={(selectedOption) => setBanco(selectedOption)}
-              options={filtrosData.data.bancos.map((banco) => ({
-                value: banco,
-                label: determinarBancoPorCBU(banco),
-              }))}
+              options={[
+                // Primero, agregar las opciones con valor "011" y "014"
+                {
+                  value: '011',
+                  label: determinarBancoPorCBU('011'), // Reemplaza 'determinarBancoPorCBU' con la función que obtiene el nombre del banco
+                },
+                {
+                  value: '014',
+                  label: determinarBancoPorCBU('014'),
+                },
+                // Luego, agregar las demás opciones
+                ...filtrosData.data.bancos
+                  .filter(
+                    (banco) =>
+                      banco !== '011' &&
+                      banco !== '014' &&
+                      banco !== '000' &&
+                      determinarBancoPorCBU(banco) !== 'Desconocido',
+                  )
+                  .map((banco) => ({
+                    value: banco,
+                    label: determinarBancoPorCBU(banco),
+                  })),
+              ]}
               isSearchable={false}
               placeholder="Banco"
             />
