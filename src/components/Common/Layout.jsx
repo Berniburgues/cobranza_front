@@ -28,16 +28,8 @@ const Layout = ({ children }) => {
           )}
         </div>
         <div className="space-x-4">
-          <Link to="/tabla" className="hover:text-gray-300" target="_blank">
-            Tabla
-          </Link>
-
-          <Link to="/historialDNI" className="hover:text-gray-300" target="_blank">
-            Historial DNI
-          </Link>
-
-          <Link to="/socio" className="hover:text-gray-300" target="_blank">
-            Socio
+          <Link to="/tablas" className="hover:text-gray-300" target="_blank">
+            Tablas
           </Link>
           <Link to="/reportes" className="hover:text-gray-300" target="_blank">
             Reportes

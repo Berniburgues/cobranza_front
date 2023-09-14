@@ -10,7 +10,8 @@ import Tabla from './pages/Tabla';
 import Socio from './pages/Socio';
 import Login from './pages/Login';
 import Denegado from './pages/Denegado';
-import HistorialDNI from './pages/HistorialDNI';
+import HistorialACE from './pages/historialACE';
+import Tablas from './pages/Tablas';
 
 export const router = createBrowserRouter([
   {
@@ -40,14 +41,28 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: '/tabla',
+    path: '/tablas',
     element: (
       <Layout>
         <ProtectedRoute>
-          <Tabla />
+          <Tablas />
         </ProtectedRoute>
       </Layout>
     ),
+    children: [
+      {
+        path: 'tabla',
+        element: <Tabla />,
+      },
+      {
+        path: 'socio',
+        element: <Socio />,
+      },
+      {
+        path: 'historialACE',
+        element: <HistorialACE />,
+      },
+    ],
   },
   {
     path: '/reportes',
@@ -68,25 +83,5 @@ export const router = createBrowserRouter([
         element: <ReportesIndirectos />,
       },
     ],
-  },
-  {
-    path: '/socio',
-    element: (
-      <Layout>
-        <ProtectedRoute>
-          <Socio />
-        </ProtectedRoute>
-      </Layout>
-    ),
-  },
-  {
-    path: '/historialDNI',
-    element: (
-      <Layout>
-        <ProtectedRoute>
-          <HistorialDNI />
-        </ProtectedRoute>
-      </Layout>
-    ),
   },
 ]);

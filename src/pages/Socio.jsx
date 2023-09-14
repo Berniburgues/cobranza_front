@@ -29,8 +29,9 @@ const Socio = () => {
         const socioData = await fetchSocioData(numeroSocio);
         if (socioData) {
           setDatosFijos(socioData);
+          setErrorMessage(null); // Limpiar cualquier mensaje de error anterior
         } else {
-          setDatosFijos(null);
+          setDatosFijos(socioData);
           setErrorMessage(
             'No se encontraron datos para el número de socio proporcionado.',
           );

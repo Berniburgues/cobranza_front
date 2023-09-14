@@ -19,7 +19,7 @@ const TablaCliente = ({ data }) => {
   }, [data]);
 
   return (
-    <div className="overflow-x-scroll min-w-full">
+    <div className="overflow-x-scroll min-w-full h-screen">
       <table
         className="w-full border-collapse text-center mx-auto table-fixed text-[0.50rem] md:text-xs"
         ref={tableRef}

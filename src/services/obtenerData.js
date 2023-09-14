@@ -57,7 +57,7 @@ export const fetchSocioData = async (numeroSocio) => {
     );
 
     // Devolver los datos obtenidos
-    return response.data.data[0];
+    return response.data;
   } catch (error) {
     // Manejar cualquier error que ocurra durante la solicitud
     console.error('Error al obtener los datos del socio:', error);

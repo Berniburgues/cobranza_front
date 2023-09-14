@@ -18,23 +18,22 @@ const Reportes = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <h2 className="text-3xl font-bold mb-4 underline font-libre">Reportes</h2>
+    <div className="flex flex-col items-center h-full mt-1 mb-10">
       <div className="space-x-5">
         {accesoDirecto && (
           <Link
             to="directos"
-            className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-2 font-libre rounded-md w-72 text-center"
+            className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center"
           >
-            Reportes Directos
+            Directos
           </Link>
         )}
         {accesoIndirecto && (
           <Link
             to="indirectos"
-            className="bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold p-2 font-libre rounded-md w-72 text-center"
+            className="bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center"
           >
-            Reportes Indirectos
+            Indirectos
           </Link>
         )}
       </div>

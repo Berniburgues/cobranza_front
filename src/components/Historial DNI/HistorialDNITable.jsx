@@ -161,7 +161,10 @@ const HistorialDNITable = ({ data }) => {
                       rowSpan={Object.keys(socio.Pagos).length}
                       className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white cursor-pointer"
                     >
-                      <Link to={`/socio?numeroSocio=${socio.Socio}`} target="_blank">
+                      <Link
+                        to={`/tablas/socio?numeroSocio=${socio.Socio}`}
+                        target="_blank"
+                      >
                         {socio.Socio}
                       </Link>
                     </td>

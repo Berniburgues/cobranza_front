@@ -2,12 +2,13 @@ export const permisosRoles = {
   administrador: [
     '/',
     '/home',
-    '/tabla',
+    '/tablas',
+    '/tablas/tabla',
+    '/tablas/socio',
+    '/tablas/historialDNI',
     '/reportes',
     '/reportes/directos',
     '/reportes/indirectos',
-    '/socio',
-    '/historialDNI',
   ],
   parcial: ['/', '/home', '/reportes', '/reportes/indirectos'],
 };

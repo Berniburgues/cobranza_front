@@ -154,7 +154,7 @@ const Tabla = () => {
   };
 
   return (
-    <section className="overflow-y-auto flex flex-col justify-center items-center h-screen">
+    <section className="overflow-y-auto flex flex-col items-center justify-center">
       {isLoadingFiltros ? (
         <FiltroLoader loading={isLoadingFiltros} />
       ) : (

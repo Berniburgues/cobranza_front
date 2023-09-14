@@ -3,6 +3,7 @@ import { descripcionCodigo } from '../../utils/descripcionCodigos';
 import { getNombrePeriodo } from '../../utils/fechas';
 
 const Historial = ({ datosFijos }) => {
+  console.log(datosFijos.cobranza);
   return (
     <article className="my-5">
       <h2 className="text-2xl underline font-semibold mb-2 text-center">
