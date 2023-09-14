@@ -18,7 +18,7 @@ const Home = () => {
     openModal();
   }, []);
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col justify-center items-center" style={{ height: '92vh' }}>
       <h1 className="text-[45px] font-bold font-libre mb-4 text-center italic underline">
         ATSAPRA: Sistema de Control
       </h1>

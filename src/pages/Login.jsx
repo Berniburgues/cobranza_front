@@ -34,7 +34,7 @@ const Login = () => {
   };
 
   return (
-    <section className="flex items-center justify-center h-screen">
+    <section className="flex items-center justify-center min-h-screen">
       <div className="bg-gray-200 border border-black rounded-lg shadow-lg p-5 max-w-sm w-full">
         <h2 className="text-2xl font-bold mb-2 text-center">Acceder</h2>
         <hr className="border-t border-black mb-2 w-1/2 mx-auto" />

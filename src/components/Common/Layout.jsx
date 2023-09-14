@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <section className="flex flex-col h-screen overflow-x-auto">
+    <section className="flex flex-col">
       <nav className="bg-gray-800 border-b-2 border-b-slate-500 px-4 py-2 text-white text-sm md:text-base font-semibold flex justify-between">
         <div>
           <Link to="/home" className="hover:text-gray-300">
