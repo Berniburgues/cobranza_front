@@ -38,6 +38,29 @@ export const fetchData = async (page, limit, periodo, codigo, cbu, DNI, CL, ExB)
   }
 };
 
+//Obtener Datos para Tabla Madre
+export const fetchDataPagos = async (periodo, cbu, page, pageSize) => {
+  try {
+    let url = `http://localhost:8080/clientes/pagosGenerales?periodo=${periodo}&page=${page}&pageSize=${pageSize}`;
+
+    if (cbu) {
+      url += `&cbu=${cbu}`;
+    }
+
+    const response = await axios.get(url);
+    return {
+      data: response.data,
+      page: response.page,
+      totalCount: response.totalCount,
+      count: response.count,
+      totalPages: response.totalCount,
+    };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 //Obtener Filtros para Tabla Madre
 export const fetchFiltros = async () => {
   try {

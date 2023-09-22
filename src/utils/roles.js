@@ -4,6 +4,7 @@ export const permisosRoles = {
     '/home',
     '/tablas',
     '/tablas/tabla',
+    '/tablas/tablaPagos',
     '/tablas/socio',
     '/tablas/historialDNI',
     '/reportes',

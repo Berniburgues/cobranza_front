@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Denegado from './pages/Denegado';
 import HistorialACE from './pages/historialACE';
 import Tablas from './pages/Tablas';
+import TablaPagos from './pages/TablaPagos';
 
 export const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: 'tabla',
         element: <Tabla />,
+      },
+      {
+        path: 'tablaPagos',
+        element: <TablaPagos />,
       },
       {
         path: 'socio',

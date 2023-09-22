@@ -3,6 +3,14 @@ import React from 'react';
 const ReportesIndirectos = () => {
   const informes = [
     {
+      title: 'Stock/Ventas',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiM2U4MzMxMDYtMTIyZi00NjI1LWEzNmItOGZjOTY3MzU0MmQ1IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
+    {
+      title: 'Cobranza Mes',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiOTg1YTFhYzEtZWYwOS00YjBmLWFjZDEtNTRkYWE5NmFjOTM4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
+    {
       title: 'Período ATSAPRA',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYjQ4ZTY0ZWItYmU3ZC00M2YyLWEzMjMtOWJjNmQ2MDhhNjlhIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
@@ -21,10 +29,6 @@ const ReportesIndirectos = () => {
     {
       title: 'Período GARRAHAN',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiNzIxNDZiMDQtZjhkNi00MjQzLTk3ZWMtODkxYzUxMDk1MjdhIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
-    },
-    {
-      title: 'Cobranza Mes',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiOTg1YTFhYzEtZWYwOS00YjBmLWFjZDEtNTRkYWE5NmFjOTM4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
   ];
   return (
