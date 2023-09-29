@@ -39,21 +39,30 @@ export const fetchData = async (page, limit, periodo, codigo, cbu, DNI, CL, ExB)
 };
 
 //Obtener Datos para Tabla Madre
-export const fetchDataPagos = async (periodo, cbu, page, pageSize) => {
+export const fetchDataPagos = async (periodo, cbu, codigo, convenio, ExB) => {
   try {
-    let url = `http://localhost:8080/clientes/pagosGenerales?periodo=${periodo}&page=${page}&pageSize=${pageSize}`;
+    let url = `https://cobranza-hent-dev.fl0.io/clientes/cobranzaSocios?periodo=${periodo}`;
 
     if (cbu) {
       url += `&cbu=${cbu}`;
     }
 
+    if (codigo) {
+      url += `&codigo=${codigo}`;
+    }
+
+    if (convenio) {
+      url += `&convenio=${convenio}`;
+    }
+
+    if (ExB) {
+      url += `&ExB=${ExB}`;
+    }
+
     const response = await axios.get(url);
     return {
-      data: response.data,
-      page: response.page,
-      totalCount: response.totalCount,
-      count: response.count,
-      totalPages: response.totalCount,
+      data: response.data.data, // Obtener los datos
+      count: response.data.count, // Obtener el valor de count desde la respuesta
     };
   } catch (error) {
     console.error(error);
@@ -68,6 +77,15 @@ export const fetchFiltros = async () => {
     return res.data;
   } catch (error) {
     throw error;
+  }
+};
+
+export const fetchFiltrosPagos = async () => {
+  try {
+    const res = await axios.get('https://cobranza-hent-dev.fl0.io/filtros/filtrosPagos');
+    return res.data;
+  } catch (error) {
+    console.error(error);
   }
 };
 

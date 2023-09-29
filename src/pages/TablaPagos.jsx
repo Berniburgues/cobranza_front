@@ -1,201 +1,376 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { fetchDataPagos } from '../services/obtenerData';
-import { formatFecha } from '../utils/fechas';
-import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
+import React, { useState, useEffect } from 'react';
+import { fetchDataPagos, fetchFiltrosPagos } from '../services/obtenerData';
 import { descripcionCodigo } from '../utils/descripcionCodigos';
+import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
+import { Link } from 'react-router-dom';
+import { getNombrePeriodo } from '../utils/fechas';
+import LoaderFiltros from '../components/TablaPagos/LoaderFiltros';
+import Paginacion from '../components/TablaPagos/Paginacion';
+import ExcelBoton from '../components/TablaPagos/Excel';
 
 const TablaPagos = () => {
-  const [periodo, setPeriodo] = useState('');
-  const [cbu, setCbu] = useState('');
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [page, setPage] = useState(0);
+  const [periodos, setPeriodos] = useState([]);
+  const [selectedPeriod, setSelectedPeriod] = useState('');
+  const [selectedBanco, setSelectedBanco] = useState('');
+  const [selectedCodigo, setSelectedCodigo] = useState('');
+  const [selectedConvenio, setSelectedConvenio] = useState('');
+  const [selectedExb, setSelectedExb] = useState('');
+  const [uniqueDates, setUniqueDates] = useState([]);
+  const [pageSize, setPageSize] = useState(5000);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [showLoader, setShowLoader] = useState(true);
+  const [count, setCount] = useState(0);
 
-  const handlePeriodoChange = (e) => {
-    setPeriodo(e.target.value);
-  };
+  useEffect(() => {
+    cargarFiltros();
+  }, []);
 
-  const handleCbuChange = (e) => {
-    setCbu(e.target.value);
-  };
-
-  const handleBuscarClick = async (newPage) => {
+  const cargarFiltros = async () => {
     try {
-      setLoading(true);
-      const pageSize = 2500;
-      const response = await fetchDataPagos(periodo, cbu, newPage, pageSize);
-      setData(response.data.data);
-      setTotalCount(response.data.totalCount);
-      setTotalPages(response.data.totalPages);
-      setPage(response.data.page);
+      const result = await fetchFiltrosPagos();
+      setShowLoader(true);
+      if (result && result.data && result.data.Periodos) {
+        const periodos = Object.keys(result.data.Periodos).map((periodo) => ({
+          periodo,
+          bancos: result.data.Periodos[periodo].Bancos,
+          codigos: result.data.Periodos[periodo].Codigos,
+          convenios: result.data.Periodos[periodo].Convenios,
+          exbs: result.data.Periodos[periodo].ExBs,
+        }));
+        setPeriodos(periodos);
+        setShowLoader(false); // Oculta el loader una vez que los filtros se cargan
+      }
+    } catch (error) {
+      console.error('Error al obtener opciones de select', error);
+      setShowLoader(false); // Asegura que el loader se oculte en caso de error
+    }
+  };
+
+  const handleSearch = async () => {
+    setLoading(true);
+    setPageNumber(1);
+
+    try {
+      const result = await fetchDataPagos(
+        selectedPeriod,
+        selectedBanco,
+        selectedCodigo,
+        selectedConvenio,
+        selectedExb,
+      );
+      setData(result.data);
+      setCount(result.count);
+      setLoading(false);
+
+      const fechasCobro = Object.keys(result.data[0]).filter(
+        (key) =>
+          key !== 'ID' &&
+          key !== 'Socio' &&
+          key !== 'NombreCompleto' &&
+          key !== 'DNI' &&
+          key !== 'CUIL' &&
+          key !== 'Convenio' &&
+          key !== 'CBU' &&
+          key !== 'ExB',
+      );
+      setUniqueDates(fechasCobro);
     } catch (error) {
       console.error(error);
-    } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    handleBuscarClick(1);
-  }, []);
+  // Función para generar los botones de paginación
+  const renderPageButtons = () => {
+    const totalPages = Math.ceil(data.length / pageSize);
+    const pageButtons = [];
 
-  const fechasDeCobroUnicas = useMemo(() => {
-    const uniqueFechas = new Set();
-    data.forEach((socio) => {
-      socio.Cobranzas.forEach((cobranza) => {
-        uniqueFechas.add(cobranza.FechaCobro);
-      });
-    });
-    return [...uniqueFechas].sort();
-  }, [data]);
+    for (let i = 1; i <= totalPages; i++) {
+      pageButtons.push(
+        <button
+          key={i}
+          className={`mx-1 p-2 h-7 border-2 border-black rounded-full text-xs flex justify-center items-center font-bold ${
+            i === pageNumber
+              ? 'bg-blue-500 hover:bg-white text-white hover:text-blue-500'
+              : 'bg-white text-blue-500 hover:bg-blue-600 hover:text-white'
+          }`}
+          onClick={() => handlePageChange(i)}
+        >
+          {i}
+        </button>,
+      );
+    }
+
+    return pageButtons;
+  };
+
+  const handlePageChange = (newPage) => {
+    setPageNumber(newPage);
+  };
+
+  const handlePeriodChange = (e) => {
+    const selected = e.target.value;
+    setSelectedPeriod(selected);
+  };
+
+  const handleReset = () => {
+    setSelectedPeriod('');
+    setSelectedBanco('');
+    setSelectedCodigo('');
+    setSelectedConvenio('');
+    setSelectedExb('');
+    setData([]);
+    setUniqueDates([]);
+    setCount(0);
+  };
+
+  const startIndex = (pageNumber - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedData = data.slice(startIndex, endIndex);
 
   return (
-    <section className="w-full flex flex-col items-center justify-start">
-      <h1 className="text-2xl font-bold mb-2">Tabla de Pagos</h1>
-      <article className="mb-2 w-[30%] flex flex-grow justify-start items-center gap-5">
-        <input
-          type="text"
-          placeholder="Período"
-          value={periodo}
-          onChange={handlePeriodoChange}
-          className="border rounded px-3 py-2 w-full"
-        />
-        <input
-          type="text"
-          placeholder="Banco"
-          value={cbu}
-          onChange={handleCbuChange}
-          className="border rounded px-3 py-2 w-full"
-        />
-        <button
-          onClick={() => handleBuscarClick(1)}
-          disabled={loading}
-          className={`bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
-        >
-          {loading ? 'Cargando...' : 'Buscar'}
-        </button>
-      </article>
-      {data.length > 0 && (
-        <section className=" w-[95%] mt-1 overflow-x-auto h-screen">
-          <table className="w-full border-collapse text-xs md:text-sm">
-            <thead className="min-h-[0.5rem] max-h-2">
-              <tr className="bg-black text-white">
-                <th className="border-2 border-gray-800 min-w-[2.5rem] max-w-[2.5rem] bg-black whitespace-nowrap font-semibold md:font-bold sticky top-0">
-                  Socio
-                </th>
-                <th className="border-2 border-gray-800 bg-black whitespace-nowrap font-semibold md:font-bold sticky top-0">
-                  Nombre
-                </th>
-                <th className="border-2 border-gray-800 bg-black whitespace-nowrap font-semibold md:font-bold sticky top-0">
-                  DNI
-                </th>
-                <th className="border-2 border-gray-800 bg-black whitespace-nowrap font-semibold md:font-bold sticky top-0">
-                  CUIL
-                </th>
-                <th className="border-2 border-gray-800 bg-black whitespace-nowrap font-semibold md:font-bold sticky top-0">
-                  CL
-                </th>
-                <th className="border-2 border-gray-800 bg-black whitespace-nowrap font-semibold md:font-bold sticky top-0">
-                  CBU
-                </th>
-                <th className="border-2 border-gray-800 bg-black whitespace-nowrap font-semibold md:font-bold sticky top-0">
-                  ExB
-                </th>
-                {fechasDeCobroUnicas.map((fecha) => (
-                  <th
-                    key={fecha}
-                    className="border-2 p-[1px] min-w-[3rem] max-w-[3rem] border-gray-800 bg-black whitespace-nowrap truncate font-semibold md:font-bold sticky top-0"
+    <div className="flex items-center justify-center">
+      <div className="container mx-auto mt-2">
+        <div className="mb-2 flex flex-wrap justify-center">
+          <div className="flex items-center gap-2">
+            {showLoader ? (
+              <LoaderFiltros />
+            ) : (
+              <>
+                <div className="flex items-center gap-2">
+                  <select
+                    className="border-2 border-black rounded-md p-1 w-28"
+                    value={selectedPeriod}
+                    onChange={handlePeriodChange}
                   >
-                    {formatFecha(fecha)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((socio) => (
-                <tr key={socio.Identificador}>
-                  <td className="border-2 border-black min-w-[2.5rem] max-w-[2.5rem] text-center text-xs font-semibold truncate whitespace-nowrap">
-                    {socio.Socio}
-                  </td>
-                  <td
-                    className="border-2 border-black min-w-[5rem] max-w-[5rem] text-center text-xs font-bold truncate whitespace-nowrap p-1"
-                    title={socio.NombreCompleto}
+                    <option value="">Período</option>
+                    {periodos.map((periodoData) => (
+                      <option key={periodoData.periodo} value={periodoData.periodo}>
+                        {getNombrePeriodo(periodoData.periodo)}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="border-2 border-black rounded-md p-1 w-28"
+                    value={selectedBanco}
+                    onChange={(e) => setSelectedBanco(e.target.value)}
                   >
-                    {socio.NombreCompleto}
-                  </td>
-                  <td className="border-2 border-black text-center text-xs font-bold truncate whitespace-nowrap p-1">
-                    {socio.DNI}
-                  </td>
-                  <td className="border-2 border-black text-center text-xs font-bold truncate whitespace-nowrap p-1">
-                    {socio.CUIL}
-                  </td>
-                  <td
-                    className="border-2 border-black text-center min-w-[5rem] max-w-[5rem] text-xs font-bold truncate whitespace-nowrap p-1"
-                    title={socio.CL}
+                    <option value="">Banco</option>
+                    {selectedPeriod &&
+                      periodos
+                        .find((periodoData) => periodoData.periodo === selectedPeriod)
+                        ?.bancos.map((banco) => (
+                          <option key={banco} value={banco}>
+                            {determinarBancoPorCBU(banco)}
+                          </option>
+                        ))}
+                  </select>
+                  <select
+                    className="border-2 border-black rounded-md p-1 w-28"
+                    value={selectedCodigo}
+                    onChange={(e) => setSelectedCodigo(e.target.value)}
                   >
-                    {socio.CL}
-                  </td>
-                  <td
-                    className="border-2 border-black text-center text-[0.50rem] md:text-sm font-bold truncate whitespace-nowrap p-1"
-                    title={determinarBancoPorCBU(socio.CBU)}
+                    <option value="">Código</option>
+                    {selectedPeriod &&
+                      periodos
+                        .find((periodoData) => periodoData.periodo === selectedPeriod)
+                        ?.codigos.map((codigo) => (
+                          <option key={codigo} value={codigo}>
+                            {codigo}
+                          </option>
+                        ))}
+                  </select>
+                  <select
+                    className="border-2 border-black rounded-md p-1 w-28"
+                    value={selectedConvenio}
+                    onChange={(e) => setSelectedConvenio(e.target.value)}
                   >
-                    {socio.CBU}
-                  </td>
-                  <td
-                    className="border-2 border-black text-center text-[0.50rem] md:text-sm font-bold truncate whitespace-nowrap p-1"
-                    title={determinarBancoPorCBU(socio.ExB)}
+                    <option value="">Canal de Venta</option>
+                    {selectedPeriod &&
+                      periodos
+                        .find((periodoData) => periodoData.periodo === selectedPeriod)
+                        ?.convenios.map((convenio) => (
+                          <option key={convenio} value={convenio}>
+                            {convenio}
+                          </option>
+                        ))}
+                  </select>
+                  <select
+                    className="border-2 border-black rounded-md p-1 w-28"
+                    value={selectedExb}
+                    onChange={(e) => setSelectedExb(e.target.value)}
                   >
-                    {socio.ExB}
-                  </td>
-                  {fechasDeCobroUnicas.map((fecha) => (
-                    <td
-                      key={fecha}
-                      className="border-2 border-black text-center text-xs font-bold truncate whitespace-nowrap p-[1px] min-w-[3rem] max-w-[3rem]"
-                      title={descripcionCodigo()}
-                    >
-                      {socio.Cobranzas.find((c) => c.FechaCobro === fecha)
-                        ? socio.Cobranzas.find((c) => c.FechaCobro === fecha).Codigo
-                        : '-'}
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-      )}
-      {data.length === 0 && <p className="mt-4">No hay datos disponibles.</p>}
-      <div className="mt-4">
-        <span>
-          Página{' '}
-          <strong>
-            {page} de {totalPages}
-          </strong>{' '}
-        </span>
-        <button
-          onClick={() => {
-            handleBuscarClick(page - 1);
-          }}
-          disabled={page === 1 || loading}
-          className="px-2 py-1 mx-1 bg-gray-300 rounded"
-        >
-          {'<'}
-        </button>
-        <button
-          onClick={() => {
-            handleBuscarClick(page + 1);
-          }}
-          disabled={totalPages === 0 || loading}
-          className="px-2 py-1 mx-1 bg-gray-300 rounded"
-        >
-          {'>'}
-        </button>
+                    <option value="">ExB</option>
+                    {selectedPeriod &&
+                      periodos
+                        .find((periodoData) => periodoData.periodo === selectedPeriod)
+                        ?.exbs.map((exb) => (
+                          <option key={exb} value={exb}>
+                            {determinarBancoPorCBU(exb)}
+                          </option>
+                        ))}
+                  </select>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md p-1 border-2 border-black w-28 ${
+                      loading ? 'cursor-not-allowed opacity-50' : ''
+                    }`}
+                    onClick={handleSearch}
+                    disabled={loading}
+                  >
+                    {loading ? 'Cargando...' : 'Buscar'}
+                  </button>
+                  <button
+                    className={`bg-yellow-500 hover:bg-yellow-600 border-2 border-black text-white rounded-md p-1 w-28 ${
+                      loading ? 'cursor-not-allowed opacity-50' : ''
+                    }`}
+                    onClick={handleReset}
+                    disabled={loading}
+                  >
+                    Reiniciar
+                  </button>
+                  <ExcelBoton uniqueDates={uniqueDates} data={data} loading={loading} />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {showLoader ? null : (
+          <section>
+            <div className="my-1">
+              <p className="text-center text-base font-semibold italic">
+                Mostrando{' '}
+                <span className="text-blue-600 font-bold">
+                  {Math.min(pageSize, data.length)}
+                </span>{' '}
+                de <span className="text-blue-600 font-bold">{count}</span> socios
+              </p>
+            </div>
+
+            <Paginacion
+              data={data}
+              pageSize={pageSize}
+              renderPageButtons={renderPageButtons}
+              handlePageChange={handlePageChange}
+              pageNumber={pageNumber}
+            />
+
+            <div className="overflow-x-auto">
+              <div className="max-h-screen overflow-y-auto">
+                <div className="w-auto">
+                  <table className="w-full border-collapse border text-sm">
+                    <thead>
+                      <tr className="bg-black text-white sticky top-0 z-10">
+                        <th className="py-1 border-2 border-gray-700">NºS</th>
+                        <th className="p-1 border-2 border-gray-700">Nombre</th>
+                        <th className="py-1 border-2 border-gray-700">DNI</th>
+                        <th className="py-1 border-2 border-gray-700">CUIL</th>
+                        <th className="p-1 border-2 border-gray-700 truncate">
+                          Canal de Venta
+                        </th>
+                        <th className="py-1 border-2 border-gray-700">CBU</th>
+                        <th className="py-1 border-2 border-gray-700">ExB</th>
+                        {uniqueDates.map((date) => {
+                          const [año, mes, dia] = date.split('-');
+                          const fechaFormateada = `${dia}/${mes}`;
+                          return (
+                            <th key={date} className="p-1 border-2 border-gray-700">
+                              {fechaFormateada}
+                            </th>
+                          );
+                        })}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paginatedData.map((socio) => (
+                        <tr key={socio.ID} className="text-center">
+                          <td className="p-1 border-2 border-black hover:bg-black hover:text-white">
+                            <Link
+                              to={`/tablas/socio?numeroSocio=${socio.Socio}`}
+                              target="_blank"
+                              className="block w-full h-full text-center"
+                            >
+                              {socio.Socio}
+                            </Link>
+                          </td>
+                          <td
+                            className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem] capitalize"
+                            title={socio.NombreCompleto}
+                          >
+                            {socio.NombreCompleto}
+                          </td>
+                          <td className="p-1 border-2 border-black">{socio.DNI}</td>
+                          <td className="p-1 border-2 border-black">{socio.CUIL}</td>
+                          <td
+                            className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem]"
+                            title={socio.Convenio}
+                          >
+                            {socio.Convenio}
+                          </td>
+                          <td
+                            className={`p-1 border-2 border-black font-semibold ${
+                              socio.CBU === '027' ? 'bg-white' : 'bg-blue-500'
+                            }`}
+                            title={determinarBancoPorCBU(socio.CBU)}
+                          >
+                            {socio.CBU}
+                          </td>
+                          <td
+                            className={`p-1 border-2 border-black font-semibold ${
+                              socio.ExB === '027' ? 'bg-white' : 'bg-blue-500'
+                            }`}
+                            title={determinarBancoPorCBU(socio.ExB)}
+                          >
+                            {socio.ExB}
+                          </td>
+                          {uniqueDates.map((date) => {
+                            const codigo = socio[date];
+                            let backgroundColorClass = '';
+                            if (
+                              !codigo &&
+                              socio.CBU !== '027' &&
+                              !Object.values(socio).includes('ACE')
+                            ) {
+                              backgroundColorClass = 'bg-slate-500';
+                            } else if (codigo === 'ACE') {
+                              backgroundColorClass = 'bg-green-500';
+                            } else if (codigo === 'R10') {
+                              backgroundColorClass = 'bg-yellow-400';
+                            } else if (codigo) {
+                              backgroundColorClass = 'bg-red-500';
+                            }
+                            return (
+                              <td
+                                key={date}
+                                className={`border-2 p-1 border-black font-bold text-xs ${backgroundColorClass}`}
+                                title={descripcionCodigo(codigo)}
+                              >
+                                {codigo}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <Paginacion
+              data={data}
+              pageSize={pageSize}
+              renderPageButtons={renderPageButtons}
+              handlePageChange={handlePageChange}
+              pageNumber={pageNumber}
+            />
+          </section>
+        )}
       </div>
-    </section>
+    </div>
   );
 };
 
