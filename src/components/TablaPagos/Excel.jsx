@@ -52,14 +52,14 @@ const ExcelBoton = ({ uniqueDates, data, loading }) => {
           row.eachCell((cell, colIndex) => {
             const codigo = cell.value;
             if (colIndex > 7 && codigo && codigo !== '-') {
-              // Aplicar colores menos brillantes
+              // Aplicar colores
               let fillColor = '';
               if (codigo === 'ACE') {
-                fillColor = '66FF66'; // Verde menos brillante
+                fillColor = '66FF66'; // Verde
               } else if (codigo === 'R10') {
-                fillColor = 'FFFF99'; // Amarillo menos brillante
+                fillColor = 'FFFF99'; // Amarillo
               } else {
-                fillColor = 'FF9999'; // Rojo menos brillante
+                fillColor = 'FF9999'; // Rojo
               }
               cell.fill = {
                 type: 'pattern',
