@@ -8,13 +8,8 @@ const EnviosFuturos = ({ isOpen, closeModal }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="bg-white w-96 rounded-lg shadow-lg p-6 relative text-center">
-        <p className="font-semibold text-red-500">
-          <span className="font-bold underline italic">TENER EN CUENTA:</span> VENTAS
-          HASTA EL 31/05 de OTROS BANCOS NO ENVIAR al primer vencimiento mora. MARTES 2/10
-          CRUZAR DEVOLUCIÓN CON BAJAS
-        </p>
         <img
-          src="https://i.ibb.co/t3Px12V/Enviados-a-futuro.png"
+          src="https://i.ibb.co/dK7xQ1M/enviados-a-futuro.png"
           alt="Reporte"
           className="mx-auto mb-4"
         />
