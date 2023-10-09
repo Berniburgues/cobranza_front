@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { fetchHistorialDNI, fetchFiltrosDNI } from '../services/obtenerData';
 import HistorialDNITable from '../components/Historial DNI/HistorialDNITable';
-import FiltroLoader from '../components/Tabla/FiltroLoader';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import { getNombrePeriodo } from '../utils/fechas';
+import FiltroLoader from '../components/Historial DNI/FiltroLoader';
 
 const HistorialDNI = () => {
   const [banco, setBanco] = useState(null);

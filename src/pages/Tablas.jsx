@@ -9,12 +9,14 @@ const Tablas = () => {
     <div className="flex flex-col items-center h-full">
       <div className="space-x-5 mt-1 mb-10">
         <Link
-          to="tabla"
+          to="tablaPagos"
           className={`bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
-            location.pathname === '/tablas/tabla' ? 'opacity-50 cursor-not-allowed' : ''
+            location.pathname === '/tablas/tablaPagos'
+              ? 'opacity-50 cursor-not-allowed'
+              : ''
           }`}
         >
-          Tabla Madre
+          Tabla General
         </Link>
         <Link
           to="socio"

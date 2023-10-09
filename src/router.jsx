@@ -6,7 +6,6 @@ import ReportesDirectos from './components/Reportes/ReportesDirectos';
 import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
-import Tabla from './pages/Tabla';
 import Socio from './pages/Socio';
 import Login from './pages/Login';
 import Denegado from './pages/Denegado';
@@ -51,10 +50,6 @@ export const router = createBrowserRouter([
       </Layout>
     ),
     children: [
-      {
-        path: 'tabla',
-        element: <Tabla />,
-      },
       {
         path: 'tablaPagos',
         element: <TablaPagos />,
