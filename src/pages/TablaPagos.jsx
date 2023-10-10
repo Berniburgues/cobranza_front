@@ -26,8 +26,8 @@ const TablaPagos = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [showLoader, setShowLoader] = useState(true);
   const [count, setCount] = useState(0);
-  const [importeEnviado, setImporteEnviado] = useState('Seleccionar Período');
-  const [importeCobrado, setImporteCobrado] = useState('Seleccionar Período');
+  const [importeEnviado, setImporteEnviado] = useState('-');
+  const [importeCobrado, setImporteCobrado] = useState('-');
 
   useEffect(() => {
     cargarFiltros();
@@ -134,8 +134,8 @@ const TablaPagos = () => {
     setData([]);
     setUniqueDates([]);
     setCount(0);
-    setImporteEnviado('Seleccionar Período');
-    setImporteCobrado('Seleccionar Período');
+    setImporteEnviado('-');
+    setImporteCobrado('-');
   };
 
   const startIndex = (pageNumber - 1) * pageSize;
@@ -265,7 +265,7 @@ const TablaPagos = () => {
             <article className="flex flex-wrap text-center items-center justify-center gap-5 mb-1">
               <p className="font-semibold">
                 Enviado:{' '}
-                <span className="font-bold italic text-blue-500">{importeEnviado}</span>
+                <span className="font-bold italic text-blue-600">{importeEnviado}</span>
               </p>
               <p className="font-semibold">
                 Cobrado:{' '}
