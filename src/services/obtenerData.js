@@ -32,6 +32,31 @@ export const fetchDataPagos = async (periodo, cbu, codigo, convenio, ExB) => {
   }
 };
 
+//Obtener Importes Enviados y Cobrados
+export const fetchImportes = async (periodo, bco) => {
+  try {
+    let url = `https://cobranza.2.us-1.fl0.io/clientes/importes?periodo=${periodo}`;
+
+    if (bco) {
+      url += `&bco=${bco}`;
+    }
+
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+      // Si la respuesta es exitosa, devuelve los datos
+      return response.data;
+    } else {
+      // Si la respuesta tiene un estado diferente a 200, puedes manejar el error aquí
+      throw new Error(`Error en la solicitud: ${response.status}`);
+    }
+  } catch (error) {
+    // Maneja cualquier error que ocurra durante la solicitud
+    console.error('Error al obtener los importes:', error);
+    throw error;
+  }
+};
+
 //Obtener Filtros para Tabla Madre
 export const fetchFiltrosPagos = async () => {
   try {

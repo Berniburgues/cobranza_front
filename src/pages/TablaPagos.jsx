@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { fetchDataPagos, fetchFiltrosPagos } from '../services/obtenerData';
+import {
+  fetchDataPagos,
+  fetchFiltrosPagos,
+  fetchImportes,
+} from '../services/obtenerData';
 import { descripcionCodigo } from '../utils/descripcionCodigos';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import { Link } from 'react-router-dom';
@@ -22,6 +26,8 @@ const TablaPagos = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [showLoader, setShowLoader] = useState(true);
   const [count, setCount] = useState(0);
+  const [importeEnviado, setImporteEnviado] = useState('Seleccionar Período');
+  const [importeCobrado, setImporteCobrado] = useState('Seleccionar Período');
 
   useEffect(() => {
     cargarFiltros();
@@ -60,6 +66,7 @@ const TablaPagos = () => {
         selectedConvenio,
         selectedExb,
       );
+
       setData(result.data);
       setCount(result.count);
       setLoading(false);
@@ -76,6 +83,9 @@ const TablaPagos = () => {
           key !== 'ExB',
       );
       setUniqueDates(fechasCobro);
+      const importes = await fetchImportes(selectedPeriod, selectedBanco);
+      setImporteEnviado(importes.importeEnviado);
+      setImporteCobrado(importes.importeCobrado);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -124,6 +134,8 @@ const TablaPagos = () => {
     setData([]);
     setUniqueDates([]);
     setCount(0);
+    setImporteEnviado('Seleccionar Período');
+    setImporteCobrado('Seleccionar Período');
   };
 
   const startIndex = (pageNumber - 1) * pageSize;
@@ -241,7 +253,7 @@ const TablaPagos = () => {
 
         {showLoader ? null : (
           <section>
-            <div className="my-1">
+            <article>
               <p className="text-center text-base font-semibold italic">
                 Mostrando{' '}
                 <span className="text-blue-600 font-bold">
@@ -249,8 +261,17 @@ const TablaPagos = () => {
                 </span>{' '}
                 de <span className="text-blue-600 font-bold">{count}</span> socios
               </p>
-            </div>
-
+            </article>
+            <article className="flex flex-wrap text-center items-center justify-center gap-5 mb-1">
+              <p className="font-semibold">
+                Enviado:{' '}
+                <span className="font-bold italic text-blue-500">{importeEnviado}</span>
+              </p>
+              <p className="font-semibold">
+                Cobrado:{' '}
+                <span className="font-bold italic text-green-500">{importeCobrado}</span>
+              </p>
+            </article>
             <Paginacion
               data={data}
               pageSize={pageSize}
