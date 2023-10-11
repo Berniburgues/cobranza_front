@@ -11,6 +11,7 @@ import { getNombrePeriodo } from '../utils/fechas';
 import LoaderFiltros from '../components/TablaPagos/LoaderFiltros';
 import Paginacion from '../components/TablaPagos/Paginacion';
 import ExcelBoton from '../components/TablaPagos/Excel';
+import ImportesSocios from '../components/TablaPagos/ImportesSocios';
 
 const TablaPagos = () => {
   const [data, setData] = useState([]);
@@ -253,25 +254,13 @@ const TablaPagos = () => {
 
         {showLoader ? null : (
           <section>
-            <article>
-              <p className="text-center text-base font-semibold italic">
-                Mostrando{' '}
-                <span className="text-blue-600 font-bold">
-                  {Math.min(pageSize, data.length)}
-                </span>{' '}
-                de <span className="text-blue-600 font-bold">{count}</span> socios
-              </p>
-            </article>
-            <article className="flex flex-wrap text-center items-center justify-center gap-5 mb-1">
-              <p className="font-semibold">
-                Enviado:{' '}
-                <span className="font-bold italic text-blue-600">{importeEnviado}</span>
-              </p>
-              <p className="font-semibold">
-                Cobrado:{' '}
-                <span className="font-bold italic text-green-500">{importeCobrado}</span>
-              </p>
-            </article>
+            <ImportesSocios
+              pageSize={pageSize}
+              data={data}
+              count={count}
+              importeCobrado={importeCobrado}
+              importeEnviado={importeEnviado}
+            />
             <Paginacion
               data={data}
               pageSize={pageSize}
