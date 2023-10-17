@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const ImportesSocios = ({ pageSize, data, count, importeCobrado, importeEnviado }) => {
-  const importeEnviadoNumerico = parseFloat(importeEnviado.replace('$', ''));
-  const importeCobradoNumerico = parseFloat(importeCobrado.replace('$', ''));
-  const ratio = ((importeCobradoNumerico / importeEnviadoNumerico) * 100).toFixed(2);
+  const [ratio, setRatio] = useState(0);
+
+  useEffect(() => {
+    // Cuando cambian los importes, actualiza el gráfico y el ratio
+    const importeEnviadoNumerico = parseFloat(importeEnviado.replace('$', ''));
+    const importeCobradoNumerico = parseFloat(importeCobrado.replace('$', ''));
+    const newRatio = ((importeCobradoNumerico / importeEnviadoNumerico) * 100).toFixed(2);
+    setRatio(isNaN(newRatio) ? '-' : newRatio + '%');
+  }, [importeEnviado, importeCobrado]);
 
   return (
     <div>
@@ -26,10 +32,7 @@ const ImportesSocios = ({ pageSize, data, count, importeCobrado, importeEnviado 
           <span className="font-bold italic text-green-500">{importeCobrado}</span>
         </p>
         <p className="font-semibold">
-          Ratio:{' '}
-          <span className="font-bold italic text-green-500">
-            {isNaN(ratio) ? '-' : `${ratio}%`}
-          </span>
+          Ratio: <span className="font-bold italic text-green-500">{ratio}</span>
         </p>
       </article>
     </div>
