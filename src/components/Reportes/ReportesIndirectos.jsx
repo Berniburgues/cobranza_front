@@ -8,7 +8,7 @@ const ReportesIndirectos = () => {
     },
     {
       title: 'Cobranza Mes',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiOTg1YTFhYzEtZWYwOS00YjBmLWFjZDEtNTRkYWE5NmFjOTM4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiYzA2NzMyMWYtNGE5NC00MDA2LWFhYjEtYzRiNDYyNjhjYmQ4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
       title: 'Período ATSAPRA',
