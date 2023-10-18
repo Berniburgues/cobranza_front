@@ -3,6 +3,7 @@ import {
   fetchDataPagos,
   fetchFiltrosPagos,
   fetchImportes,
+  fetchCuiles,
 } from '../services/obtenerData';
 import { descripcionCodigo } from '../utils/descripcionCodigos';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
@@ -29,6 +30,9 @@ const TablaPagos = () => {
   const [count, setCount] = useState(0);
   const [importeEnviado, setImporteEnviado] = useState('-');
   const [importeCobrado, setImporteCobrado] = useState('-');
+  const [altaCuiles, setAltaCuiles] = useState('-');
+  const [bajaCuiles, setBajaCuiles] = useState('-');
+  const [cuilesTotales, setCuilesTotales] = useState('-');
 
   useEffect(() => {
     cargarFiltros();
@@ -87,6 +91,10 @@ const TablaPagos = () => {
       const importes = await fetchImportes(selectedPeriod, selectedBanco);
       setImporteEnviado(importes.importeEnviado);
       setImporteCobrado(importes.importeCobrado);
+      const cuiles = await fetchCuiles(selectedPeriod);
+      setAltaCuiles(cuiles.CuilesNuevos);
+      setBajaCuiles(cuiles.CuilesBaja);
+      setCuilesTotales(cuiles.CuilesTotales);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -145,8 +153,8 @@ const TablaPagos = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="container mx-auto mt-2">
-        <div className="mb-2 flex flex-wrap justify-center">
+      <div className="container mx-auto">
+        <div className="mb-1 flex flex-wrap justify-center">
           <div className="flex items-center gap-2">
             {showLoader ? (
               <LoaderFiltros />
@@ -215,7 +223,7 @@ const TablaPagos = () => {
                     value={selectedExb}
                     onChange={(e) => setSelectedExb(e.target.value)}
                   >
-                    <option value="">ExB</option>
+                    <option value="">Banco Envío</option>
                     {selectedPeriod &&
                       periodos
                         .find((periodoData) => periodoData.periodo === selectedPeriod)
@@ -260,6 +268,9 @@ const TablaPagos = () => {
               count={count}
               importeCobrado={importeCobrado}
               importeEnviado={importeEnviado}
+              altaCuiles={altaCuiles}
+              bajaCuiles={bajaCuiles}
+              cuilesTotales={cuilesTotales}
             />
             <Paginacion
               data={data}
