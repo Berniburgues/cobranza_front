@@ -13,6 +13,7 @@ import LoaderFiltros from '../components/TablaPagos/LoaderFiltros';
 import Paginacion from '../components/TablaPagos/Paginacion';
 import ExcelBoton from '../components/TablaPagos/Excel';
 import ImportesSocios from '../components/TablaPagos/ImportesSocios';
+import './TablaPagos.css';
 
 const TablaPagos = () => {
   const [data, setData] = useState([]);
@@ -33,6 +34,7 @@ const TablaPagos = () => {
   const [altaCuiles, setAltaCuiles] = useState('-');
   const [bajaCuiles, setBajaCuiles] = useState('-');
   const [cuilesTotales, setCuilesTotales] = useState('-');
+  const [selectChanges, setSelectChanges] = useState(false);
 
   useEffect(() => {
     cargarFiltros();
@@ -95,6 +97,7 @@ const TablaPagos = () => {
       setAltaCuiles(cuiles.CuilesNuevos);
       setBajaCuiles(cuiles.CuilesBaja);
       setCuilesTotales(cuiles.CuilesTotales);
+      setSelectChanges(false);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -129,9 +132,22 @@ const TablaPagos = () => {
     setPageNumber(newPage);
   };
 
-  const handlePeriodChange = (e) => {
-    const selected = e.target.value;
-    setSelectedPeriod(selected);
+  const handleSelectChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    // Usar un objeto para mapear los estados de los select
+    const selectStateMap = {
+      selectedPeriod: setSelectedPeriod,
+      selectedBanco: setSelectedBanco,
+      selectedCodigo: setSelectedCodigo,
+      selectedConvenio: setSelectedConvenio,
+      selectedExb: setSelectedExb,
+    };
+
+    selectStateMap[name](value); // Establecer el valor seleccionado
+
+    setSelectChanges(true); // Establecer selectChanges en true
   };
 
   const handleReset = () => {
@@ -145,6 +161,10 @@ const TablaPagos = () => {
     setCount(0);
     setImporteEnviado('-');
     setImporteCobrado('-');
+    setBajaCuiles('-');
+    setAltaCuiles('-');
+    setCuilesTotales('-');
+    setSelectChanges(false);
   };
 
   const startIndex = (pageNumber - 1) * pageSize;
@@ -164,7 +184,8 @@ const TablaPagos = () => {
                   <select
                     className="border-2 border-black rounded-md p-1 w-28"
                     value={selectedPeriod}
-                    onChange={handlePeriodChange}
+                    name="selectedPeriod"
+                    onChange={handleSelectChange}
                   >
                     <option value="">Período</option>
                     {periodos.map((periodoData) => (
@@ -176,7 +197,8 @@ const TablaPagos = () => {
                   <select
                     className="border-2 border-black rounded-md p-1 w-28"
                     value={selectedBanco}
-                    onChange={(e) => setSelectedBanco(e.target.value)}
+                    name="selectedBanco"
+                    onChange={handleSelectChange}
                   >
                     <option value="">Banco</option>
                     {selectedPeriod &&
@@ -191,7 +213,8 @@ const TablaPagos = () => {
                   <select
                     className="border-2 border-black rounded-md p-1 w-28"
                     value={selectedCodigo}
-                    onChange={(e) => setSelectedCodigo(e.target.value)}
+                    name="selectedCodigo"
+                    onChange={handleSelectChange}
                   >
                     <option value="">Código</option>
                     {selectedPeriod &&
@@ -206,7 +229,8 @@ const TablaPagos = () => {
                   <select
                     className="border-2 border-black rounded-md p-1 w-28"
                     value={selectedConvenio}
-                    onChange={(e) => setSelectedConvenio(e.target.value)}
+                    name="selectedConvenio"
+                    onChange={handleSelectChange}
                   >
                     <option value="">Canal de Venta</option>
                     {selectedPeriod &&
@@ -221,7 +245,8 @@ const TablaPagos = () => {
                   <select
                     className="border-2 border-black rounded-md p-1 w-28"
                     value={selectedExb}
-                    onChange={(e) => setSelectedExb(e.target.value)}
+                    name="selectedExb"
+                    onChange={handleSelectChange}
                   >
                     <option value="">Banco Envío</option>
                     {selectedPeriod &&
@@ -236,14 +261,18 @@ const TablaPagos = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <button
-                    className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md p-1 border-2 border-black w-28 ${
-                      loading ? 'cursor-not-allowed opacity-50' : ''
-                    }`}
-                    onClick={handleSearch}
+                    className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md p-1 border-2 border-black w-28
+                    ${loading ? 'cursor-not-allowed opacity-50' : ''}
+                    ${selectChanges ? 'boton_parpadeo' : ''}`}
+                    onClick={() => {
+                      handleSearch();
+                      setSelectChanges(false);
+                    }}
                     disabled={loading}
                   >
                     {loading ? 'Cargando...' : 'Buscar'}
                   </button>
+
                   <button
                     className={`bg-yellow-500 hover:bg-yellow-600 border-2 border-black text-white rounded-md p-1 w-28 ${
                       loading ? 'cursor-not-allowed opacity-50' : ''
