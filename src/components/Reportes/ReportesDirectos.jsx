@@ -11,7 +11,7 @@ const ReportesDirectos = () => {
       url: 'https://app.powerbi.com/view?r=eyJrIjoiODVkM2E5NjAtODI2My00ZDlhLThjYjEtY2FlYmFiZjk5OTk2IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
     {
-      title: 'CUILES',
+      title: 'Cuiles por Banco',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiN2UxMTA1MGMtYzI0Zi00ZTViLWJlMGYtNWQ5ZDZhODkzNjI2IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
     {

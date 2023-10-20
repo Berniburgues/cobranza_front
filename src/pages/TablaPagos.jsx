@@ -264,7 +264,7 @@ const TablaPagos = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <button
-                    className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md p-1 border-2 border-black w-28
+                    className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
                     ${loading ? 'cursor-not-allowed opacity-50' : ''}
                     ${selectChanges ? 'boton_parpadeo' : ''}`}
                     onClick={() => {
