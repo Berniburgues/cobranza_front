@@ -29,7 +29,8 @@ const TablaPagos = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [showLoader, setShowLoader] = useState(true);
   const [count, setCount] = useState(0);
-  const [importeEnviado, setImporteEnviado] = useState('-');
+  const [importeEnviadoTotal, setImporteEnviadoTotal] = useState('-');
+  const [importeEnviadoTramo1, setImporteEnviadoTramo1] = useState('-');
   const [importeCobrado, setImporteCobrado] = useState('-');
   const [altaCuiles, setAltaCuiles] = useState('-');
   const [bajaCuiles, setBajaCuiles] = useState('-');
@@ -91,7 +92,8 @@ const TablaPagos = () => {
       );
       setUniqueDates(fechasCobro);
       const importes = await fetchImportes(selectedPeriod, selectedBanco);
-      setImporteEnviado(importes.importeEnviado);
+      setImporteEnviadoTotal(importes.importeEnviadoTotal);
+      setImporteEnviadoTramo1(importes.importeEnviadoTramo1);
       setImporteCobrado(importes.importeCobrado);
       const cuiles = await fetchCuiles(selectedPeriod);
       setAltaCuiles(cuiles.CuilesNuevos);
@@ -159,7 +161,8 @@ const TablaPagos = () => {
     setData([]);
     setUniqueDates([]);
     setCount(0);
-    setImporteEnviado('-');
+    setImporteEnviadoTotal('-');
+    setImporteEnviadoTramo1('-');
     setImporteCobrado('-');
     setBajaCuiles('-');
     setAltaCuiles('-');
@@ -296,7 +299,8 @@ const TablaPagos = () => {
               data={data}
               count={count}
               importeCobrado={importeCobrado}
-              importeEnviado={importeEnviado}
+              importeEnviadoTotal={importeEnviadoTotal}
+              importeEnviadoTramo1={importeEnviadoTramo1}
               altaCuiles={altaCuiles}
               bajaCuiles={bajaCuiles}
               cuilesTotales={cuilesTotales}
