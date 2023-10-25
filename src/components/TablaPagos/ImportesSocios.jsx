@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 const ImportesSocios = ({
-  pageSize,
-  data,
-  count,
   importeCobrado,
   importeEnviadoTotal,
   importeEnviadoTramo1,
   altaCuiles,
   bajaCuiles,
   cuilesTotales,
+  serviciosTitulares,
+  serviciosAdherentes,
 }) => {
   const [ratioTotal, setRatioTotal] = useState(0);
   const [ratioTramo1, setRatioTramo1] = useState(0);
@@ -20,7 +19,7 @@ const ImportesSocios = ({
     const importeEnviadoTramo1Numerico = parseFloat(
       importeEnviadoTramo1.replace('$', ''),
     );
-    const importeCobradoNumerico = parseFloat(importeCobrado.replace('$', ''));
+    const importeCobradoNumerico = parseFloat(importeCobrado?.replace('$', ''));
     const newRatioTotal = (
       (importeCobradoNumerico / importeEnviadoTotalNumerico) *
       100
@@ -35,34 +34,40 @@ const ImportesSocios = ({
 
   return (
     <section>
-      <article className="rounded-md border-2 border-black mb-1">
+      <article className="rounded-md border-2 border-black mb-1 p-1">
         <p className="text-center text-base font-semibold italic">
-          Cuiles Altas: <span className="text-green-600 font-bold">{altaCuiles}</span> |
-          Cuiles Bajas: <span className="text-red-600 font-bold">{bajaCuiles}</span> |
-          Totales: <span className="text-blue-600 font-bold">{cuilesTotales}</span>
+          <span>Cuiles Altas:</span>{' '}
+          <span className="text-green-500 font-bold">{altaCuiles}</span> |{' '}
+          <span>Cuiles Bajas:</span>{' '}
+          <span className="text-red-600 font-bold">{bajaCuiles}</span> |{' '}
+          <span>Totales:</span>{' '}
+          <span className="text-blue-600 font-bold">{cuilesTotales}</span>
         </p>
       </article>
-      <article className="bg-slate-300 rounded-md border-2 border-black mb-1">
+      <article className="bg-slate-300 rounded-md border-2 border-black mb-1 p-1">
         <p className="text-center text-base font-semibold italic">
-          Mostrando{' '}
-          <span className="text-blue-600 font-bold">
-            {Math.min(pageSize, data.length)}
-          </span>{' '}
-          de <span className="text-blue-600 font-bold">{count}</span> Socios
+          <span>Servicios Titulares:</span>{' '}
+          <span className="text-blue-600 font-bold">{serviciosTitulares}</span> |{' '}
+          <span>Servicios Adherentes:</span>{' '}
+          <span className="text-blue-600 font-bold">{serviciosAdherentes}</span> |{' '}
+          <span>Totales:</span>{' '}
+          <span className="text-green-500 font-bold">
+            {serviciosTitulares + serviciosAdherentes}
+          </span>
         </p>
       </article>
 
-      <article className="flex flex-wrap text-center items-center justify-center gap-3 mb-1 border-2 border-black rounded-md">
+      <article className="flex flex-wrap text-center items-center justify-center gap-3 mb-1 border-2 border-black rounded-md p-1">
         <p className="font-semibold">
-          Enviado 0-90:{' '}
+          <span>Enviado 0-90:</span>{' '}
           <span className="font-bold italic text-blue-600">{importeEnviadoTramo1}</span>
         </p>
         <p className="font-semibold">
-          Cobrado:{' '}
+          <span>Cobrado:</span>{' '}
           <span className="font-bold italic text-green-500">{importeCobrado}</span>
         </p>
         <p className="font-semibold">
-          Ratio 0-90:{' '}
+          <span>Ratio 0-90:</span>{' '}
           <span className="font-bold italic text-green-500">{ratioTramo1}</span>
         </p>
       </article>

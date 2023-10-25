@@ -4,6 +4,7 @@ import {
   fetchFiltrosPagos,
   fetchImportes,
   fetchCuiles,
+  fetchServicios,
 } from '../services/obtenerData';
 import { descripcionCodigo } from '../utils/descripcionCodigos';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
@@ -36,6 +37,8 @@ const TablaPagos = () => {
   const [bajaCuiles, setBajaCuiles] = useState('-');
   const [cuilesTotales, setCuilesTotales] = useState('-');
   const [selectChanges, setSelectChanges] = useState(false);
+  const [serviciosTitulares, setServiciosTitulares] = useState(0);
+  const [serviciosAdherentes, setServiciosAdherentes] = useState(0);
 
   useEffect(() => {
     cargarFiltros();
@@ -100,6 +103,9 @@ const TablaPagos = () => {
       setBajaCuiles(cuiles.CuilesBaja);
       setCuilesTotales(cuiles.CuilesTotales);
       setSelectChanges(false);
+      const servicios = await fetchServicios(selectedPeriod);
+      setServiciosTitulares(servicios['01']);
+      setServiciosAdherentes(servicios['02']);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -168,6 +174,8 @@ const TablaPagos = () => {
     setAltaCuiles('-');
     setCuilesTotales('-');
     setSelectChanges(false);
+    setServiciosAdherentes(0);
+    setServiciosTitulares(0);
   };
 
   const startIndex = (pageNumber - 1) * pageSize;
@@ -197,6 +205,7 @@ const TablaPagos = () => {
                       </option>
                     ))}
                   </select>
+
                   <select
                     className="border-2 border-black rounded-md p-1 w-28"
                     value={selectedBanco}
@@ -295,15 +304,14 @@ const TablaPagos = () => {
         {showLoader ? null : (
           <section>
             <ImportesSocios
-              pageSize={pageSize}
-              data={data}
-              count={count}
               importeCobrado={importeCobrado}
               importeEnviadoTotal={importeEnviadoTotal}
               importeEnviadoTramo1={importeEnviadoTramo1}
               altaCuiles={altaCuiles}
               bajaCuiles={bajaCuiles}
               cuilesTotales={cuilesTotales}
+              serviciosTitulares={serviciosTitulares}
+              serviciosAdherentes={serviciosAdherentes}
             />
             <Paginacion
               data={data}

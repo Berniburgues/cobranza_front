@@ -32,7 +32,7 @@ export const fetchDataPagos = async (periodo, cbu, codigo, convenio, ExB) => {
   }
 };
 
-//Obtener Importes Enviados y Cobrados
+//Obtener Importes, Cuiles, Servicios
 export const fetchImportes = async (periodo, bco) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/importes?periodo=${periodo}`;
@@ -56,7 +56,6 @@ export const fetchImportes = async (periodo, bco) => {
     throw error;
   }
 };
-
 export const fetchCuiles = async (periodo) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/cuiles?periodo=${periodo}`;
@@ -73,6 +72,20 @@ export const fetchCuiles = async (periodo) => {
   } catch (error) {
     // Maneja cualquier error que ocurra durante la solicitud
     console.error('Error al obtener los cuiles:', error);
+    throw error;
+  }
+};
+export const fetchServicios = async (periodo) => {
+  try {
+    let url = `https://cobranza.2.us-1.fl0.io/clientes/servicios?periodo=${periodo}`;
+    const res = await axios.get(url);
+    if (res.status === 200) {
+      return res.data;
+    } else {
+      throw new Error(`Error en la solicitud: ${res.status}`);
+    }
+  } catch (error) {
+    console.error('Error al obtener los servicios:', error);
     throw error;
   }
 };
