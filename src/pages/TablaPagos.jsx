@@ -37,8 +37,8 @@ const TablaPagos = () => {
   const [bajaCuiles, setBajaCuiles] = useState('-');
   const [cuilesTotales, setCuilesTotales] = useState('-');
   const [selectChanges, setSelectChanges] = useState(false);
-  const [serviciosTitulares, setServiciosTitulares] = useState(0);
-  const [serviciosAdherentes, setServiciosAdherentes] = useState(0);
+  const [serviciosTitulares, setServiciosTitulares] = useState('-');
+  const [serviciosAdherentes, setServiciosAdherentes] = useState('-');
 
   useEffect(() => {
     cargarFiltros();
@@ -174,8 +174,8 @@ const TablaPagos = () => {
     setAltaCuiles('-');
     setCuilesTotales('-');
     setSelectChanges(false);
-    setServiciosAdherentes(0);
-    setServiciosTitulares(0);
+    setServiciosAdherentes('-');
+    setServiciosTitulares('-');
   };
 
   const startIndex = (pageNumber - 1) * pageSize;
