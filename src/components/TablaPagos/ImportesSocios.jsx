@@ -4,6 +4,7 @@ const ImportesSocios = ({
   importeCobrado,
   importeEnviadoTotal,
   importeEnviadoTramo1,
+  importeEnviadoTramo2,
   altaCuiles,
   bajaCuiles,
   cuilesTotales,
@@ -12,12 +13,16 @@ const ImportesSocios = ({
 }) => {
   const [ratioTotal, setRatioTotal] = useState(0);
   const [ratioTramo1, setRatioTramo1] = useState(0);
+  const [ratioTramo2, setRatioTramo2] = useState(0);
 
   useEffect(() => {
     // Cuando cambian los importes, actualiza el gráfico y el ratio
-    const importeEnviadoTotalNumerico = parseFloat(importeEnviadoTotal.replace('$', ''));
+    const importeEnviadoTotalNumerico = parseFloat(importeEnviadoTotal?.replace('$', ''));
     const importeEnviadoTramo1Numerico = parseFloat(
       importeEnviadoTramo1.replace('$', ''),
+    );
+    const importeEnviadoTramo2Numerico = parseFloat(
+      importeEnviadoTramo2.replace('$', ''),
     );
     const importeCobradoNumerico = parseFloat(importeCobrado?.replace('$', ''));
     const newRatioTotal = (
@@ -30,7 +35,12 @@ const ImportesSocios = ({
       100
     ).toFixed(2);
     setRatioTramo1(isNaN(newRatioTramo1) ? '-' : newRatioTramo1 + '%');
-  }, [importeEnviadoTotal, importeEnviadoTramo1, importeCobrado]);
+    const newRatioTramo2 = (
+      (importeCobradoNumerico / importeEnviadoTramo2Numerico) *
+      100
+    ).toFixed(2);
+    setRatioTramo2(isNaN(newRatioTramo2) ? '-' : newRatioTramo2 + '%');
+  }, [importeEnviadoTotal, importeEnviadoTramo1, importeEnviadoTramo2, importeCobrado]);
 
   return (
     <section>
@@ -56,19 +66,22 @@ const ImportesSocios = ({
           </span>
         </p>
       </article>
-
-      <article className="flex flex-wrap text-center items-center justify-center gap-3 mb-1 border-2 border-black rounded-md p-1">
-        <p className="font-semibold">
-          <span>Enviado 0-30:</span>{' '}
-          <span className="font-bold italic text-blue-600">{importeEnviadoTramo1}</span>
-        </p>
-        <p className="font-semibold">
+      <article className="border-2 border-black rounded-md p-1">
+        <p className="text-center text-base font-semibold italic">
           <span>Cobrado:</span>{' '}
           <span className="font-bold italic text-green-500">{importeCobrado}</span>
         </p>
-        <p className="font-semibold">
+        <p className="text-center text-base font-semibold italic">
+          <span>Enviado 0-30:</span>{' '}
+          <span className="font-bold italic text-blue-600">{importeEnviadoTramo1}</span>{' '}
           <span>Ratio 0-30:</span>{' '}
           <span className="font-bold italic text-green-500">{ratioTramo1}</span>
+        </p>
+        <p className="text-center text-base font-semibold italic">
+          <span>Enviado 0-90:</span>{' '}
+          <span className="font-bold italic text-blue-600">{importeEnviadoTramo2}</span>{' '}
+          <span>Ratio 0-90:</span>{' '}
+          <span className="font-bold italic text-green-500">{ratioTramo2}</span>
         </p>
       </article>
     </section>
