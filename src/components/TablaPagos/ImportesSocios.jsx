@@ -59,7 +59,7 @@ const ImportesSocios = ({
 
       <article className="flex flex-wrap text-center items-center justify-center gap-3 mb-1 border-2 border-black rounded-md p-1">
         <p className="font-semibold">
-          <span>Enviado 0-90:</span>{' '}
+          <span>Enviado 0-30:</span>{' '}
           <span className="font-bold italic text-blue-600">{importeEnviadoTramo1}</span>
         </p>
         <p className="font-semibold">
@@ -67,7 +67,7 @@ const ImportesSocios = ({
           <span className="font-bold italic text-green-500">{importeCobrado}</span>
         </p>
         <p className="font-semibold">
-          <span>Ratio 0-90:</span>{' '}
+          <span>Ratio 0-30:</span>{' '}
           <span className="font-bold italic text-green-500">{ratioTramo1}</span>
         </p>
       </article>
