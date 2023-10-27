@@ -19,10 +19,10 @@ const ImportesSocios = ({
     // Cuando cambian los importes, actualiza el gráfico y el ratio
     const importeEnviadoTotalNumerico = parseFloat(importeEnviadoTotal?.replace('$', ''));
     const importeEnviadoTramo1Numerico = parseFloat(
-      importeEnviadoTramo1.replace('$', ''),
+      importeEnviadoTramo1?.replace('$', ''),
     );
     const importeEnviadoTramo2Numerico = parseFloat(
-      importeEnviadoTramo2.replace('$', ''),
+      importeEnviadoTramo2?.replace('$', ''),
     );
     const importeCobradoNumerico = parseFloat(importeCobrado?.replace('$', ''));
     const newRatioTotal = (
