@@ -30,10 +30,14 @@ const TablaPagos = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [showLoader, setShowLoader] = useState(true);
   const [count, setCount] = useState(0);
-  const [importeEnviadoTotal, setImporteEnviadoTotal] = useState('-');
-  const [importeEnviadoTramo1, setImporteEnviadoTramo1] = useState('-');
-  const [importeEnviadoTramo2, setImporteEnviadoTramo2] = useState('-');
-  const [importeCobrado, setImporteCobrado] = useState('-');
+  const [importes, setImportes] = useState({
+    totales: {
+      enviado: 0,
+      cobrado: 0,
+      ratio: 0,
+    },
+    tramos: {},
+  });
   const [altaCuiles, setAltaCuiles] = useState('-');
   const [bajaCuiles, setBajaCuiles] = useState('-');
   const [cuilesTotales, setCuilesTotales] = useState('-');
@@ -95,11 +99,8 @@ const TablaPagos = () => {
           key !== 'ExB',
       );
       setUniqueDates(fechasCobro);
-      const importes = await fetchImportes(selectedPeriod, selectedBanco);
-      setImporteEnviadoTotal(importes.importeEnviadoTotal);
-      setImporteEnviadoTramo1(importes.importeEnviadoTramo1);
-      setImporteEnviadoTramo2(importes.importeEnviadoTramo2);
-      setImporteCobrado(importes.importeCobrado);
+      const importesData = await fetchImportes(selectedPeriod, selectedBanco);
+      setImportes(importesData);
       const cuiles = await fetchCuiles(selectedPeriod);
       setAltaCuiles(cuiles.CuilesNuevos);
       setBajaCuiles(cuiles.CuilesBaja);
@@ -169,16 +170,20 @@ const TablaPagos = () => {
     setData([]);
     setUniqueDates([]);
     setCount(0);
-    setImporteEnviadoTotal('-');
-    setImporteEnviadoTramo1('-');
-    setImporteEnviadoTramo2('-');
-    setImporteCobrado('-');
     setBajaCuiles('-');
     setAltaCuiles('-');
     setCuilesTotales('-');
     setSelectChanges(false);
     setServiciosAdherentes('-');
     setServiciosTitulares('-');
+    setImportes({
+      totales: {
+        enviado: 0,
+        cobrado: 0,
+        ratio: 0,
+      },
+      tramos: {},
+    });
   };
 
   const startIndex = (pageNumber - 1) * pageSize;
@@ -307,10 +312,7 @@ const TablaPagos = () => {
         {showLoader ? null : (
           <section>
             <ImportesSocios
-              importeCobrado={importeCobrado}
-              importeEnviadoTotal={importeEnviadoTotal}
-              importeEnviadoTramo1={importeEnviadoTramo1}
-              importeEnviadoTramo2={importeEnviadoTramo2}
+              importes={importes}
               altaCuiles={altaCuiles}
               bajaCuiles={bajaCuiles}
               cuilesTotales={cuilesTotales}
