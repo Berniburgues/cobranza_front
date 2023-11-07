@@ -94,7 +94,7 @@ export function determinarBancoPorCBU(cbu) {
   } else if (primerosDigitos === '453') {
     return 'Naranja X';
   } else if (primerosDigitos === '415') {
-    return 'Trasatlántico';
+    return 'Transatlántico';
   } else if (primerosDigitos === '426') {
     return 'Banco BICA S.A';
   } else if (primerosDigitos === '431') {
