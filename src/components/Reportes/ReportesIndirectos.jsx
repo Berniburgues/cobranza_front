@@ -4,7 +4,7 @@ const ReportesIndirectos = () => {
   const informes = [
     {
       title: 'Stock/Ventas',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiM2U4MzMxMDYtMTIyZi00NjI1LWEzNmItOGZjOTY3MzU0MmQ1IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiZjAxNzZiZDYtZDA2ZC00MGE2LWFiMjQtY2JlOWQ5NGFlZTA0IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
       title: 'Reclamos',
