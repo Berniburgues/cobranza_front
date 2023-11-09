@@ -3,6 +3,10 @@ import React from 'react';
 const ReportesIndirectos = () => {
   const informes = [
     {
+      title: 'VENTAS',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiYTZiODA4ZDQtNGVmNy00MGNjLTlmZTctOTA5MzE5NzI2YmFkIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
+    {
       title: 'Stock/Ventas',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZjAxNzZiZDYtZDA2ZC00MGE2LWFiMjQtY2JlOWQ5NGFlZTA0IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
