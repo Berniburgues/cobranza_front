@@ -8,16 +8,6 @@ const ImportesSocios = ({
   serviciosTitulares,
   serviciosAdherentes,
 }) => {
-  function getTramoNombre(tramoKey) {
-    const tramoNombres = {
-      'tramo 1': '0-30',
-      'tramo 2': '30-60',
-      'tramo 3': '60-90',
-      'tramo 4': '90+',
-    };
-    return tramoNombres[tramoKey] || tramoKey;
-  }
-
   const [expandido, setExpandido] = useState(false);
 
   const handleToggleExpandido = () => {
@@ -52,9 +42,31 @@ const ImportesSocios = ({
         {expandido && (
           <div>
             <p className="text-center text-base font-semibold italic">
+              <span className="underline">Enviado 0-90:</span>{' '}
+              <span className="font-bold text-blue-500">
+                {Number(importes['0-90'].Enviado0_90).toLocaleString('es-AR', {
+                  style: 'currency',
+                  currency: 'ARS',
+                  minimumFractionDigits: 2,
+                })}
+              </span>{' '}
+              | <span className="underline">Cobrado 0-90:</span>{' '}
+              <span className="font-bold text-green-500">
+                {Number(importes['0-90'].Cobrado0_90).toLocaleString('es-AR', {
+                  style: 'currency',
+                  currency: 'ARS',
+                  minimumFractionDigits: 2,
+                })}
+              </span>{' '}
+              | <span className="underline">Ratio 0-90:</span>{' '}
+              <span className="font-bold text-green-500">
+                {Number(importes['0-90'].Ratio0_90).toFixed(2)}%
+              </span>
+            </p>
+            <p className="text-center text-base font-semibold italic">
               <span className="underline">Enviado Total:</span>{' '}
               <span className="font-bold text-blue-500">
-                {Number(importes.totales.enviado).toLocaleString('es-AR', {
+                {Number(importes.totales.EnviadoTotal).toLocaleString('es-AR', {
                   style: 'currency',
                   currency: 'ARS',
                   minimumFractionDigits: 2,
@@ -62,7 +74,7 @@ const ImportesSocios = ({
               </span>{' '}
               | <span className="underline">Cobrado Total:</span>{' '}
               <span className="font-bold text-green-500">
-                {Number(importes.totales.cobrado).toLocaleString('es-AR', {
+                {Number(importes.totales.CobradoTotal).toLocaleString('es-AR', {
                   style: 'currency',
                   currency: 'ARS',
                   minimumFractionDigits: 2,
@@ -70,35 +82,9 @@ const ImportesSocios = ({
               </span>{' '}
               | <span className="underline">Ratio Total:</span>{' '}
               <span className="font-bold text-green-500">
-                {Number(importes.totales.ratio).toFixed(2)}%
+                {Number(importes.totales.RatioTotal).toFixed(2)}%
               </span>
             </p>
-            <div className="text-center font-semibold italic">
-              {Object.keys(importes.tramos).map((tramoKey) => (
-                <p key={tramoKey}>
-                  <span className="underline">Enviado {getTramoNombre(tramoKey)}:</span>{' '}
-                  <span className="font-bold text-blue-500">
-                    {Number(importes.tramos[tramoKey].enviado).toLocaleString('es-AR', {
-                      style: 'currency',
-                      currency: 'ARS',
-                      minimumFractionDigits: 2,
-                    })}
-                  </span>{' '}
-                  | <span className="underline">Cobrado {getTramoNombre(tramoKey)}:</span>{' '}
-                  <span className="font-bold text-green-500">
-                    {Number(importes.tramos[tramoKey].cobrado).toLocaleString('es-AR', {
-                      style: 'currency',
-                      currency: 'ARS',
-                      minimumFractionDigits: 2,
-                    })}
-                  </span>{' '}
-                  | <span className="underline">Ratio {getTramoNombre(tramoKey)}:</span>{' '}
-                  <span className="font-bold text-green-500">
-                    {Number(importes.tramos[tramoKey].ratio).toFixed(2)}%
-                  </span>
-                </p>
-              ))}
-            </div>
           </div>
         )}
         <div className="text-center">

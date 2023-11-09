@@ -3,6 +3,7 @@ import {
   fetchDataPagos,
   fetchFiltrosPagos,
   fetchImportes,
+  fetchImportesPorFecha,
   fetchCuiles,
   fetchServicios,
 } from '../services/obtenerData';
@@ -31,13 +32,19 @@ const TablaPagos = () => {
   const [showLoader, setShowLoader] = useState(true);
   const [count, setCount] = useState(0);
   const [importes, setImportes] = useState({
-    totales: {
-      enviado: 0,
-      cobrado: 0,
-      ratio: 0,
+    '0-90': {
+      Enviado0_90: 0,
+      Cobrado0_90: 0,
+      Ratio0_90: 0,
     },
-    tramos: {},
+    totales: {
+      EnviadoTotal: 0,
+      CobradoTotal: 0,
+      RatioTotal: 0,
+    },
   });
+
+  const [importesPorFecha, setImportesPorFecha] = useState([]);
   const [altaCuiles, setAltaCuiles] = useState('-');
   const [bajaCuiles, setBajaCuiles] = useState('-');
   const [cuilesTotales, setCuilesTotales] = useState('-');
@@ -109,6 +116,8 @@ const TablaPagos = () => {
       const servicios = await fetchServicios(selectedPeriod);
       setServiciosTitulares(servicios['01']);
       setServiciosAdherentes(servicios['02']);
+      const importesXFecha = await fetchImportesPorFecha(selectedPeriod, selectedBanco);
+      setImportesPorFecha(importesXFecha);
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -177,12 +186,16 @@ const TablaPagos = () => {
     setServiciosAdherentes('-');
     setServiciosTitulares('-');
     setImportes({
-      totales: {
-        enviado: 0,
-        cobrado: 0,
-        ratio: 0,
+      '0-90': {
+        Enviado0_90: 0,
+        Cobrado0_90: 0,
+        Ratio0_90: 0,
       },
-      tramos: {},
+      totales: {
+        EnviadoTotal: 0,
+        CobradoTotal: 0,
+        RatioTotal: 0,
+      },
     });
   };
 
@@ -342,12 +355,28 @@ const TablaPagos = () => {
                         </th>
                         <th className="py-1 border-2 border-gray-700">CBU</th>
                         <th className="py-1 border-2 border-gray-700">ExB</th>
-                        {uniqueDates.map((date) => {
+                        {uniqueDates.map((date, index) => {
                           const [año, mes, dia] = date.split('-');
                           const fechaFormateada = `${dia}/${mes}`;
+                          const diaHabil = index + 1;
+                          // Obtener el importe correspondiente a la fecha
+                          const importe = importesPorFecha.find(
+                            (item) => item.FechaCobro === date,
+                          )?.Importe;
+
                           return (
-                            <th key={date} className="p-1 border-2 border-gray-700">
-                              {fechaFormateada}
+                            <th
+                              key={date}
+                              className="p-1 border-2 border-gray-700 whitespace-nowrap"
+                              title={
+                                importesPorFecha.length > 0
+                                  ? importe !== undefined
+                                    ? importe
+                                    : '-'
+                                  : 'Cargando..'
+                              }
+                            >
+                              {fechaFormateada}-Día {diaHabil}
                             </th>
                           );
                         })}
