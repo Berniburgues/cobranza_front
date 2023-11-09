@@ -23,12 +23,12 @@ const ReportesIndirectos = () => {
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYzA2NzMyMWYtNGE5NC00MDA2LWFhYjEtYzRiNDYyNjhjYmQ4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
-      title: 'Período ATSAPRA',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiYjQ4ZTY0ZWItYmU3ZC00M2YyLWEzMjMtOWJjNmQ2MDhhNjlhIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9&pageName=ReportSectionf06324290e1bb7bd427b',
+      title: 'Importes Enviados',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiMDI2OTc4M2YtYmQzZC00NDE0LTkzNmUtYWY0NzMyNGM3MDEzIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
-      title: 'Ratios ATSAPRA',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiNWZmNjA2ZjQtYWE0NC00YTA4LWJlODAtN2U2YmJjODcwOWM2IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+      title: 'Período ATSAPRA',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiYjQ4ZTY0ZWItYmU3ZC00M2YyLWEzMjMtOWJjNmQ2MDhhNjlhIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9&pageName=ReportSectionf06324290e1bb7bd427b',
     },
     {
       title: 'Período ASISTIR',
