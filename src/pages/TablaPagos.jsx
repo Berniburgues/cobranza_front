@@ -376,7 +376,7 @@ const TablaPagos = () => {
                                   : 'Cargando..'
                               }
                             >
-                              {fechaFormateada}-Día {diaHabil}
+                              {fechaFormateada}({diaHabil})
                             </th>
                           );
                         })}
@@ -390,6 +390,7 @@ const TablaPagos = () => {
                               to={`/tablas/socio?numeroSocio=${socio.Socio}`}
                               target="_blank"
                               className="block w-full h-full text-center"
+                              title="Buscar Datos"
                             >
                               {socio.Socio}
                             </Link>
