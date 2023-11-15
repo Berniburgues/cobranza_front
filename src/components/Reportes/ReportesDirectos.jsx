@@ -16,7 +16,7 @@ const ReportesDirectos = () => {
     },
     {
       title: 'Importes Enviados',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiMjE3YzkzNmUtOWEyMC00NTA0LWIxMzItNDM0NmU0MzI0NDFiIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiNWEyNDg1Y2ItMTg3Yi00YWM5LWI2NDMtNDVkZGJlOWNlNTVkIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
     {
       title: 'Cobranza por Período',

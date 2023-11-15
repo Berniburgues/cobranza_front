@@ -33,12 +33,15 @@ export const fetchDataPagos = async (periodo, cbu, codigo, convenio, ExB) => {
 };
 
 //Obtener Importes, Cuiles, Servicios
-export const fetchImportes = async (periodo, bco) => {
+export const fetchImportes = async (periodo, bco, exb) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/importes?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
+    }
+    if (exb) {
+      url += `&exb=${exb}`;
     }
 
     const response = await axios.get(url);
@@ -56,12 +59,15 @@ export const fetchImportes = async (periodo, bco) => {
     throw error;
   }
 };
-export const fetchImportesPorFecha = async (periodo, bco) => {
+export const fetchImportesPorFecha = async (periodo, bco, exb) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/importesPorFecha?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
+    }
+    if (exb) {
+      url += `&exb=${exb}`;
     }
 
     const response = await axios.get(url);

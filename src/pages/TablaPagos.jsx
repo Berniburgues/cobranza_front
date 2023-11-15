@@ -106,7 +106,11 @@ const TablaPagos = () => {
           key !== 'ExB',
       );
       setUniqueDates(fechasCobro);
-      const importesData = await fetchImportes(selectedPeriod, selectedBanco);
+      const importesData = await fetchImportes(
+        selectedPeriod,
+        selectedBanco,
+        selectedExb,
+      );
       setImportes(importesData);
       const cuiles = await fetchCuiles(selectedPeriod);
       setAltaCuiles(cuiles.CuilesNuevos);
@@ -116,7 +120,11 @@ const TablaPagos = () => {
       const servicios = await fetchServicios(selectedPeriod);
       setServiciosTitulares(servicios['01']);
       setServiciosAdherentes(servicios['02']);
-      const importesXFecha = await fetchImportesPorFecha(selectedPeriod, selectedBanco);
+      const importesXFecha = await fetchImportesPorFecha(
+        selectedPeriod,
+        selectedBanco,
+        selectedExb,
+      );
       setImportesPorFecha(importesXFecha);
     } catch (error) {
       console.error(error);
