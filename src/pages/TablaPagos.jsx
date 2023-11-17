@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
 import {
   fetchDataPagos,
   fetchFiltrosPagos,
@@ -23,7 +24,7 @@ const TablaPagos = () => {
   const [periodos, setPeriodos] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState('');
   const [selectedBanco, setSelectedBanco] = useState('');
-  const [selectedCodigo, setSelectedCodigo] = useState('');
+  const [selectedCodigo, setSelectedCodigo] = useState([]);
   const [selectedConvenio, setSelectedConvenio] = useState('');
   const [selectedExb, setSelectedExb] = useState('');
   const [uniqueDates, setUniqueDates] = useState([]);
@@ -90,42 +91,49 @@ const TablaPagos = () => {
         selectedExb,
       );
 
-      setData(result.data);
-      setCount(result.count);
-      setLoading(false);
+      // Agrega esta verificación para asegurarte de que result.data[0] no sea undefined o null
+      if (result.data && result.data[0]) {
+        setData(result.data);
+        setCount(result.count);
+        setLoading(false);
 
-      const fechasCobro = Object.keys(result.data[0]).filter(
-        (key) =>
-          key !== 'ID' &&
-          key !== 'Socio' &&
-          key !== 'NombreCompleto' &&
-          key !== 'DNI' &&
-          key !== 'CUIL' &&
-          key !== 'Convenio' &&
-          key !== 'CBU' &&
-          key !== 'ExB',
-      );
-      setUniqueDates(fechasCobro);
-      const importesData = await fetchImportes(
-        selectedPeriod,
-        selectedBanco,
-        selectedExb,
-      );
-      setImportes(importesData);
-      const cuiles = await fetchCuiles(selectedPeriod);
-      setAltaCuiles(cuiles.CuilesNuevos);
-      setBajaCuiles(cuiles.CuilesBaja);
-      setCuilesTotales(cuiles.CuilesTotales);
-      setSelectChanges(false);
-      const servicios = await fetchServicios(selectedPeriod);
-      setServiciosTitulares(servicios['01']);
-      setServiciosAdherentes(servicios['02']);
-      const importesXFecha = await fetchImportesPorFecha(
-        selectedPeriod,
-        selectedBanco,
-        selectedExb,
-      );
-      setImportesPorFecha(importesXFecha);
+        const fechasCobro = Object.keys(result.data[0]).filter(
+          (key) =>
+            key !== 'ID' &&
+            key !== 'Socio' &&
+            key !== 'NombreCompleto' &&
+            key !== 'DNI' &&
+            key !== 'CUIL' &&
+            key !== 'Convenio' &&
+            key !== 'CBU' &&
+            key !== 'ExB',
+        );
+        setUniqueDates(fechasCobro);
+        const importesData = await fetchImportes(
+          selectedPeriod,
+          selectedBanco,
+          selectedExb,
+        );
+        setImportes(importesData);
+        const cuiles = await fetchCuiles(selectedPeriod);
+        setAltaCuiles(cuiles.CuilesNuevos);
+        setBajaCuiles(cuiles.CuilesBaja);
+        setCuilesTotales(cuiles.CuilesTotales);
+        setSelectChanges(false);
+        const servicios = await fetchServicios(selectedPeriod);
+        setServiciosTitulares(servicios['01']);
+        setServiciosAdherentes(servicios['02']);
+        const importesXFecha = await fetchImportesPorFecha(
+          selectedPeriod,
+          selectedBanco,
+          selectedExb,
+        );
+        setImportesPorFecha(importesXFecha);
+      } else {
+        // Manejar el caso en el que result.data[0] es undefined o null
+        console.error('Error: result.data[0] es undefined o null');
+        setLoading(false);
+      }
     } catch (error) {
       console.error(error);
       setLoading(false);
@@ -160,10 +168,7 @@ const TablaPagos = () => {
     setPageNumber(newPage);
   };
 
-  const handleSelectChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
+  const handleSelectChange = (name, selectedOption) => {
     // Usar un objeto para mapear los estados de los select
     const selectStateMap = {
       selectedPeriod: setSelectedPeriod,
@@ -173,7 +178,15 @@ const TablaPagos = () => {
       selectedExb: setSelectedExb,
     };
 
-    selectStateMap[name](value); // Establecer el valor seleccionado
+    // Si es el select de "selectedCodigo", manejar las opciones seleccionadas
+    if (name === 'selectedCodigo') {
+      const selectedOptions = selectedOption
+        ? selectedOption.map((option) => option.value)
+        : [];
+      selectStateMap[name](selectedOptions);
+    } else {
+      selectStateMap[name](selectedOption ? selectedOption.value : null);
+    }
 
     setSelectChanges(true); // Establecer selectChanges en true
   };
@@ -181,7 +194,7 @@ const TablaPagos = () => {
   const handleReset = () => {
     setSelectedPeriod('');
     setSelectedBanco('');
-    setSelectedCodigo('');
+    setSelectedCodigo([]);
     setSelectedConvenio('');
     setSelectedExb('');
     setData([]);
@@ -220,86 +233,145 @@ const TablaPagos = () => {
               <LoaderFiltros />
             ) : (
               <>
-                <div className="flex items-center gap-2">
-                  <select
-                    className="border-2 border-black rounded-md p-1 w-28"
-                    value={selectedPeriod}
+                <div className="flex items-center gap-2 text-xs z-50 whitespace-nowrap">
+                  <Select
+                    className="border-2 border-black rounded-md w-28"
+                    value={
+                      selectedPeriod
+                        ? {
+                            value: selectedPeriod,
+                            label: getNombrePeriodo(selectedPeriod),
+                          }
+                        : null
+                    }
                     name="selectedPeriod"
-                    onChange={handleSelectChange}
-                  >
-                    <option value="">Período</option>
-                    {periodos.map((periodoData) => (
-                      <option key={periodoData.periodo} value={periodoData.periodo}>
-                        {getNombrePeriodo(periodoData.periodo)}
-                      </option>
-                    ))}
-                  </select>
+                    options={periodos.map((periodoData) => ({
+                      value: periodoData.periodo,
+                      label: getNombrePeriodo(periodoData.periodo),
+                    }))}
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedPeriod', selectedOption)
+                    }
+                    placeholder="Período"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
 
-                  <select
-                    className="border-2 border-black rounded-md p-1 w-28"
-                    value={selectedBanco}
+                  <Select
+                    className="border-2 border-black rounded-md w-28"
+                    value={
+                      selectedBanco
+                        ? {
+                            value: selectedBanco,
+                            label: determinarBancoPorCBU(selectedBanco),
+                          }
+                        : null
+                    }
                     name="selectedBanco"
-                    onChange={handleSelectChange}
-                  >
-                    <option value="">Banco</option>
-                    {selectedPeriod &&
-                      periodos
-                        .find((periodoData) => periodoData.periodo === selectedPeriod)
-                        ?.bancos.map((banco) => (
-                          <option key={banco} value={banco}>
-                            {determinarBancoPorCBU(banco)}
-                          </option>
-                        ))}
-                  </select>
-                  <select
-                    className="border-2 border-black rounded-md p-1 w-28"
-                    value={selectedCodigo}
+                    options={
+                      selectedPeriod
+                        ? periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.bancos.map((banco) => ({
+                              value: banco,
+                              label: determinarBancoPorCBU(banco),
+                            }))
+                        : []
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedBanco', selectedOption)
+                    }
+                    placeholder="Banco"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+
+                  <Select
+                    className="border-2 border-black rounded-md w-[206px]"
+                    value={selectedCodigo.map((code) => ({ value: code, label: code }))}
                     name="selectedCodigo"
-                    onChange={handleSelectChange}
-                  >
-                    <option value="">Código</option>
-                    {selectedPeriod &&
-                      periodos
-                        .find((periodoData) => periodoData.periodo === selectedPeriod)
-                        ?.codigos.map((codigo) => (
-                          <option key={codigo} value={codigo}>
-                            {codigo}
-                          </option>
-                        ))}
-                  </select>
-                  <select
-                    className="border-2 border-black rounded-md p-1 w-28"
-                    value={selectedConvenio}
+                    options={
+                      selectedPeriod
+                        ? periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.codigos.map((codigo) => ({
+                              value: codigo,
+                              label: codigo,
+                            }))
+                        : []
+                    }
+                    isMulti
+                    onChange={(selectedOptions) =>
+                      handleSelectChange('selectedCodigo', selectedOptions)
+                    }
+                    getOptionLabel={(option) => option.label}
+                    getOptionValue={(option) => option.value}
+                    placeholder="Código"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+
+                  <Select
+                    className="border-2 border-black rounded-md w-28"
+                    value={
+                      selectedConvenio
+                        ? { value: selectedConvenio, label: selectedConvenio }
+                        : null
+                    }
                     name="selectedConvenio"
-                    onChange={handleSelectChange}
-                  >
-                    <option value="">Canal de Venta</option>
-                    {selectedPeriod &&
-                      periodos
-                        .find((periodoData) => periodoData.periodo === selectedPeriod)
-                        ?.convenios.map((convenio) => (
-                          <option key={convenio} value={convenio}>
-                            {convenio}
-                          </option>
-                        ))}
-                  </select>
-                  <select
-                    className="border-2 border-black rounded-md p-1 w-28"
-                    value={selectedExb}
+                    options={
+                      selectedPeriod
+                        ? periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.convenios.map((convenio) => ({
+                              value: convenio,
+                              label: convenio,
+                            }))
+                        : []
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedConvenio', selectedOption)
+                    }
+                    placeholder="Canal de Venta"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+
+                  <Select
+                    className="border-2 border-black rounded-md w-28"
+                    value={
+                      selectedExb
+                        ? {
+                            value: selectedExb,
+                            label: determinarBancoPorCBU(selectedExb),
+                          }
+                        : null
+                    }
                     name="selectedExb"
-                    onChange={handleSelectChange}
-                  >
-                    <option value="">Banco Envío</option>
-                    {selectedPeriod &&
-                      periodos
-                        .find((periodoData) => periodoData.periodo === selectedPeriod)
-                        ?.exbs.map((exb) => (
-                          <option key={exb} value={exb}>
-                            {determinarBancoPorCBU(exb)}
-                          </option>
-                        ))}
-                  </select>
+                    options={
+                      selectedPeriod
+                        ? periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.exbs.map((exb) => ({
+                              value: exb,
+                              label: determinarBancoPorCBU(exb),
+                            }))
+                        : []
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedExb', selectedOption)
+                    }
+                    placeholder="Banco Envío"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
                 </div>
+
                 <div className="flex items-center gap-2">
                   <button
                     className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
@@ -419,7 +491,14 @@ const TablaPagos = () => {
                           </td>
                           <td
                             className={`p-1 border-2 border-black font-semibold ${
-                              socio.CBU === '027' ? 'bg-white' : 'bg-blue-500'
+                              socio.CBU === '027'
+                                ? 'bg-white'
+                                : socio.CBU === '004' ||
+                                  socio.CBU === '005' ||
+                                  socio.CBU === '003' ||
+                                  socio.CBU === '006'
+                                ? 'bg-violet-500'
+                                : 'bg-blue-500'
                             }`}
                             title={determinarBancoPorCBU(socio.CBU)}
                           >
@@ -427,7 +506,11 @@ const TablaPagos = () => {
                           </td>
                           <td
                             className={`p-1 border-2 border-black font-semibold ${
-                              socio.ExB === '027' ? 'bg-white' : 'bg-blue-500'
+                              socio.ExB === '027'
+                                ? 'bg-white'
+                                : socio.ExB === 'TAR' || socio.ExB === 'PRI'
+                                ? 'bg-violet-500'
+                                : 'bg-blue-500'
                             }`}
                             title={determinarBancoPorCBU(socio.ExB)}
                           >

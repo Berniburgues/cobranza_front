@@ -107,11 +107,16 @@ export function determinarBancoPorCBU(cbu) {
     return 'First Data';
   } else if (primerosDigitos === 'PRI') {
     return 'Prisma';
+  } else if (primerosDigitos === '003') {
+    return 'American Express';
   } else if (primerosDigitos === '004') {
     return 'Visa';
   } else if (primerosDigitos === '005') {
-    return 'MasterCard';
+    return 'Master Card';
+  } else if (primerosDigitos === '006') {
+    return 'Discover Card';
   }
+
   // Si no se encuentra el banco, retornar un valor por defecto
   return 'Desconocido';
 }

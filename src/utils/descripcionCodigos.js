@@ -4,6 +4,9 @@ export const descripcionCodigo = (codigo) => {
     case 'ACE':
       description = 'Pago aceptado';
       break;
+    case 'R01':
+      description = 'Remitirse al Emisor';
+      break;
     case 'R02':
       description = 'Cuenta cerrada por orden judicial';
       break;
@@ -16,11 +19,20 @@ export const descripcionCodigo = (codigo) => {
     case 'R05':
       description = 'Stop debit';
       break;
+    case 'R06':
+      description = 'Otro Error/Error Genérico';
+      break;
+    case 'R07':
+      description = 'Recoger Tarjeta (Fraude)';
+      break;
     case 'R08':
       description = 'Orden de no pagar';
       break;
     case 'R10':
       description = 'Falta de fondos';
+      break;
+    case 'R12':
+      description = 'Transacción Inválida';
       break;
     case 'R13':
       description = 'Sucursal/Entidad de destino incorrecta';
@@ -67,6 +79,24 @@ export const descripcionCodigo = (codigo) => {
     case 'R31':
       description = 'Vuelta atrás de cámara';
       break;
+    case 'R43':
+      description = 'Tarjeta Robada/Extraviada';
+      break;
+    case 'R51':
+      description = 'Fondos Insuficientes';
+      break;
+    case 'R54':
+      description = 'Tarjeta Expirada';
+      break;
+    case 'R55':
+      description = 'Tarjeta Denegada';
+      break;
+    case 'R57':
+      description = 'Transacción no permitida';
+      break;
+    case 'R58':
+      description = 'Transacción no permitida (terminal)';
+      break;
     case 'R75':
       description = 'Fecha inválida';
       break;
@@ -84,6 +114,9 @@ export const descripcionCodigo = (codigo) => {
       break;
     case 'R80':
       description = 'Error en campo 3, Reg. Adic (Concepto)';
+      break;
+    case 'R86':
+      description = 'Sistema emisor no disponible';
       break;
     case 'R87':
       description = 'Moneda inválida';

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //Obtener Datos para Tabla Madre
-export const fetchDataPagos = async (periodo, cbu, codigo, convenio, ExB) => {
+export const fetchDataPagos = async (periodo, cbu, codigos, convenio, ExB) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/cobranzaSocios?periodo=${periodo}`;
 
@@ -9,8 +9,11 @@ export const fetchDataPagos = async (periodo, cbu, codigo, convenio, ExB) => {
       url += `&cbu=${cbu}`;
     }
 
-    if (codigo) {
-      url += `&codigo=${codigo}`;
+    if (codigos && codigos.length > 0) {
+      // Si codigos es un array y tiene elementos, agregamos múltiples parámetros 'codigo' a la URL
+      codigos.forEach((codigo) => {
+        url += `&codigo=${codigo}`;
+      });
     }
 
     if (convenio) {
@@ -22,6 +25,7 @@ export const fetchDataPagos = async (periodo, cbu, codigo, convenio, ExB) => {
     }
 
     const response = await axios.get(url);
+
     return {
       data: response.data.data, // Obtener los datos
       count: response.data.count, // Obtener el valor de count desde la respuesta
