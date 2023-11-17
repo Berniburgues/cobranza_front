@@ -33,15 +33,41 @@ const TablaPagos = () => {
   const [showLoader, setShowLoader] = useState(true);
   const [count, setCount] = useState(0);
   const [importes, setImportes] = useState({
-    '0-90': {
-      Enviado0_90: 0,
-      Cobrado0_90: 0,
-      Ratio0_90: 0,
+    CBU: {
+      '0-90': {
+        Enviado: 0,
+        Cobrado: 0,
+        Ratio: 0,
+      },
+      Total: {
+        Enviado: 0,
+        Cobrado: 0,
+        Ratio: 0,
+      },
     },
-    totales: {
-      EnviadoTotal: 0,
-      CobradoTotal: 0,
-      RatioTotal: 0,
+    TAR: {
+      '0-90': {
+        Enviado: 0,
+        Cobrado: 0,
+        Ratio: 0,
+      },
+      Total: {
+        Enviado: 0,
+        Cobrado: 0,
+        Ratio: 0,
+      },
+    },
+    TOT: {
+      '0-90': {
+        Enviado: 0,
+        Cobrado: 0,
+        Ratio: 0,
+      },
+      Total: {
+        Enviado: 0,
+        Cobrado: 0,
+        Ratio: 0,
+      },
     },
   });
 
@@ -57,6 +83,7 @@ const TablaPagos = () => {
     cargarFiltros();
   }, []);
 
+  // Cargar filtros de los select al cargar la página
   const cargarFiltros = async () => {
     try {
       const result = await fetchFiltrosPagos();
@@ -78,6 +105,7 @@ const TablaPagos = () => {
     }
   };
 
+  //Función que se activa al hacer click en el Botón de Búsqueda. Setea todos los estados.
   const handleSearch = async () => {
     setLoading(true);
     setPageNumber(1);
@@ -91,7 +119,7 @@ const TablaPagos = () => {
         selectedExb,
       );
 
-      // Agrega esta verificación para asegurarte de que result.data[0] no sea undefined o null
+      // Se agrega esta verificación para asegurarse de que result.data[0] no sea undefined o null
       if (result.data && result.data[0]) {
         setData(result.data);
         setCount(result.count);
@@ -164,10 +192,12 @@ const TablaPagos = () => {
     return pageButtons;
   };
 
+  // Función para cambiar página
   const handlePageChange = (newPage) => {
     setPageNumber(newPage);
   };
 
+  //Función para guardar en variables lo seleccionado en cada Select
   const handleSelectChange = (name, selectedOption) => {
     // Usar un objeto para mapear los estados de los select
     const selectStateMap = {
@@ -191,6 +221,7 @@ const TablaPagos = () => {
     setSelectChanges(true); // Establecer selectChanges en true
   };
 
+  // Cargar los datos  a 0, y cada estado a su estado inicial
   const handleReset = () => {
     setSelectedPeriod('');
     setSelectedBanco('');
@@ -207,15 +238,41 @@ const TablaPagos = () => {
     setServiciosAdherentes('-');
     setServiciosTitulares('-');
     setImportes({
-      '0-90': {
-        Enviado0_90: 0,
-        Cobrado0_90: 0,
-        Ratio0_90: 0,
+      CBU: {
+        '0-90': {
+          Enviado: 0,
+          Cobrado: 0,
+          Ratio: 0,
+        },
+        Total: {
+          Enviado: 0,
+          Cobrado: 0,
+          Ratio: 0,
+        },
       },
-      totales: {
-        EnviadoTotal: 0,
-        CobradoTotal: 0,
-        RatioTotal: 0,
+      TAR: {
+        '0-90': {
+          Enviado: 0,
+          Cobrado: 0,
+          Ratio: 0,
+        },
+        Total: {
+          Enviado: 0,
+          Cobrado: 0,
+          Ratio: 0,
+        },
+      },
+      TOT: {
+        '0-90': {
+          Enviado: 0,
+          Cobrado: 0,
+          Ratio: 0,
+        },
+        Total: {
+          Enviado: 0,
+          Cobrado: 0,
+          Ratio: 0,
+        },
       },
     });
   };
