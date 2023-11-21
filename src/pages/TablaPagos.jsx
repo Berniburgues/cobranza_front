@@ -79,11 +79,11 @@ const TablaPagos = () => {
   const [serviciosTitulares, setServiciosTitulares] = useState('-');
   const [serviciosAdherentes, setServiciosAdherentes] = useState('-');
 
+  // Cargar filtros de los select al cargar la página
   useEffect(() => {
     cargarFiltros();
   }, []);
 
-  // Cargar filtros de los select al cargar la página
   const cargarFiltros = async () => {
     try {
       const result = await fetchFiltrosPagos();
@@ -177,7 +177,7 @@ const TablaPagos = () => {
       pageButtons.push(
         <button
           key={i}
-          className={`mx-1 p-2 h-7 border-2 border-black rounded-full text-xs flex justify-center items-center font-bold ${
+          className={`mx-1 p-2 h-5 border-2 border-black rounded-full text-xs flex justify-center items-center font-bold ${
             i === pageNumber
               ? 'bg-blue-500 hover:bg-white text-white hover:text-blue-500'
               : 'bg-white text-blue-500 hover:bg-blue-600 hover:text-white'
@@ -221,7 +221,7 @@ const TablaPagos = () => {
     setSelectChanges(true); // Establecer selectChanges en true
   };
 
-  // Cargar los datos  a 0, y cada estado a su estado inicial
+  // Cargar los datos a 0, y cada estado a su estado inicial
   const handleReset = () => {
     setSelectedPeriod('');
     setSelectedBanco('');
@@ -282,180 +282,179 @@ const TablaPagos = () => {
   const paginatedData = data.slice(startIndex, endIndex);
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="container mx-auto">
-        <div className="mb-1 flex flex-wrap justify-center">
+    <div className="flex items-center justify-center font-sans">
+      <div className="container mx-96">
+        <div className="mb-1 flex flex-col justify-center items-center">
           <div className="flex items-center gap-2">
             {showLoader ? (
               <LoaderFiltros />
             ) : (
-              <>
-                <div className="flex items-center gap-2 text-xs z-50 whitespace-nowrap">
-                  <Select
-                    className="border-2 border-black rounded-md w-28"
-                    value={
-                      selectedPeriod
-                        ? {
-                            value: selectedPeriod,
-                            label: getNombrePeriodo(selectedPeriod),
-                          }
-                        : null
-                    }
-                    name="selectedPeriod"
-                    options={periodos.map((periodoData) => ({
-                      value: periodoData.periodo,
-                      label: getNombrePeriodo(periodoData.periodo),
-                    }))}
-                    onChange={(selectedOption) =>
-                      handleSelectChange('selectedPeriod', selectedOption)
-                    }
-                    placeholder="Período"
-                    styles={{
-                      indicatorSeparator: () => ({ display: 'none' }),
-                    }}
-                  />
+              <div className="flex items-center gap-2 text-xs z-50 whitespace-nowrap">
+                <Select
+                  className="border-2 border-black rounded-md w-28 h-full"
+                  value={
+                    selectedPeriod
+                      ? {
+                          value: selectedPeriod,
+                          label: getNombrePeriodo(selectedPeriod),
+                        }
+                      : null
+                  }
+                  name="selectedPeriod"
+                  options={periodos.map((periodoData) => ({
+                    value: periodoData.periodo,
+                    label: getNombrePeriodo(periodoData.periodo),
+                  }))}
+                  onChange={(selectedOption) =>
+                    handleSelectChange('selectedPeriod', selectedOption)
+                  }
+                  placeholder="Período"
+                  styles={{
+                    indicatorSeparator: () => ({ display: 'none' }),
+                  }}
+                />
 
-                  <Select
-                    className="border-2 border-black rounded-md w-28"
-                    value={
-                      selectedBanco
-                        ? {
-                            value: selectedBanco,
-                            label: determinarBancoPorCBU(selectedBanco),
-                          }
-                        : null
-                    }
-                    name="selectedBanco"
-                    options={
-                      selectedPeriod
-                        ? periodos
-                            .find((periodoData) => periodoData.periodo === selectedPeriod)
-                            ?.bancos.map((banco) => ({
-                              value: banco,
-                              label: determinarBancoPorCBU(banco),
-                            }))
-                        : []
-                    }
-                    onChange={(selectedOption) =>
-                      handleSelectChange('selectedBanco', selectedOption)
-                    }
-                    placeholder="Banco"
-                    styles={{
-                      indicatorSeparator: () => ({ display: 'none' }),
-                    }}
-                  />
+                <Select
+                  className="border-2 border-black rounded-md w-28 h-full"
+                  value={
+                    selectedBanco
+                      ? {
+                          value: selectedBanco,
+                          label: determinarBancoPorCBU(selectedBanco),
+                        }
+                      : null
+                  }
+                  name="selectedBanco"
+                  options={
+                    selectedPeriod
+                      ? periodos
+                          .find((periodoData) => periodoData.periodo === selectedPeriod)
+                          ?.bancos.map((banco) => ({
+                            value: banco,
+                            label: determinarBancoPorCBU(banco),
+                          }))
+                      : []
+                  }
+                  onChange={(selectedOption) =>
+                    handleSelectChange('selectedBanco', selectedOption)
+                  }
+                  placeholder="Banco"
+                  styles={{
+                    indicatorSeparator: () => ({ display: 'none' }),
+                  }}
+                />
 
-                  <Select
-                    className="border-2 border-black rounded-md w-[206px]"
-                    value={selectedCodigo.map((code) => ({ value: code, label: code }))}
-                    name="selectedCodigo"
-                    options={
-                      selectedPeriod
-                        ? periodos
-                            .find((periodoData) => periodoData.periodo === selectedPeriod)
-                            ?.codigos.map((codigo) => ({
-                              value: codigo,
-                              label: codigo,
-                            }))
-                        : []
-                    }
-                    isMulti
-                    onChange={(selectedOptions) =>
-                      handleSelectChange('selectedCodigo', selectedOptions)
-                    }
-                    getOptionLabel={(option) => option.label}
-                    getOptionValue={(option) => option.value}
-                    placeholder="Código"
-                    styles={{
-                      indicatorSeparator: () => ({ display: 'none' }),
-                    }}
-                  />
+                <Select
+                  className="border-2 border-black rounded-md w-[206px] h-full"
+                  value={selectedCodigo.map((code) => ({ value: code, label: code }))}
+                  name="selectedCodigo"
+                  options={
+                    selectedPeriod
+                      ? periodos
+                          .find((periodoData) => periodoData.periodo === selectedPeriod)
+                          ?.codigos.map((codigo) => ({
+                            value: codigo,
+                            label: codigo,
+                          }))
+                      : []
+                  }
+                  isMulti
+                  onChange={(selectedOptions) =>
+                    handleSelectChange('selectedCodigo', selectedOptions)
+                  }
+                  getOptionLabel={(option) => option.label}
+                  getOptionValue={(option) => option.value}
+                  placeholder="Código"
+                  styles={{
+                    indicatorSeparator: () => ({ display: 'none' }),
+                  }}
+                />
 
-                  <Select
-                    className="border-2 border-black rounded-md w-28"
-                    value={
-                      selectedConvenio
-                        ? { value: selectedConvenio, label: selectedConvenio }
-                        : null
-                    }
-                    name="selectedConvenio"
-                    options={
-                      selectedPeriod
-                        ? periodos
-                            .find((periodoData) => periodoData.periodo === selectedPeriod)
-                            ?.convenios.map((convenio) => ({
-                              value: convenio,
-                              label: convenio,
-                            }))
-                        : []
-                    }
-                    onChange={(selectedOption) =>
-                      handleSelectChange('selectedConvenio', selectedOption)
-                    }
-                    placeholder="Canal de Venta"
-                    styles={{
-                      indicatorSeparator: () => ({ display: 'none' }),
-                    }}
-                  />
+                <Select
+                  className="border-2 border-black rounded-md w-28 h-full"
+                  value={
+                    selectedConvenio
+                      ? { value: selectedConvenio, label: selectedConvenio }
+                      : null
+                  }
+                  name="selectedConvenio"
+                  options={
+                    selectedPeriod
+                      ? periodos
+                          .find((periodoData) => periodoData.periodo === selectedPeriod)
+                          ?.convenios.map((convenio) => ({
+                            value: convenio,
+                            label: convenio,
+                          }))
+                      : []
+                  }
+                  onChange={(selectedOption) =>
+                    handleSelectChange('selectedConvenio', selectedOption)
+                  }
+                  placeholder="Canal de Venta"
+                  styles={{
+                    indicatorSeparator: () => ({ display: 'none' }),
+                  }}
+                />
 
-                  <Select
-                    className="border-2 border-black rounded-md w-28"
-                    value={
-                      selectedExb
-                        ? {
-                            value: selectedExb,
-                            label: determinarBancoPorCBU(selectedExb),
-                          }
-                        : null
-                    }
-                    name="selectedExb"
-                    options={
-                      selectedPeriod
-                        ? periodos
-                            .find((periodoData) => periodoData.periodo === selectedPeriod)
-                            ?.exbs.map((exb) => ({
-                              value: exb,
-                              label: determinarBancoPorCBU(exb),
-                            }))
-                        : []
-                    }
-                    onChange={(selectedOption) =>
-                      handleSelectChange('selectedExb', selectedOption)
-                    }
-                    placeholder="Banco Envío"
-                    styles={{
-                      indicatorSeparator: () => ({ display: 'none' }),
-                    }}
-                  />
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
-                    ${loading ? 'cursor-not-allowed opacity-50' : ''}
-                    ${selectChanges ? 'boton_parpadeo' : ''}`}
-                    onClick={() => {
-                      handleSearch();
-                      setSelectChanges(false);
-                    }}
-                    disabled={loading}
-                  >
-                    {loading ? 'Cargando...' : 'Buscar'}
-                  </button>
-
-                  <button
-                    className={`bg-yellow-500 hover:bg-yellow-600 border-2 border-black text-white rounded-md p-1 w-28 ${
-                      loading ? 'cursor-not-allowed opacity-50' : ''
-                    }`}
-                    onClick={handleReset}
-                    disabled={loading}
-                  >
-                    Reiniciar
-                  </button>
-                  <ExcelBoton uniqueDates={uniqueDates} data={data} loading={loading} />
-                </div>
-              </>
+                <Select
+                  className="border-2 border-black rounded-md w-28 h-full"
+                  value={
+                    selectedExb
+                      ? {
+                          value: selectedExb,
+                          label: determinarBancoPorCBU(selectedExb),
+                        }
+                      : null
+                  }
+                  name="selectedExb"
+                  options={
+                    selectedPeriod
+                      ? periodos
+                          .find((periodoData) => periodoData.periodo === selectedPeriod)
+                          ?.exbs.map((exb) => ({
+                            value: exb,
+                            label: determinarBancoPorCBU(exb),
+                          }))
+                      : []
+                  }
+                  onChange={(selectedOption) =>
+                    handleSelectChange('selectedExb', selectedOption)
+                  }
+                  placeholder="Banco Envío"
+                  styles={{
+                    indicatorSeparator: () => ({ display: 'none' }),
+                  }}
+                />
+              </div>
             )}
+          </div>
+
+          <div className="flex items-center gap-2 text-xs pt-1">
+            <button
+              className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
+      ${loading ? 'cursor-not-allowed opacity-50' : ''}
+      ${selectChanges ? 'boton_parpadeo' : ''}`}
+              onClick={() => {
+                handleSearch();
+                setSelectChanges(false);
+              }}
+              disabled={loading}
+            >
+              {loading ? 'Cargando...' : 'Buscar'}
+            </button>
+
+            <button
+              className={`bg-yellow-500 hover:bg-yellow-600 border-2 border-black text-white rounded-md p-1 w-28 ${
+                loading ? 'cursor-not-allowed opacity-50' : ''
+              }`}
+              onClick={handleReset}
+              disabled={loading}
+            >
+              Reiniciar
+            </button>
+
+            <ExcelBoton uniqueDates={uniqueDates} data={data} loading={loading} />
           </div>
         </div>
 
@@ -480,7 +479,7 @@ const TablaPagos = () => {
             <div className="overflow-x-auto">
               <div className="max-h-screen overflow-y-auto">
                 <div className="w-auto">
-                  <table className="w-full border-collapse border text-sm">
+                  <table className="w-full border-collapse border text-xs">
                     <thead>
                       <tr className="bg-black text-white sticky top-0 z-10">
                         <th className="py-1 border-2 border-gray-700">NºS</th>
@@ -504,7 +503,7 @@ const TablaPagos = () => {
                           return (
                             <th
                               key={date}
-                              className="p-1 border-2 border-gray-700 whitespace-nowrap"
+                              className="border-2 border-gray-700 whitespace-nowrap"
                               title={
                                 importesPorFecha.length > 0
                                   ? importe !== undefined
@@ -592,7 +591,7 @@ const TablaPagos = () => {
                             return (
                               <td
                                 key={date}
-                                className={`border-2 p-1 border-black font-bold text-xs ${backgroundColorClass}`}
+                                className={`border-2 border-black font-semibold ${backgroundColorClass}`}
                                 title={descripcionCodigo(codigo)}
                               >
                                 {codigo}

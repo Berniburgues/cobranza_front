@@ -9,10 +9,10 @@ const Paginacion = ({
 }) => {
   return (
     <div className="my-1">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center text-sm">
         <div>
           <i
-            className={`fas fa-chevron-circle-left text-blue-500 text-2xl  ${
+            className={`fas fa-chevron-circle-left text-blue-500 text-base  ${
               pageNumber === 1
                 ? 'text-gray-400 cursor-not-allowed'
                 : 'hover:text-green-500 cursor-pointer'
@@ -27,7 +27,7 @@ const Paginacion = ({
         <div className="flex">{renderPageButtons()}</div>
         <div>
           <i
-            className={`fas fa-chevron-circle-right text-blue-500 text-2xl ${
+            className={`fas fa-chevron-circle-right text-blue-500 text-base ${
               pageNumber === Math.ceil(data.length / pageSize)
                 ? 'text-gray-400 cursor-not-allowed'
                 : 'hover:text-green-500 cursor-pointer'
