@@ -89,9 +89,13 @@ export const fetchImportesPorFecha = async (periodo, bco, exb) => {
     throw error;
   }
 };
-export const fetchCuiles = async (periodo) => {
+export const fetchCuiles = async (periodo, bco) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/cuiles?periodo=${periodo}`;
+
+    if (bco) {
+      url += `&bco=${bco}`;
+    }
 
     const response = await axios.get(url);
 
@@ -108,9 +112,14 @@ export const fetchCuiles = async (periodo) => {
     throw error;
   }
 };
-export const fetchServicios = async (periodo) => {
+export const fetchServicios = async (periodo, bco) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/servicios?periodo=${periodo}`;
+
+    if (bco) {
+      url += `&bco=${bco}`;
+    }
+
     const res = await axios.get(url);
     if (res.status === 200) {
       return res.data;

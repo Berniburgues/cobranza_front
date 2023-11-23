@@ -21,6 +21,7 @@ import './TablaPagos.css';
 const TablaPagos = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [periodos, setPeriodos] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState('');
   const [selectedBanco, setSelectedBanco] = useState('');
@@ -143,12 +144,12 @@ const TablaPagos = () => {
           selectedExb,
         );
         setImportes(importesData);
-        const cuiles = await fetchCuiles(selectedPeriod);
+        const cuiles = await fetchCuiles(selectedPeriod, selectedBanco);
         setAltaCuiles(cuiles.CuilesNuevos);
         setBajaCuiles(cuiles.CuilesBaja);
         setCuilesTotales(cuiles.CuilesTotales);
         setSelectChanges(false);
-        const servicios = await fetchServicios(selectedPeriod);
+        const servicios = await fetchServicios(selectedPeriod, selectedBanco);
         setServiciosTitulares(servicios['01']);
         setServiciosAdherentes(servicios['02']);
         const importesXFecha = await fetchImportesPorFecha(
@@ -157,6 +158,7 @@ const TablaPagos = () => {
           selectedExb,
         );
         setImportesPorFecha(importesXFecha);
+        setDataLoaded(true);
       } else {
         // Manejar el caso en el que result.data[0] es undefined o null
         console.error('Error: result.data[0] es undefined o null');
@@ -165,6 +167,7 @@ const TablaPagos = () => {
     } catch (error) {
       console.error(error);
       setLoading(false);
+      setDataLoaded(true);
     }
   };
 
@@ -285,10 +288,10 @@ const TablaPagos = () => {
     <div className="flex items-center justify-center font-sans">
       <div className="container mx-96">
         <div className="mb-1 flex flex-col justify-center items-center">
-          <div className="flex items-center gap-2">
-            {showLoader ? (
-              <LoaderFiltros />
-            ) : (
+          {showLoader ? (
+            <LoaderFiltros />
+          ) : (
+            <>
               <div className="flex items-center gap-2 text-xs z-50 whitespace-nowrap">
                 <Select
                   className="border-2 border-black rounded-md w-28 h-full"
@@ -427,35 +430,34 @@ const TablaPagos = () => {
                   }}
                 />
               </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2 text-xs pt-1">
-            <button
-              className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
+              <div className="flex items-center gap-2 text-xs pt-1">
+                <button
+                  className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
       ${loading ? 'cursor-not-allowed opacity-50' : ''}
       ${selectChanges ? 'boton_parpadeo' : ''}`}
-              onClick={() => {
-                handleSearch();
-                setSelectChanges(false);
-              }}
-              disabled={loading}
-            >
-              {loading ? 'Cargando...' : 'Buscar'}
-            </button>
+                  onClick={() => {
+                    handleSearch();
+                    setSelectChanges(false);
+                  }}
+                  disabled={loading}
+                >
+                  {loading ? 'Cargando...' : 'Buscar'}
+                </button>
 
-            <button
-              className={`bg-yellow-500 hover:bg-yellow-600 border-2 border-black text-white rounded-md p-1 w-28 ${
-                loading ? 'cursor-not-allowed opacity-50' : ''
-              }`}
-              onClick={handleReset}
-              disabled={loading}
-            >
-              Reiniciar
-            </button>
+                <button
+                  className={`bg-yellow-500 hover:bg-yellow-600 border-2 border-black text-white rounded-md p-1 w-28 ${
+                    loading ? 'cursor-not-allowed opacity-50' : ''
+                  }`}
+                  onClick={handleReset}
+                  disabled={loading}
+                >
+                  Reiniciar
+                </button>
 
-            <ExcelBoton uniqueDates={uniqueDates} data={data} loading={loading} />
-          </div>
+                <ExcelBoton uniqueDates={uniqueDates} data={data} loading={loading} />
+              </div>
+            </>
+          )}
         </div>
 
         {showLoader ? null : (
@@ -467,6 +469,7 @@ const TablaPagos = () => {
               cuilesTotales={cuilesTotales}
               serviciosTitulares={serviciosTitulares}
               serviciosAdherentes={serviciosAdherentes}
+              dataLoaded={dataLoaded}
             />
             <Paginacion
               data={data}

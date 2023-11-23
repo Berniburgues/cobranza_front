@@ -8,12 +8,12 @@ const ImportesSocios = ({
   serviciosTitulares,
   serviciosAdherentes,
 }) => {
-  const [expandido, setExpandido] = useState(false);
-  const [tiposExpandidos, setTiposExpandidos] = useState([]);
+  const [expandido, setExpandido] = useState(true);
+  const [tiposExpandidos, setTiposExpandidos] = useState(['CBU', 'TAR', 'TOT']);
 
   const handleToggleExpandido = () => {
     setExpandido(!expandido);
-    setTiposExpandidos([]);
+    setTiposExpandidos(['CBU', 'TAR', 'TOT']);
   };
 
   const handleToggleExpandidoTipo = (tipo) => {
