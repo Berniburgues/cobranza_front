@@ -286,7 +286,7 @@ const TablaPagos = () => {
 
   return (
     <div className="flex items-center justify-center font-sans">
-      <div className="container mx-96">
+      <div className="container mx-auto">
         <div className="mb-1 flex flex-col justify-center items-center">
           {showLoader ? (
             <LoaderFiltros />
@@ -330,12 +330,18 @@ const TablaPagos = () => {
                   name="selectedBanco"
                   options={
                     selectedPeriod
-                      ? periodos
-                          .find((periodoData) => periodoData.periodo === selectedPeriod)
-                          ?.bancos.map((banco) => ({
-                            value: banco,
-                            label: determinarBancoPorCBU(banco),
-                          }))
+                      ? [
+                          {
+                            value: '', // Valor vacío para representar "Todos"
+                            label: 'Todos',
+                          },
+                          ...periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.bancos.map((banco) => ({
+                              value: banco,
+                              label: determinarBancoPorCBU(banco),
+                            })),
+                        ]
                       : []
                   }
                   onChange={(selectedOption) =>
@@ -462,6 +468,12 @@ const TablaPagos = () => {
 
         {showLoader ? null : (
           <section>
+            {selectedBanco && (
+              <h2 className="text-lg text-center underline font-bold">
+                Banco: {determinarBancoPorCBU(selectedBanco)}
+              </h2>
+            )}
+
             <ImportesSocios
               importes={importes}
               altaCuiles={altaCuiles}
