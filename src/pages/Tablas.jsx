@@ -10,6 +10,7 @@ const Tablas = () => {
       <div className="space-x-5 mt-1 mb-10">
         <Link
           to="tablaPagos"
+          target="_blank"
           className={`bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
             location.pathname === '/tablas/tablaPagos'
               ? 'opacity-50 cursor-not-allowed'
@@ -20,6 +21,7 @@ const Tablas = () => {
         </Link>
         <Link
           to="socio"
+          target="_blank"
           className={`bg-yellow-500 hover:bg-yellow-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
             location.pathname === '/tablas/socio' ? 'opacity-50 cursor-not-allowed' : ''
           }`}
@@ -28,6 +30,7 @@ const Tablas = () => {
         </Link>
         <Link
           to="historialACE"
+          target="_blank"
           className={`bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
             location.pathname === '/tablas/historialACE'
               ? 'opacity-50 cursor-not-allowed'

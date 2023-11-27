@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { fetchSocioData } from '../services/obtenerData';
-import DatosFijos from '../components/Socio/DatosFijos';
+import { fetchSociosData } from '../services/obtenerData';
 import Historial from '../components/Socio/Historial';
 import SocioSearch from '../components/Socio/SocioSearch';
 
 const Socio = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const initialNumeroSocio = searchParams.get('numeroSocio') || '';
+  const initialNumerosSocio = searchParams.getAll('numerosSocio');
 
-  const [numeroSocio, setNumeroSocio] = useState(initialNumeroSocio);
+  const [numerosSocio, setNumerosSocio] = useState(initialNumerosSocio);
   const [datosFijos, setDatosFijos] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleNumeroSocioChange = (event) => {
-    setNumeroSocio(event.target.value);
+  const handleNumerosSocioChange = (event) => {
+    const numeros = event.target.value.split(',').map((num) => num.trim());
+    setNumerosSocio(numeros.length > 1 ? numeros : numeros[0]);
     setErrorMessage(null);
   };
 
   const handleBuscarClick = async () => {
-    if (numeroSocio) {
+    if (numerosSocio.length > 0) {
       setIsLoading(true);
-      setErrorMessage(null); // Limpiar cualquier mensaje de error anterior
+      setErrorMessage(null);
 
       try {
-        const socioData = await fetchSocioData(numeroSocio);
-        if (socioData) {
-          setDatosFijos(socioData);
-          setErrorMessage(null); // Limpiar cualquier mensaje de error anterior
+        const sociosData = await fetchSociosData(numerosSocio);
+        if (sociosData) {
+          setDatosFijos(sociosData);
+          setErrorMessage(null);
         } else {
-          setDatosFijos(socioData);
+          setDatosFijos(sociosData);
           setErrorMessage(
-            'No se encontraron datos para el número de socio proporcionado.',
+            'No se encontraron datos para los números de socio proporcionados.',
           );
         }
       } catch (error) {
@@ -41,33 +41,42 @@ const Socio = () => {
         setDatosFijos(null);
         setErrorMessage('Error al cargar los datos en el servidor.');
       } finally {
-        setIsLoading(false); // Siempre restablecer isLoading, independientemente del resultado
+        setIsLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    if (initialNumeroSocio) {
+    if (initialNumerosSocio.length > 0) {
       handleBuscarClick();
     }
-  }, [initialNumeroSocio]);
+  }, [initialNumerosSocio]);
 
   return (
     <section className="flex flex-col items-center justify-center">
       <SocioSearch
-        numeroSocio={numeroSocio}
-        handleNumeroSocioChange={handleNumeroSocioChange}
+        numerosSocio={Array.isArray(numerosSocio) ? numerosSocio.join(',') : numerosSocio}
+        handleNumerosSocioChange={handleNumerosSocioChange}
         handleBuscarClick={handleBuscarClick}
         isLoading={isLoading}
-        initialNumeroSocio={initialNumeroSocio}
+        initialNumerosSocio={initialNumerosSocio.join(',')}
       />
       {errorMessage && (
         <p className="text-red-500 text-center font-semibold">{errorMessage}</p>
       )}
       {datosFijos && (
         <section className="flex flex-col items-center justify-center space-y-4">
-          <DatosFijos datosFijos={datosFijos} />
-          {datosFijos.cobranza && <Historial datosFijos={datosFijos} />}
+          {Object.keys(datosFijos).map((socioKey) => {
+            const socio = datosFijos[socioKey];
+
+            return (
+              <div key={socioKey}>
+                {socio.cobranza && (
+                  <Historial cobranza={socio.cobranza} datosFijos={socio.datosFijos} />
+                )}
+              </div>
+            );
+          })}
         </section>
       )}
     </section>

@@ -31,6 +31,14 @@ const ReportesIndirectos = () => {
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYjQ4ZTY0ZWItYmU3ZC00M2YyLWEzMjMtOWJjNmQ2MDhhNjlhIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9&pageName=ReportSectionf06324290e1bb7bd427b',
     },
     {
+      title: 'Cobranza MES ATSAPRA',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiMjM1OTIyZDMtNDllZC00Y2M0LWFlOTEtN2I3OWI1OTlkYjg4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
+    {
+      title: 'Evolución Cobranza ATSAPRA',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiYTM2M2MyZGUtMzIwYi00MTJjLTkwMGUtZWM0Y2E3M2RmNzEyIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
+    {
       title: 'Período ASISTIR',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZmJlYjRkODQtNWNjYS00YTAyLWJmNWMtMTIzN2YzMDkyNWY1IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },

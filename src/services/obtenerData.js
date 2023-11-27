@@ -142,19 +142,20 @@ export const fetchFiltrosPagos = async () => {
   }
 };
 
-// Obtener Datos de Socio individual
-export const fetchSocioData = async (numeroSocio) => {
+// Obtener Datos de Socios
+export const fetchSociosData = async (numerosSocio) => {
   try {
-    // Realizar la solicitud GET al servidor
+    const numerosSocioArray = Array.isArray(numerosSocio) ? numerosSocio : [numerosSocio];
+
     const response = await axios.get(
-      `https://cobranza.2.us-1.fl0.io/clientes/socio?numeroSocio=${numeroSocio}`,
+      `https://cobranza.2.us-1.fl0.io/clientes/socio?${numerosSocioArray
+        .map((num) => `numerosSocio=${num}`)
+        .join('&')}`,
     );
 
-    // Devolver los datos obtenidos
     return response.data;
   } catch (error) {
-    // Manejar cualquier error que ocurra durante la solicitud
-    console.error('Error al obtener los datos del socio:', error);
+    console.error('Error al obtener los datos de los socios:', error);
     return null;
   }
 };

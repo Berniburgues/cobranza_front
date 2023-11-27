@@ -24,7 +24,7 @@ const TablaPagos = () => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [periodos, setPeriodos] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState('');
-  const [selectedBanco, setSelectedBanco] = useState('');
+  const [selectedBanco, setSelectedBanco] = useState('027');
   const [selectedCodigo, setSelectedCodigo] = useState([]);
   const [selectedConvenio, setSelectedConvenio] = useState('');
   const [selectedExb, setSelectedExb] = useState('');
@@ -325,7 +325,10 @@ const TablaPagos = () => {
                           value: selectedBanco,
                           label: determinarBancoPorCBU(selectedBanco),
                         }
-                      : null
+                      : {
+                          value: '027', // Valor de Supervielle o el que corresponda
+                          label: 'Supervielle', // Etiqueta para mostrar en la interfaz
+                        }
                   }
                   name="selectedBanco"
                   options={
@@ -538,7 +541,7 @@ const TablaPagos = () => {
                         <tr key={socio.ID} className="text-center">
                           <td className="p-1 border-2 border-black hover:bg-black hover:text-white">
                             <Link
-                              to={`/tablas/socio?numeroSocio=${socio.Socio}`}
+                              to={`/tablas/socio?numerosSocio=${socio.DNI}`}
                               target="_blank"
                               className="block w-full h-full text-center"
                               title="Buscar Datos"
