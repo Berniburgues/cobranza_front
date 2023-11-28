@@ -5,7 +5,6 @@ import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 
 const Historial = ({ datosFijos, cobranza }) => {
   // Obtener la lista única de días de cobro
-  console.log('SOCIO:', datosFijos, cobranza);
   const diasCobro = [...new Set(cobranza.map((item) => item.dia))].sort((a, b) => a - b);
 
   // Obtener la lista única de periodos
