@@ -85,6 +85,9 @@ export const descripcionCodigo = (codigo) => {
     case 'R43':
       description = 'Tarjeta Robada/Extraviada';
       break;
+    case 'R50':
+      description = 'Causa de Rechazo en Boletín';
+      break;
     case 'R51':
       description = 'Fondos Insuficientes';
       break;
