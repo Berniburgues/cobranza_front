@@ -43,6 +43,9 @@ export const descripcionCodigo = (codigo) => {
     case 'R15':
       description = 'Adherente dado de baja';
       break;
+    case 'R16':
+      description = 'Autorización Rechazada Emisor / Reservado Uso Privado';
+      break;
     case 'R17':
       description = 'Error de formato';
       break;

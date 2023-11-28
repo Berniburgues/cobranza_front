@@ -107,6 +107,10 @@ export function determinarBancoPorCBU(cbu) {
     return 'First Data';
   } else if (primerosDigitos === 'PRI') {
     return 'Prisma';
+  } else if (primerosDigitos === '001') {
+    return 'Tarjeta Grupo 1';
+  } else if (primerosDigitos === '002') {
+    return 'Tarjeta Grupo 2';
   } else if (primerosDigitos === '003') {
     return 'American Express';
   } else if (primerosDigitos === '004') {
