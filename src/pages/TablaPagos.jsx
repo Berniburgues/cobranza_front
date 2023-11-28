@@ -21,6 +21,8 @@ import './TablaPagos.css';
 const TablaPagos = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [calculating, setCalculating] = useState(false);
+  const [searchClicked, setSearchClicked] = useState(false); // Nuevo estado
   const [dataLoaded, setDataLoaded] = useState(false);
   const [periodos, setPeriodos] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState('');
@@ -108,8 +110,10 @@ const TablaPagos = () => {
 
   //Función que se activa al hacer click en el Botón de Búsqueda. Setea todos los estados.
   const handleSearch = async () => {
-    setLoading(true);
     setPageNumber(1);
+    setLoading(true);
+    setCalculating(true);
+    setSearchClicked(true);
 
     try {
       const result = await fetchDataPagos(
@@ -158,6 +162,7 @@ const TablaPagos = () => {
           selectedExb,
         );
         setImportesPorFecha(importesXFecha);
+        setCalculating(false);
         setDataLoaded(true);
       } else {
         // Manejar el caso en el que result.data[0] es undefined o null
@@ -168,6 +173,7 @@ const TablaPagos = () => {
       console.error(error);
       setLoading(false);
       setDataLoaded(true);
+      setCalculating(false);
     }
   };
 
@@ -226,8 +232,10 @@ const TablaPagos = () => {
 
   // Cargar los datos a 0, y cada estado a su estado inicial
   const handleReset = () => {
+    setCalculating(false);
+    setSearchClicked(false);
     setSelectedPeriod('');
-    setSelectedBanco('');
+    setSelectedBanco('027');
     setSelectedCodigo([]);
     setSelectedConvenio('');
     setSelectedExb('');
@@ -278,6 +286,7 @@ const TablaPagos = () => {
         },
       },
     });
+    setImportesPorFecha([]);
   };
 
   const startIndex = (pageNumber - 1) * pageSize;
@@ -450,7 +459,7 @@ const TablaPagos = () => {
                   }}
                   disabled={loading}
                 >
-                  {loading ? 'Cargando...' : 'Buscar'}
+                  {loading ? 'Cargando Tabla..' : 'Buscar'}
                 </button>
 
                 <button
@@ -477,15 +486,27 @@ const TablaPagos = () => {
               </h2>
             )}
 
-            <ImportesSocios
-              importes={importes}
-              altaCuiles={altaCuiles}
-              bajaCuiles={bajaCuiles}
-              cuilesTotales={cuilesTotales}
-              serviciosTitulares={serviciosTitulares}
-              serviciosAdherentes={serviciosAdherentes}
-              dataLoaded={dataLoaded}
-            />
+            {searchClicked && (
+              <>
+                {calculating && (
+                  <h3 className="text-center text-base font-bold text-blue-500">
+                    Calculando Importes/Servicios/Cuiles...
+                  </h3>
+                )}
+                {!calculating && dataLoaded && (
+                  <ImportesSocios
+                    importes={importes}
+                    altaCuiles={altaCuiles}
+                    bajaCuiles={bajaCuiles}
+                    cuilesTotales={cuilesTotales}
+                    serviciosTitulares={serviciosTitulares}
+                    serviciosAdherentes={serviciosAdherentes}
+                    dataLoaded={dataLoaded}
+                  />
+                )}
+              </>
+            )}
+
             <Paginacion
               data={data}
               pageSize={pageSize}
