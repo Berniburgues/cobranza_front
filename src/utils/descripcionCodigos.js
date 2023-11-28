@@ -31,6 +31,9 @@ export const descripcionCodigo = (codigo) => {
     case 'R10':
       description = 'Falta de fondos';
       break;
+    case 'R11':
+      description = 'Imposible Autorizar';
+      break;
     case 'R12':
       description = 'Transacción Inválida';
       break;
@@ -91,6 +94,9 @@ export const descripcionCodigo = (codigo) => {
     case 'R51':
       description = 'Fondos Insuficientes';
       break;
+    case 'R52':
+      description = 'Supera el límite de compra';
+      break;
     case 'R54':
       description = 'Tarjeta Expirada';
       break;
@@ -102,6 +108,18 @@ export const descripcionCodigo = (codigo) => {
       break;
     case 'R58':
       description = 'Transacción no permitida (terminal)';
+      break;
+    case 'R61':
+      description = 'Socio dado de baja';
+      break;
+    case 'R62':
+      description = 'Tarjeta vencida';
+      break;
+    case 'R64':
+      description = 'Tarjeta privada en comercio no autorizado';
+      break;
+    case 'R66':
+      description = 'Tarjeta inexistente';
       break;
     case 'R75':
       description = 'Fecha inválida';
@@ -121,6 +139,12 @@ export const descripcionCodigo = (codigo) => {
     case 'R80':
       description = 'Error en campo 3, Reg. Adic (Concepto)';
       break;
+    case 'R84':
+      description = 'Autorización Rechazada, adhesión dada de baja, stop debit';
+      break;
+    case 'R85':
+      description = 'Stop debit';
+      break;
     case 'R86':
       description = 'Sistema emisor no disponible';
       break;
@@ -128,7 +152,7 @@ export const descripcionCodigo = (codigo) => {
       description = 'Moneda inválida';
       break;
     case 'R88':
-      description = 'Error en campo 2, Reg. Individ.';
+      description = 'Autorización rechazada, socio en mora';
       break;
     case 'R89':
       description = 'Errores en adhesión';
