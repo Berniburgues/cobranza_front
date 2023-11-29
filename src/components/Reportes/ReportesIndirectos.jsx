@@ -15,6 +15,10 @@ const ReportesIndirectos = () => {
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZWYxOTk0ZmUtNDg4OC00ZmE3LWI3NjYtZmRiMThhNDhjZGYwIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
+      title: 'Llamadas Isla de Retención',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiZGI4NDEwNjktYjNiYi00OGJlLTgwNmYtZGMwMjc3ODIyZjJmIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
+    {
       title: 'Evolución Cobranza por Mes',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiNzUwMTAwYWItOTZkOS00M2E1LWFiMTQtNzk0NWUxMmRjMzExIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
@@ -27,16 +31,16 @@ const ReportesIndirectos = () => {
       url: 'https://app.powerbi.com/view?r=eyJrIjoiMDI2OTc4M2YtYmQzZC00NDE0LTkzNmUtYWY0NzMyNGM3MDEzIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
-      title: 'Período ATSAPRA',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiYjQ4ZTY0ZWItYmU3ZC00M2YyLWEzMjMtOWJjNmQ2MDhhNjlhIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9&pageName=ReportSectionf06324290e1bb7bd427b',
-    },
-    {
       title: 'Cobranza MES ATSAPRA',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiMjM1OTIyZDMtNDllZC00Y2M0LWFlOTEtN2I3OWI1OTlkYjg4IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
       title: 'Evolución Cobranza ATSAPRA',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYTM2M2MyZGUtMzIwYi00MTJjLTkwMGUtZWM0Y2E3M2RmNzEyIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
+    {
+      title: 'Período ATSAPRA',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiYjQ4ZTY0ZWItYmU3ZC00M2YyLWEzMjMtOWJjNmQ2MDhhNjlhIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9&pageName=ReportSectionf06324290e1bb7bd427b',
     },
     {
       title: 'Período ASISTIR',
@@ -52,11 +56,11 @@ const ReportesIndirectos = () => {
     },
   ];
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <div className="grid grid-cols-3 gap-2 h-1/4">
       {informes.map((informe, index) => (
-        <div key={index} className="mb-4">
+        <div key={index} className="mb-1">
           <button
-            className="bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold font-libre p-2  rounded-md w-96"
+            className="bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold font-libre p-2 rounded-md w-full h-12"
             onClick={() => window.open(informe.url, '_blank')}
           >
             {informe.title}

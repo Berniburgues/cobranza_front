@@ -29,11 +29,11 @@ const ReportesDirectos = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <div className="grid grid-cols-2 gap-2 h-full">
       {informes.map((informe, index) => (
-        <div key={index} className="mb-4">
+        <div key={index} className="mb-1">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold font-libre p-2 rounded-md w-96"
+            className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold font-libre p-2 rounded-md w-full"
             onClick={() => window.open(informe.url, '_blank')}
           >
             {informe.title}
