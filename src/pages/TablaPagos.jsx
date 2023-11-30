@@ -551,7 +551,7 @@ const TablaPagos = () => {
                               to={`/tablas/socio?numerosSocio=${socio.DNI}`}
                               target="_blank"
                               className="block w-full h-full text-center"
-                              title="Buscar Datos"
+                              title="Buscar Historial"
                             >
                               {socio.Socio}
                             </Link>
