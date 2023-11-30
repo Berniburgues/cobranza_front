@@ -42,11 +42,6 @@ const TablaPagos = () => {
         Cobrado: 0,
         Ratio: 0,
       },
-      Total: {
-        Enviado: 0,
-        Cobrado: 0,
-        Ratio: 0,
-      },
     },
     TAR: {
       '0-90': {
@@ -62,11 +57,6 @@ const TablaPagos = () => {
     },
     TOT: {
       '0-90': {
-        Enviado: 0,
-        Cobrado: 0,
-        Ratio: 0,
-      },
-      Total: {
         Enviado: 0,
         Cobrado: 0,
         Ratio: 0,
@@ -267,19 +257,9 @@ const TablaPagos = () => {
           Cobrado: 0,
           Ratio: 0,
         },
-        Total: {
-          Enviado: 0,
-          Cobrado: 0,
-          Ratio: 0,
-        },
       },
       TOT: {
         '0-90': {
-          Enviado: 0,
-          Cobrado: 0,
-          Ratio: 0,
-        },
-        Total: {
           Enviado: 0,
           Cobrado: 0,
           Ratio: 0,
@@ -336,7 +316,6 @@ const TablaPagos = () => {
                         }
                       : {
                           value: '027', // Valor de Supervielle o el que corresponda
-                          label: 'Supervielle', // Etiqueta para mostrar en la interfaz
                         }
                   }
                   name="selectedBanco"
@@ -489,9 +468,16 @@ const TablaPagos = () => {
             {searchClicked && (
               <>
                 {calculating && (
-                  <h3 className="text-center text-base font-bold text-blue-500">
-                    Calculando Importes/Servicios/Cuiles...
-                  </h3>
+                  <div className="flex flex-wrap items-center justify-center text-center gap-2">
+                    <h3
+                      className={`text-center text-sm font-semibold pb-1 ${
+                        calculating ? 'boton_parpadeo' : ''
+                      }`}
+                    >
+                      Calculando Importes/Servicios/Cuiles
+                    </h3>
+                    <LoaderFiltros />
+                  </div>
                 )}
                 {!calculating && dataLoaded && (
                   <ImportesSocios

@@ -55,15 +55,19 @@ const ImportesSocios = ({
               <div key={tipo} className="text-center">
                 <button
                   onClick={() => handleToggleExpandidoTipo(tipo)}
-                  className={`font-semibold cursor-pointer text-blue-600 hover:text-blue-500 ${
+                  className={`font-semibold cursor-pointer text-blue-600 hover:text-blue-500 mb-2 text-sm ${
                     tiposExpandidos.includes(tipo) ? 'font-bold underline' : ''
                   }`}
                 >
-                  {tipo === 'CBU' ? 'Bancos' : tipo === 'TAR' ? 'Tarjeta' : 'Totales'}
+                  {tipo === 'CBU'
+                    ? 'Bancos'
+                    : tipo === 'TAR'
+                    ? 'Tarjeta'
+                    : 'CBU + Tarjeta'}
                   {tiposExpandidos.includes(tipo) ? ' ⬆️' : ' ⬇️'}
                 </button>
                 {tiposExpandidos.includes(tipo) && (
-                  <div className="grid grid-cols-2">
+                  <div className="flex flex-col">
                     <div>
                       <p className="font-semibold">
                         <span className="underline">{`Env 0-90:`}</span>{' '}
@@ -98,34 +102,6 @@ const ImportesSocios = ({
                         </span>
                       </p>
                     </div>
-                    <div>
-                      <p className="font-semibold">
-                        <span className="underline">{`Env Total:`}</span>{' '}
-                        <span className="font-bold text-blue-500 block">
-                          {Number(importes[tipo].Total.Enviado).toLocaleString('es-AR', {
-                            style: 'currency',
-                            currency: 'ARS',
-                            minimumFractionDigits: 2,
-                          })}
-                        </span>
-                      </p>
-                      <p className="font-semibold">
-                        <span className="underline">{`Cob Total:`}</span>{' '}
-                        <span className="font-bold text-green-500 block">
-                          {Number(importes[tipo].Total.Cobrado).toLocaleString('es-AR', {
-                            style: 'currency',
-                            currency: 'ARS',
-                            minimumFractionDigits: 2,
-                          })}
-                        </span>
-                      </p>
-                      <p className="font-semibold">
-                        <span className="underline">{`Ratio Total:`}</span>{' '}
-                        <span className="font-bold text-green-500 block">
-                          {Number(importes[tipo].Total.Ratio).toFixed(2)}%
-                        </span>
-                      </p>
-                    </div>
                   </div>
                 )}
               </div>
@@ -135,9 +111,7 @@ const ImportesSocios = ({
         <div className="text-center">
           <button
             onClick={handleToggleExpandido}
-            className={`font-bold text-blue-600 hover:text-blue-500  ${
-              tiposExpandidos.length > 0 ? 'mt-1' : 'mt-0'
-            } ${expandido ? 'mt-3' : 'mt-0'}`}
+            className="font-bold text-blue-600 hover:text-blue-500"
           >
             {expandido ? 'Ocultar Importes ⬆️' : 'Mostrar Importes ⬇️'}
           </button>
