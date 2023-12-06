@@ -141,7 +141,30 @@ export const fetchFiltrosPagos = async () => {
     console.error(error);
   }
 };
-
+//Obtener Filtros para Tabla Historial DNI
+export const fetchFiltrosDNI = async () => {
+  try {
+    const res = await axios.get('https://cobranza.2.us-1.fl0.io/filtros/DNI');
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+//Obtener Filtros para Historial de Socio
+export const fetchFiltroSocio = async (ace) => {
+  try {
+    let url = `https://cobranza.2.us-1.fl0.io/filtros/filtroSocios?ace=${ace}`;
+    const res = await axios.get(url);
+    if (res.status === 200) {
+      return res.data.documentos || [];
+    } else {
+      throw new Error(`Error en la solicitud: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 // Obtener Datos de Socios
 export const fetchSociosData = async (numerosSocio) => {
   try {
@@ -182,16 +205,6 @@ export const fetchHistorialDNI = async (banco, periodo) => {
   }
 };
 
-//Obtener Filtros para Tabla Historial DNI
-export const fetchFiltrosDNI = async () => {
-  try {
-    const res = await axios.get('https://cobranza.2.us-1.fl0.io/filtros/DNI');
-    return res.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 //Servicio para el Login
 export const loginService = async (email, password) => {
   try {
@@ -202,5 +215,25 @@ export const loginService = async (email, password) => {
     return res.data;
   } catch (error) {
     throw error.response.data;
+  }
+};
+
+//Servicio para subir archivos
+export const uploadFile = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await axios.post(
+      'https://cobranza.2.us-1.fl0.io/archivos/subir_archivo',
+      formData,
+    );
+
+    // Maneja la respuesta según tus necesidades
+    return response.data;
+  } catch (error) {
+    // Manejar el error, mostrar un mensaje, etc.
+    console.error('Error al subir el archivo:', error);
+    throw error;
   }
 };

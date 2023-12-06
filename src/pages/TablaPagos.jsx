@@ -448,7 +448,7 @@ const TablaPagos = () => {
                   onClick={handleReset}
                   disabled={loading}
                 >
-                  Reiniciar
+                  Limpiar
                 </button>
 
                 <ExcelBoton uniqueDates={uniqueDates} data={data} loading={loading} />

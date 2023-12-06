@@ -22,12 +22,12 @@ const Historial = ({ datosFijos, cobranza }) => {
   });
 
   return (
-    <article className="my-5">
+    <article className="p-1">
       <table className="w-full border-collapse text-center table-fixed text-xs md:text-sm">
         <thead>
           <tr>
             <th
-              className="border-2 border-gray-800 bg-white text-black truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold"
+              className="border-2 border-black bg-slate-800 text-white truncate whitespace-normal md:whitespace-nowrap font-mono text-xs md:text-sm font-semibold md:font-bold"
               colSpan={diasCobro.length + 1}
             >
               {datosFijos && (
@@ -42,15 +42,15 @@ const Historial = ({ datosFijos, cobranza }) => {
             </th>
           </tr>
           <tr>
-            <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold">
-              Período
+            <th className="border-2 border-gray-800 bg-black text-white font-mono truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold">
+              PERÍODO
             </th>
             {diasCobro.map((dia, index) => (
               <th
                 key={index}
-                className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold"
+                className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold font-mono"
               >
-                Día {dia}
+                DÍA {dia}
               </th>
             ))}
           </tr>
@@ -58,7 +58,10 @@ const Historial = ({ datosFijos, cobranza }) => {
         <tbody>
           {periodos.map((periodo, index) => (
             <tr key={index}>
-              <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap italic">
+              <td
+                className="border-2 border-gray-800 text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap font-mono bg-white text-black"
+                title={getNombrePeriodo(periodo)}
+              >
                 {getNombrePeriodo(periodo)}
               </td>
               {diasCobro.map((dia, index) => {
@@ -104,15 +107,17 @@ const Historial = ({ datosFijos, cobranza }) => {
                   ? fechaCobro.split('-').slice(1).reverse().join('/')
                   : '';
 
-                const titleText = `${fechaCobroFormateada} ${descripcion} - Importe: ${importeTotal}`;
+                const titleText = codigosAplanados
+                  ? `${fechaCobroFormateada} - ${descripcion} - $${importeTotal}`
+                  : null;
 
                 return (
                   <td
                     key={index}
-                    className={`border-2 border-black text-center text-[0.50rem] md:text-sm font-bold truncate whitespace-nowrap ${cellColorClass}`}
+                    className={`border-2 border-black text-center text-[0.50rem] md:text-sm font-mono font-bold truncate whitespace-nowrap ${cellColorClass}`}
                     title={titleText}
                   >
-                    {codigosAplanados || '-'}
+                    {codigosAplanados || ''}
                   </td>
                 );
               })}
