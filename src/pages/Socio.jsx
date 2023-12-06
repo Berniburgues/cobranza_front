@@ -10,7 +10,6 @@ const Socio = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const initialNumerosSocio = searchParams.getAll('numerosSocio');
-
   const [numerosSocio, setNumerosSocio] = useState(initialNumerosSocio);
   const [datosFijos, setDatosFijos] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -19,16 +18,27 @@ const Socio = () => {
   const [dni, setDNI] = useState('');
   const [buscadorVisible, setBuscadorVisible] = useState(false);
 
+  //Mostrar u ocultar el botón de filtrador
   const toggleBuscador = () => {
     setBuscadorVisible(!buscadorVisible);
   };
 
+  //Función que activa el scrolleo hacia el tope de la página
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  //Función que se activa cuando cambian los dnis en el input text del componente hijo SocioSearch
   const handleNumerosSocioChange = (event) => {
     const numeros = event.target.value.split(',').map((num) => num.trim());
     setNumerosSocio(numeros.length > 1 ? numeros : numeros[0]);
     setErrorMessage(null);
   };
 
+  //Activa la búsqueda del botón Buscar del componente hijo SocioSearch
   const handleBuscarClick = async () => {
     setIsLoading(true);
     setErrorMessage(null);
@@ -45,13 +55,13 @@ const Socio = () => {
     }
   };
 
+  //Función para cargar los archivos en el input File del componente hijo SocioSearch
   const handleFileUpload = async (file) => {
     setIsLoading(true);
 
     try {
       const dnis = await uploadFile(file);
       setNumerosSocio(dnis.documentos || []);
-      handleBuscarClick();
     } catch (error) {
       console.error(error);
     } finally {
@@ -59,20 +69,19 @@ const Socio = () => {
     }
   };
 
+  //Resetear estados y limpiar la página
   const handleReset = () => {
     setNumerosSocio([]);
     setDatosFijos(null);
     setErrorMessage(null);
     setDNI('');
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+      fileInput.value = '';
+    }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
+  //Función para Buscar un DNI específico una vez que se renderizan las tarjetas
   const handleSearchByDNI = (dniInput) => {
     const foundSocioKey = Object.keys(datosFijos).find((socioKey) => {
       const socioDNI = datosFijos[socioKey]?.datosFijos?.documento || '';
@@ -89,6 +98,7 @@ const Socio = () => {
     }
   };
 
+  //Función que llama los filtros de los select de opciones predeterminadas en SocioSearch
   const handleSelectFetch = async (value) => {
     try {
       const filtrosSocioData = await fetchFiltroSocio(value);
@@ -98,6 +108,7 @@ const Socio = () => {
     }
   };
 
+  //Función que setea los dnis según el input text del componente SocioSearch
   const updateNumerosSocio = (documentos) => {
     setNumerosSocio(documentos);
   };

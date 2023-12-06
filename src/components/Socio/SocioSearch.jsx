@@ -93,9 +93,9 @@ const SocioSearch = ({
             loading ? 'boton_parpadeo' : ''
           }`}
         >
-          Cargando documentos..
+          Cargando documentos...
         </p>
-      )}{' '}
+      )}
       <div className="flex flex-row items-center justify-center mt-2 gap-5">
         <button
           className={`w-24 rounded-md bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 text-center text-sm border-2 border-black${
