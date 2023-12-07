@@ -2,6 +2,7 @@ import React from 'react';
 import { descripcionCodigo } from '../../utils/descripcionCodigos';
 import { getNombrePeriodo } from '../../utils/fechas';
 import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
+import { determinarColorPorBanco } from '../../utils/determinarColorPorBanco';
 
 const Historial = ({ datosFijos, cobranza }) => {
   // Obtener la lista única de días de cobro
@@ -27,7 +28,9 @@ const Historial = ({ datosFijos, cobranza }) => {
         <thead>
           <tr>
             <th
-              className="border-2 border-black bg-slate-800 text-white truncate whitespace-normal md:whitespace-nowrap font-mono text-xs md:text-sm font-semibold md:font-bold"
+              className={`border-2 border-black ${determinarColorPorBanco(
+                datosFijos.banco,
+              )} text-white truncate whitespace-normal md:whitespace-nowrap font-mono text-xs md:text-sm font-semibold md:font-bold`}
               colSpan={diasCobro.length + 1}
             >
               {datosFijos && (
