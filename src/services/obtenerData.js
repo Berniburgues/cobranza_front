@@ -36,6 +36,24 @@ export const fetchDataPagos = async (periodo, cbu, codigos, convenio, ExB) => {
   }
 };
 
+// Obtener Datos de Socios
+export const fetchSociosData = async (numerosSocio) => {
+  try {
+    const numerosSocioArray = Array.isArray(numerosSocio) ? numerosSocio : [numerosSocio];
+
+    const response = await axios.get(
+      `https://cobranza.2.us-1.fl0.io/clientes/socio?${numerosSocioArray
+        .map((num) => `numerosSocio=${num}`)
+        .join('&')}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener los datos de los socios:', error);
+    return null;
+  }
+};
+
 //Obtener Importes, Cuiles, Servicios
 export const fetchImportes = async (periodo, bco, exb) => {
   try {
@@ -163,23 +181,6 @@ export const fetchFiltroSocio = async (ace) => {
   } catch (error) {
     console.error(error);
     throw error;
-  }
-};
-// Obtener Datos de Socios
-export const fetchSociosData = async (numerosSocio) => {
-  try {
-    const numerosSocioArray = Array.isArray(numerosSocio) ? numerosSocio : [numerosSocio];
-
-    const response = await axios.get(
-      `https://cobranza.2.us-1.fl0.io/clientes/socio?${numerosSocioArray
-        .map((num) => `numerosSocio=${num}`)
-        .join('&')}`,
-    );
-
-    return response.data;
-  } catch (error) {
-    console.error('Error al obtener los datos de los socios:', error);
-    return null;
   }
 };
 

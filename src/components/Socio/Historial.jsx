@@ -5,6 +5,15 @@ import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 import { determinarColorPorBanco } from '../../utils/determinarColorPorBanco';
 
 const Historial = ({ datosFijos, cobranza }) => {
+  const informacionSocio = (
+    <div>
+      #{datosFijos.socio} || {datosFijos.nombre} {datosFijos.apellido} || DNI:{' '}
+      {datosFijos.documento} || CUIL: {datosFijos.cuil} || Banco:{' '}
+      {determinarBancoPorCBU(datosFijos.banco)}
+      {datosFijos.baja !== null && <> || Baja: {datosFijos.baja} </>}
+      {datosFijos.motivoBaja !== '' && <> || Motivo Baja: {datosFijos.motivoBaja} </>}
+    </div>
+  );
   // Obtener la lista única de días de cobro
   const diasCobro = [...new Set(cobranza.map((item) => item.dia))].sort((a, b) => a - b);
 
@@ -35,11 +44,7 @@ const Historial = ({ datosFijos, cobranza }) => {
             >
               {datosFijos && (
                 <>
-                  <div>
-                    #{datosFijos.socio} || {datosFijos.nombre} {datosFijos.apellido} ||
-                    DNI: {datosFijos.documento} || CUIL: {datosFijos.cuil} || Banco:{' '}
-                    {determinarBancoPorCBU(datosFijos.banco)}
-                  </div>
+                  <div>{informacionSocio}</div>
                 </>
               )}
             </th>
