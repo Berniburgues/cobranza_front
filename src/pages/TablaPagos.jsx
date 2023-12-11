@@ -448,10 +448,18 @@ const TablaPagos = () => {
                   onClick={handleReset}
                   disabled={loading}
                 >
-                  Limpiar
+                  Nueva Consulta
                 </button>
 
-                <ExcelBoton uniqueDates={uniqueDates} data={data} loading={loading} />
+                <ExcelBoton
+                  uniqueDates={uniqueDates}
+                  data={data}
+                  loading={loading}
+                  selectedPeriod={selectedPeriod}
+                  selectedBanco={selectedBanco}
+                  selectedCodigo={selectedCodigo}
+                  selectedExb={selectedExb}
+                />
               </div>
             </>
           )}

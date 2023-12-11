@@ -110,7 +110,7 @@ const SocioSearch = ({
           className="w-24 rounded-md bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 text-center text-sm border-2 border-black"
           onClick={handleReset}
         >
-          Limpiar
+          Nueva Consulta
         </button>
       </div>
     </div>

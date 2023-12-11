@@ -139,7 +139,7 @@ const HistorialDNI = () => {
             }`}
             disabled={isLoading || data.length === 0 || !banco}
           >
-            Reiniciar
+            Nueva Consulta
           </button>
         </div>
       )}

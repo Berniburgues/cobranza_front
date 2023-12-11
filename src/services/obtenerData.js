@@ -229,8 +229,6 @@ export const uploadFile = async (file) => {
       'https://cobranza.2.us-1.fl0.io/archivos/subir_archivo',
       formData,
     );
-
-    // Maneja la respuesta según tus necesidades
     return response.data;
   } catch (error) {
     // Manejar el error, mostrar un mensaje, etc.

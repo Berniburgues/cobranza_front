@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
+import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
+import { getNombrePeriodo } from '../../utils/fechas';
 
-const ExcelBoton = ({ uniqueDates, data, loading }) => {
+const ExcelBoton = ({
+  uniqueDates,
+  data,
+  loading,
+  selectedPeriod,
+  selectedBanco,
+  selectedCodigo,
+  selectedExb,
+}) => {
   const [exporting, setExporting] = useState(false);
 
   const exportToExcel = async () => {
@@ -11,7 +21,16 @@ const ExcelBoton = ({ uniqueDates, data, loading }) => {
 
     try {
       const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet('TablaPagos');
+      const workName = `Tabla ${getNombrePeriodo(selectedPeriod)}${
+        selectedBanco
+          ? ` - ${determinarBancoPorCBU(selectedBanco)}`
+          : ' - Todos los Bancos'
+      }${
+        selectedCodigo && selectedCodigo.length > 0
+          ? ` - ${selectedCodigo.join(', ')}`
+          : ''
+      }${selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''}.xlsx`;
+      const worksheet = workbook.addWorksheet(workName);
 
       // Encabezados de la tabla
       const headerRow = [
@@ -95,8 +114,19 @@ const ExcelBoton = ({ uniqueDates, data, loading }) => {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       });
 
+      // Generar el nombre del archivo
+      const fileName = `Tabla ${getNombrePeriodo(selectedPeriod)}${
+        selectedBanco
+          ? ` - ${determinarBancoPorCBU(selectedBanco)}`
+          : ' - Todos los Bancos'
+      }${
+        selectedCodigo && selectedCodigo.length > 0
+          ? ` - ${selectedCodigo.join(', ')}`
+          : ''
+      }${selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''}.xlsx`;
+
       // Guardar el blob como un archivo Excel
-      saveAs(blob, 'tabla_pagos.xlsx');
+      saveAs(blob, fileName);
     } catch (error) {
       console.error('Error al exportar a Excel', error);
     } finally {
