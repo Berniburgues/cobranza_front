@@ -41,7 +41,7 @@ const SocioSearch = ({
         Buscar Historial de Socio por DNI:
       </h2>
       <div className="flex flex-row items-center space-x-2">
-        <div className="flex flex-col w-1/3">
+        <div className="flex flex-col w-auto">
           <label htmlFor="dniInput" className="text-xs italic text-center pb-1">
             Ingresar el/los DNI manualmente:
           </label>
@@ -54,9 +54,19 @@ const SocioSearch = ({
             placeholder="Ingresar DNI"
           />
         </div>
-        <div className="flex flex-col w-1/3">
-          <label htmlFor="fileInput" className="text-xs italic text-center pb-1">
-            Seleccionar archivo (.txt, .csv, excel):
+        <div className="flex flex-col w-auto">
+          <label
+            htmlFor="fileInput"
+            className="text-xs italic text-center pb-1 flex justify-center"
+          >
+            Seleccionar archivo (.txt, .csv, excel)
+            <a
+              href="https://drive.google.com/file/d/1WhDBhBnPKiWJsFN6ujiJALHc-raU2bgC/view?usp=sharing"
+              className="italic text-blue-700 hover:text-blue-500 text-xs font-semibold pl-2"
+              target="blank"
+            >
+              Ver Formato (pág. 2)
+            </a>
           </label>
           <input
             id="fileInput"
@@ -66,7 +76,7 @@ const SocioSearch = ({
             className="border-2 text-sm px-1 py-[1px] border-black rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
-        <div className="flex flex-col w-1/3">
+        <div className="flex flex-col w-auto">
           <label htmlFor="selectInput" className="text-xs italic text-center pb-1">
             Opciones Predeterminadas:
           </label>

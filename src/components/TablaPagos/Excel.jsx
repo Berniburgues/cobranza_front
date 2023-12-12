@@ -19,32 +19,29 @@ const ExcelBoton = ({
     if (exporting) return;
     setExporting(true);
 
+    const getTipo = (codigo) => {
+      const tarjetaCodigos = ['001', '002', '003', '004', '005', '006'];
+      return tarjetaCodigos.includes(codigo) ? 'Tarjeta' : 'Banco';
+    };
+
+    const getBancoText = (selectedBanco) => {
+      return selectedBanco
+        ? `${getTipo(selectedBanco)} ${determinarBancoPorCBU(selectedBanco)} - `
+        : 'Todos los Bancos - ';
+    };
+
     try {
       const workbook = new ExcelJS.Workbook();
-      const workName = `Tabla ${getNombrePeriodo(selectedPeriod)}${
-        selectedBanco
-          ? ` - ${determinarBancoPorCBU(selectedBanco)}`
-          : ' - Todos los Bancos'
-      }${
+
+      const workName = `${getBancoText(selectedBanco)}${getNombrePeriodo(
+        selectedPeriod,
+      )}${
         selectedCodigo && selectedCodigo.length > 0
           ? ` - ${selectedCodigo.join(', ')}`
           : ''
       }${selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''}`;
+
       const worksheet = workbook.addWorksheet(workName);
-
-      // Encabezado en la primera celda
-      const headerCell = worksheet.getCell('A1');
-      headerCell.value = workName;
-
-      // Formato del encabezado
-      headerCell.alignment = { vertical: 'middle', horizontal: 'center' };
-      headerCell.font = { bold: true, italic: true, size: 16 };
-
-      // Merge de celdas si es necesario
-      const numberOfColumns = 7 + (uniqueDates.length || 0);
-      if (numberOfColumns > 1) {
-        worksheet.mergeCells(`A1:${String.fromCharCode(64 + numberOfColumns)}1`);
-      }
 
       // Encabezados de la tabla
       const headerRow = [
@@ -80,7 +77,7 @@ const ExcelBoton = ({
 
       // Aplicar estilos de fondo solo a las filas de datos
       worksheet.eachRow((row, rowIndex) => {
-        if (rowIndex > 2) {
+        if (rowIndex > 1) {
           // Comenzar a aplicar estilos a partir de la segunda fila (los datos)
           row.eachCell((cell, colIndex) => {
             const codigo = cell.value;

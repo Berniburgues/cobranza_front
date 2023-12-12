@@ -6,11 +6,11 @@ export function determinarBancoPorCBU(cbu) {
   if (primerosDigitos === '011') {
     return 'Nación';
   } else if (primerosDigitos === '072') {
-    return 'Santander Río';
+    return 'Santander';
   } else if (primerosDigitos === '007') {
     return 'Galicia';
   } else if (primerosDigitos === '017') {
-    return 'Francés (BBVA)';
+    return 'Francés';
   } else if (primerosDigitos === '034') {
     return 'Patagonia';
   } else if (primerosDigitos === '027') {
@@ -20,11 +20,11 @@ export function determinarBancoPorCBU(cbu) {
   } else if (primerosDigitos === '015') {
     return 'ICBC';
   } else if (primerosDigitos === '020') {
-    return 'Provincia de Córdoba';
+    return 'De Córdoba';
   } else if (primerosDigitos === '016') {
     return 'Citibank';
   } else if (primerosDigitos === '029') {
-    return 'Ciudad de Bs.As';
+    return 'Ciudad';
   } else if (primerosDigitos === '044') {
     return 'Hipotecario';
   } else if (primerosDigitos === '045') {
@@ -96,7 +96,7 @@ export function determinarBancoPorCBU(cbu) {
   } else if (primerosDigitos === '415') {
     return 'Transatlántico';
   } else if (primerosDigitos === '426') {
-    return 'Banco BICA S.A';
+    return 'BICA S.A';
   } else if (primerosDigitos === '431') {
     return 'COINAG';
   } else if (primerosDigitos === '448') {
