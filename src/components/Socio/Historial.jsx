@@ -3,6 +3,7 @@ import { descripcionCodigo } from '../../utils/descripcionCodigos';
 import { getNombrePeriodo } from '../../utils/fechas';
 import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 import { determinarColorPorBanco } from '../../utils/determinarColorPorBanco';
+import ExcelSocio from './Excel';
 
 const Historial = ({ datosFijos, cobranza }) => {
   const informacionSocio = (
@@ -10,10 +11,13 @@ const Historial = ({ datosFijos, cobranza }) => {
       #{datosFijos.socio} || {datosFijos.nombre} {datosFijos.apellido} || DNI:{' '}
       {datosFijos.documento} || CUIL: {datosFijos.cuil} || Banco:{' '}
       {determinarBancoPorCBU(datosFijos.banco)}
-      {datosFijos.baja !== null && <> || Baja: {datosFijos.baja} </>}
-      {datosFijos.motivoBaja !== '' && <> || Motivo Baja: {datosFijos.motivoBaja} </>}
+      {datosFijos.baja !== null ? ` || Baja: ${datosFijos.baja}` : ''}
+      {datosFijos.baja !== null && datosFijos.motivoBaja !== ''
+        ? ` || Motivo Baja: ${datosFijos.motivoBaja}`
+        : ''}
     </div>
   );
+
   // Obtener la lista única de días de cobro
   const diasCobro = [...new Set(cobranza.map((item) => item.dia))].sort((a, b) => a - b);
 
@@ -133,6 +137,12 @@ const Historial = ({ datosFijos, cobranza }) => {
           ))}
         </tbody>
       </table>
+      <ExcelSocio
+        diasCobro={diasCobro}
+        periodos={periodos}
+        datosAgrupados={datosAgrupados}
+        datosFijos={datosFijos}
+      />
     </article>
   );
 };

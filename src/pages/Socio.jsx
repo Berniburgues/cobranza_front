@@ -1,4 +1,4 @@
-// Socio.js
+// Socio.jsx
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { fetchSociosData, uploadFile, fetchFiltroSocio } from '../services/obtenerData';

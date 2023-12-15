@@ -12,6 +12,7 @@ const ExcelBoton = ({
   selectedBanco,
   selectedCodigo,
   selectedExb,
+  dniFilter,
 }) => {
   const [exporting, setExporting] = useState(false);
 
@@ -31,6 +32,7 @@ const ExcelBoton = ({
     };
 
     try {
+      //Creación del nuevo Archivo Excel
       const workbook = new ExcelJS.Workbook();
 
       const workName = `${getBancoText(selectedBanco)}${getNombrePeriodo(
@@ -39,8 +41,11 @@ const ExcelBoton = ({
         selectedCodigo && selectedCodigo.length > 0
           ? ` - ${selectedCodigo.join(', ')}`
           : ''
-      }${selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''}`;
+      }${dniFilter ? ` - DNI's menores e iguales a ${dniFilter}` : ''}${
+        selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''
+      }`;
 
+      //Nombre de la hoja/archivo
       const worksheet = workbook.addWorksheet(workName);
 
       // Encabezados de la tabla

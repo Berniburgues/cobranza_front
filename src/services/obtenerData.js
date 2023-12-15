@@ -1,7 +1,14 @@
 import axios from 'axios';
 
 //Obtener Datos para Tabla Madre
-export const fetchDataPagos = async (periodo, cbu, codigos, convenio, ExB) => {
+export const fetchDataPagos = async (
+  periodo,
+  cbu,
+  codigos,
+  convenio,
+  ExB,
+  dniComienzaCon,
+) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/cobranzaSocios?periodo=${periodo}`;
 
@@ -22,6 +29,10 @@ export const fetchDataPagos = async (periodo, cbu, codigos, convenio, ExB) => {
 
     if (ExB) {
       url += `&ExB=${ExB}`;
+    }
+
+    if (dniComienzaCon) {
+      url += `&dniComienzaCon=${dniComienzaCon}`;
     }
 
     const response = await axios.get(url);

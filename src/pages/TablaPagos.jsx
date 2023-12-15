@@ -17,6 +17,7 @@ import Paginacion from '../components/TablaPagos/Paginacion';
 import ExcelBoton from '../components/TablaPagos/Excel';
 import ImportesSocios from '../components/TablaPagos/ImportesSocios';
 import './TablaPagos.css';
+import ModalCodigos from '../components/TablaPagos/ModalCodigos';
 
 const TablaPagos = () => {
   const [data, setData] = useState([]);
@@ -30,6 +31,7 @@ const TablaPagos = () => {
   const [selectedCodigo, setSelectedCodigo] = useState([]);
   const [selectedConvenio, setSelectedConvenio] = useState('');
   const [selectedExb, setSelectedExb] = useState('');
+  const [dniFilter, setDniFilter] = useState('');
   const [uniqueDates, setUniqueDates] = useState([]);
   const [pageSize, setPageSize] = useState(5000);
   const [pageNumber, setPageNumber] = useState(1);
@@ -63,7 +65,6 @@ const TablaPagos = () => {
       },
     },
   });
-
   const [importesPorFecha, setImportesPorFecha] = useState([]);
   const [altaCuiles, setAltaCuiles] = useState('-');
   const [bajaCuiles, setBajaCuiles] = useState('-');
@@ -71,6 +72,11 @@ const TablaPagos = () => {
   const [selectChanges, setSelectChanges] = useState(false);
   const [serviciosTitulares, setServiciosTitulares] = useState('-');
   const [serviciosAdherentes, setServiciosAdherentes] = useState('-');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   // Cargar filtros de los select al cargar la página
   useEffect(() => {
@@ -112,6 +118,7 @@ const TablaPagos = () => {
         selectedCodigo,
         selectedConvenio,
         selectedExb,
+        dniFilter,
       );
 
       // Se agrega esta verificación para asegurarse de que result.data[0] no sea undefined o null
@@ -229,6 +236,7 @@ const TablaPagos = () => {
     setSelectedCodigo([]);
     setSelectedConvenio('');
     setSelectedExb('');
+    setDniFilter('');
     setData([]);
     setUniqueDates([]);
     setCount(0);
@@ -345,7 +353,7 @@ const TablaPagos = () => {
                 />
 
                 <Select
-                  className="border-2 border-black rounded-md w-[206px] h-full"
+                  className="border-2 border-black rounded-md w-48 h-full"
                   value={selectedCodigo.map((code) => ({ value: code, label: code }))}
                   name="selectedCodigo"
                   options={
@@ -368,6 +376,14 @@ const TablaPagos = () => {
                   styles={{
                     indicatorSeparator: () => ({ display: 'none' }),
                   }}
+                />
+
+                <input
+                  type="number"
+                  value={dniFilter}
+                  onChange={(e) => setDniFilter(e.target.value)}
+                  placeholder="DNI (ej 14)"
+                  className="border-2 border-black rounded-md p-1 text-center w-20 h-[42px]"
                 />
 
                 <Select
@@ -451,6 +467,8 @@ const TablaPagos = () => {
                   Nueva Consulta
                 </button>
 
+                <ModalCodigos isOpen={modalIsOpen} closeModal={closeModal} />
+
                 <ExcelBoton
                   uniqueDates={uniqueDates}
                   data={data}
@@ -459,6 +477,7 @@ const TablaPagos = () => {
                   selectedBanco={selectedBanco}
                   selectedCodigo={selectedCodigo}
                   selectedExb={selectedExb}
+                  dniFilter={dniFilter}
                 />
               </div>
             </>
@@ -624,8 +643,15 @@ const TablaPagos = () => {
                             return (
                               <td
                                 key={date}
-                                className={`border-2 border-black font-semibold ${backgroundColorClass}`}
+                                className={`border-2 border-black font-semibold ${backgroundColorClass} ${
+                                  codigo ? 'hover:cursor-pointer' : ''
+                                }`}
                                 title={descripcionCodigo(codigo)}
+                                onClick={() => {
+                                  if (codigo) {
+                                    setModalIsOpen(true);
+                                  }
+                                }}
                               >
                                 {codigo}
                               </td>
