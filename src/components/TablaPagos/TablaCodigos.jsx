@@ -1,5 +1,7 @@
 import React from 'react';
 import { descripcionCodigo } from '../../utils/descripcionCodigos';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const TablaCodigos = () => {
   const codigos = [
@@ -73,9 +75,21 @@ const TablaCodigos = () => {
     }
   };
 
+  // Función para generar el PDF a partir de la tabla
+  const exportPDF = () => {
+    // Obtener el elemento HTML de la tabla
+    const input = document.getElementById('tabla-codigos');
+    // Crear una instancia de jsPDF
+    const pdf = new jsPDF();
+    // Usar el método autoTable para convertir la tabla en PDF
+    pdf.autoTable({ html: input });
+    // Guardar el PDF con el nombre que quieras
+    pdf.save('tabla-codigos.pdf');
+  };
+
   return (
     <article>
-      <table className="table">
+      <table id="tabla-codigos" className="table">
         <thead>
           <tr className="text-lg border-b border-white">
             <th>CÓDIGO</th>
@@ -91,6 +105,12 @@ const TablaCodigos = () => {
           ))}
         </tbody>
       </table>
+      <button
+        onClick={exportPDF}
+        className="bg-red-500 hover:bg-red-700 text-white border-2 border-black h-auto rounded-lg text-sm shadow-md w-1/3 mt-1"
+      >
+        Descargar PDF
+      </button>
     </article>
   );
 };

@@ -351,32 +351,39 @@ const TablaPagos = () => {
                     indicatorSeparator: () => ({ display: 'none' }),
                   }}
                 />
-
-                <Select
-                  className="border-2 border-black rounded-md w-48 h-full"
-                  value={selectedCodigo.map((code) => ({ value: code, label: code }))}
-                  name="selectedCodigo"
-                  options={
-                    selectedPeriod
-                      ? periodos
-                          .find((periodoData) => periodoData.periodo === selectedPeriod)
-                          ?.codigos.map((codigo) => ({
-                            value: codigo,
-                            label: codigo,
-                          }))
-                      : []
-                  }
-                  isMulti
-                  onChange={(selectedOptions) =>
-                    handleSelectChange('selectedCodigo', selectedOptions)
-                  }
-                  getOptionLabel={(option) => option.label}
-                  getOptionValue={(option) => option.value}
-                  placeholder="Código"
-                  styles={{
-                    indicatorSeparator: () => ({ display: 'none' }),
-                  }}
-                />
+                <div className="flex flex-col mb-4">
+                  <p
+                    className="hover:cursor-pointer text-blue-600 font-semibold hover:text-blue-500 text-center text-xs mb-0" // Agrega la clase 'mb-0' para quitar el margen inferior
+                    onClick={() => setModalIsOpen(true)}
+                  >
+                    Ver Códigos
+                  </p>
+                  <Select
+                    className="border-2 border-black rounded-md w-48 h-full"
+                    value={selectedCodigo.map((code) => ({ value: code, label: code }))}
+                    name="selectedCodigo"
+                    options={
+                      selectedPeriod
+                        ? periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.codigos.map((codigo) => ({
+                              value: codigo,
+                              label: codigo,
+                            }))
+                        : []
+                    }
+                    isMulti
+                    onChange={(selectedOptions) =>
+                      handleSelectChange('selectedCodigo', selectedOptions)
+                    }
+                    getOptionLabel={(option) => option.label}
+                    getOptionValue={(option) => option.value}
+                    placeholder="Código"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+                </div>
 
                 <input
                   type="number"
