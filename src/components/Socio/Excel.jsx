@@ -105,13 +105,17 @@ const ExcelSocio = ({ diasCobro, periodos, datosAgrupados, datosFijos }) => {
             ) {
               // Aplicar colores
               let fillColor = '';
+
               if (codigo === 'ACE') {
                 fillColor = '66FF66'; // Verde
               } else if (codigo === 'R10') {
                 fillColor = 'FFFF99'; // Amarillo
+              } else if (codigo === 'R10-ACE' || codigo === 'ACE-R10') {
+                fillColor = 'FFA500'; // Naranja
               } else {
                 fillColor = 'FF9999'; // Rojo
               }
+
               cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',

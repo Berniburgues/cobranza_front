@@ -10,7 +10,7 @@ export const fetchDataPagos = async (
   dniComienzaCon,
 ) => {
   try {
-    let url = `https://cobranza.2.us-1.fl0.io/clientes/cobranzaSocios?periodo=${periodo}`;
+    let url = `http://localhost:8080/clientes/cobranzaSocios?periodo=${periodo}`;
 
     if (cbu) {
       url += `&cbu=${cbu}`;

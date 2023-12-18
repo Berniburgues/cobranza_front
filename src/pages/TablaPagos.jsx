@@ -284,7 +284,7 @@ const TablaPagos = () => {
   return (
     <div className="flex items-center justify-center font-sans">
       <div className="container mx-auto">
-        <div className="mb-1 flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center">
           {showLoader ? (
             <LoaderFiltros />
           ) : (
@@ -352,16 +352,18 @@ const TablaPagos = () => {
                   }}
                 />
                 <div className="flex flex-col mb-4">
-                  <p
-                    className="hover:cursor-pointer text-blue-600 font-semibold hover:text-blue-500 text-center text-xs mb-0" // Agrega la clase 'mb-0' para quitar el margen inferior
+                  <label
+                    className="hover:cursor-pointer text-blue-700 font-semibold hover:text-blue-500 text-center text-xs mb-0" // Agrega la clase 'mb-0' para quitar el margen inferior
                     onClick={() => setModalIsOpen(true)}
+                    htmlFor="selectedCodigo"
                   >
                     Ver Códigos
-                  </p>
+                  </label>
                   <Select
                     className="border-2 border-black rounded-md w-48 h-full"
                     value={selectedCodigo.map((code) => ({ value: code, label: code }))}
                     name="selectedCodigo"
+                    id="selectedCodigo"
                     options={
                       selectedPeriod
                         ? periodos
@@ -450,7 +452,7 @@ const TablaPagos = () => {
                   }}
                 />
               </div>
-              <div className="flex items-center gap-2 text-xs pt-1">
+              <div className="flex items-center gap-2 text-xs">
                 <button
                   className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
       ${loading ? 'cursor-not-allowed opacity-50' : ''}
