@@ -21,6 +21,7 @@ import ModalCodigos from '../components/TablaPagos/ModalCodigos';
 
 const TablaPagos = () => {
   const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const [searchClicked, setSearchClicked] = useState(false); // Nuevo estado
@@ -104,7 +105,7 @@ const TablaPagos = () => {
     }
   };
 
-  //Función que se activa al hacer click en el Botón de Búsqueda. Setea todos los estados.
+  // Función que se activa al hacer click en el Botón de Búsqueda. Setea todos los estados.
   const handleSearch = async () => {
     setPageNumber(1);
     setLoading(true);
@@ -164,13 +165,48 @@ const TablaPagos = () => {
       } else {
         // Manejar el caso en el que result.data[0] es undefined o null
         console.error('Error: result.data[0] es undefined o null');
+        setError(
+          <>
+            No hay Socios que cumplan con los requisitos solicitados, por favor realice
+            una{' '}
+            <span
+              className="text-blue-700 cursor-pointer hover:text-blue-500 underline italic boton_parpadeo"
+              onClick={handleReset}
+            >
+              nueva consulta
+            </span>
+          </>,
+        );
+
+        setCalculating(false);
         setLoading(false);
       }
     } catch (error) {
-      console.error(error);
+      console.error(
+        'Error al comunicarse con el Servidor. Intentelo más tarde. Código de Error:',
+        error,
+      );
+
+      // Personalizar el mensaje de error dependiendo del tipo de error
+      if (error.response) {
+        // La solicitud fue hecha y el servidor respondió con un estado de error
+        setError(
+          'Error en la respuesta del Servidor. Intentelo más tarde. Código de Error: ' +
+            error.response.status,
+        );
+      } else if (error.request) {
+        // La solicitud fue hecha pero no se recibió respuesta
+        setError(
+          'No se recibió respuesta del Servidor. Verifique su conexión a Internet e intentelo luego.',
+        );
+      } else {
+        // Ocurrió un error al configurar la solicitud o al procesar la respuesta
+        setError('Error al procesar la solicitud. Inténtelo nuevamente más tarde.');
+      }
+
+      setCalculating(false);
       setLoading(false);
       setDataLoaded(true);
-      setCalculating(false);
     }
   };
 
@@ -238,6 +274,7 @@ const TablaPagos = () => {
     setSelectedExb('');
     setDniFilter('');
     setData([]);
+    setError(null);
     setUniqueDates([]);
     setCount(0);
     setBajaCuiles('-');
@@ -360,7 +397,7 @@ const TablaPagos = () => {
                     Ver Códigos
                   </label>
                   <Select
-                    className="border-2 border-black rounded-md w-48 h-full"
+                    className="border-2 border-black rounded-md w-52 h-full"
                     value={selectedCodigo.map((code) => ({ value: code, label: code }))}
                     name="selectedCodigo"
                     id="selectedCodigo"
@@ -452,7 +489,7 @@ const TablaPagos = () => {
                   }}
                 />
               </div>
-              <div className="flex items-center gap-2 text-xs">
+              <div className="flex items-center gap-2 text-xs pb-2">
                 <button
                   className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
       ${loading ? 'cursor-not-allowed opacity-50' : ''}
@@ -501,6 +538,8 @@ const TablaPagos = () => {
               </h2>
             )}
 
+            {error && <p className="text-red-500 font-bold text-center">{error}</p>}
+
             {searchClicked && (
               <>
                 {calculating && (
@@ -515,7 +554,7 @@ const TablaPagos = () => {
                     <LoaderFiltros />
                   </div>
                 )}
-                {!calculating && dataLoaded && (
+                {!calculating && dataLoaded && !error && (
                   <ImportesSocios
                     importes={importes}
                     altaCuiles={altaCuiles}

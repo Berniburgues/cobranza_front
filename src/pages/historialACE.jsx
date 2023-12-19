@@ -132,7 +132,7 @@ const HistorialDNI = () => {
           </button>
           <button
             onClick={handleResetClick}
-            className={`w-24 rounded-md justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
+            className={`w-auto rounded-md justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
               isLoading || data.length === 0 || !banco
                 ? 'cursor-not-allowed opacity-50'
                 : ''
@@ -148,11 +148,6 @@ const HistorialDNI = () => {
           <p className="italic font-semibold text-red-500">{errorMessage}</p>
         ) : (
           <>
-            <p className="font-semibold text-center text-sm mb-2">
-              Socios encontrados con pagos{' '}
-              <span className="italic text-green-500 underline">aceptados:</span>
-              <span className="font-bold text-green-500"> {data.count}</span>
-            </p>
             <HistorialDNITable data={data.data} />
           </>
         )}

@@ -65,6 +65,28 @@ export const fetchSociosData = async (numerosSocio) => {
   }
 };
 
+//Obtener Datos para Historial de DNI
+export const fetchHistorialDNI = async (banco, periodo) => {
+  try {
+    // Realizar la solicitud GET al servidor con los parámetros banco y periodo
+    const response = await axios.get(
+      `https://cobranza.2.us-1.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}`,
+    );
+
+    // Verificar si la respuesta tiene datos
+    if (response.data && response.data.data) {
+      return response.data; // Devuelve tanto el count como los datos
+    } else {
+      // Si la respuesta está vacía o no tiene datos, devuelve un objeto vacío
+      return { count: 0, data: [] };
+    }
+  } catch (error) {
+    // Manejar cualquier error que ocurra durante la solicitud
+    console.error('Error al obtener los datos del historial:', error);
+    return { count: 0, data: [] }; // Devuelve un objeto vacío en caso de error
+  }
+};
+
 //Obtener Importes, Cuiles, Servicios
 export const fetchImportes = async (periodo, bco, exb) => {
   try {
@@ -192,28 +214,6 @@ export const fetchFiltroSocio = async (ace) => {
   } catch (error) {
     console.error(error);
     throw error;
-  }
-};
-
-//Obtener Datos para Historial de DNI
-export const fetchHistorialDNI = async (banco, periodo) => {
-  try {
-    // Realizar la solicitud GET al servidor con los parámetros banco y periodo
-    const response = await axios.get(
-      `https://cobranza.2.us-1.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}`,
-    );
-
-    // Verificar si la respuesta tiene datos
-    if (response.data && response.data.data) {
-      return response.data; // Devuelve tanto el count como los datos
-    } else {
-      // Si la respuesta está vacía o no tiene datos, devuelve un objeto vacío
-      return { count: 0, data: [] };
-    }
-  } catch (error) {
-    // Manejar cualquier error que ocurra durante la solicitud
-    console.error('Error al obtener los datos del historial:', error);
-    return { count: 0, data: [] }; // Devuelve un objeto vacío en caso de error
   }
 };
 

@@ -162,7 +162,7 @@ const HistorialDNITable = ({ data }) => {
                       className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white cursor-pointer"
                     >
                       <Link
-                        to={`/tablas/socio?numeroSocio=${socio.Socio}`}
+                        to={`/tablas/socio?numerosSocio=${socio.DNI}`}
                         target="_blank"
                       >
                         {socio.Socio}
@@ -181,23 +181,40 @@ const HistorialDNITable = ({ data }) => {
                     {getNombrePeriodo(periodo)}
                   </td>
                   {diasOrdenados.map((dia) => {
-                    const diaColumnData = socio.Pagos[periodo]
-                      .filter((pago) => pago.dia === dia)
-                      .map((pago, index) => (
+                    const códigosDelDía = socio.Pagos[periodo].filter(
+                      (pago) => pago.dia === dia,
+                    );
+
+                    const contenidoDelDía =
+                      códigosDelDía.length > 0 ? (
                         <div
-                          key={index}
-                          title={formatFecha(pago.FechaCobro)}
-                          className="bg-green-500"
+                          title={formatFecha(códigosDelDía[0].FechaCobro)}
+                          className={`${
+                            códigosDelDía.some((pago) => pago.Codigo === 'ACE')
+                              ? 'bg-green-500'
+                              : ''
+                          } ${
+                            códigosDelDía.some((pago) => pago.Codigo === 'R10')
+                              ? 'bg-yellow-400'
+                              : ''
+                          }  ${
+                            códigosDelDía.length > 1
+                              ? 'bg-gradient-to-b from-yellow-400 to-green-500'
+                              : ''
+                          }`}
                         >
-                          {pago.Codigo}
+                          {códigosDelDía.map((pago) => pago.Codigo).join('-')}
                         </div>
-                      ));
+                      ) : (
+                        '-'
+                      );
+
                     return (
                       <td
                         key={dia}
                         className="border-2 border-black text-center text-[0.50rem] md:text-sm font-bold truncate whitespace-nowrap p-0"
                       >
-                        {diaColumnData.length > 0 ? diaColumnData : '-'}
+                        {contenidoDelDía}
                       </td>
                     );
                   })}
