@@ -351,7 +351,7 @@ const TablaPagos = () => {
                     indicatorSeparator: () => ({ display: 'none' }),
                   }}
                 />
-                <div className="flex flex-col mb-4">
+                <div className="flex flex-col pb-4">
                   <label
                     className="hover:cursor-pointer text-blue-700 font-semibold hover:text-blue-500 text-center text-xs mb-0" // Agrega la clase 'mb-0' para quitar el margen inferior
                     onClick={() => setModalIsOpen(true)}
