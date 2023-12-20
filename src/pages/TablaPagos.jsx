@@ -330,7 +330,9 @@ const TablaPagos = () => {
             <>
               <div className="flex items-center gap-2 text-xs z-50 whitespace-nowrap">
                 <Select
-                  className="border-2 border-black rounded-md w-28 h-full"
+                  className={`border-2 rounded-md w-28 h-full focus:outline-none ${
+                    !selectedPeriod ? 'border-red-500' : 'border-black'
+                  }`}
                   value={
                     selectedPeriod
                       ? {
@@ -500,13 +502,13 @@ const TablaPagos = () => {
               <div className="flex items-center gap-2 text-xs pb-2">
                 <button
                   className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
-      ${loading ? 'cursor-not-allowed opacity-50' : ''}
+      ${loading || !selectedPeriod ? 'cursor-not-allowed opacity-50' : ''}
       ${selectChanges ? 'boton_parpadeo' : ''}`}
                   onClick={() => {
                     handleSearch();
                     setSelectChanges(false);
                   }}
-                  disabled={loading}
+                  disabled={loading || !selectedPeriod}
                 >
                   {loading ? 'Cargando Tabla..' : 'Buscar'}
                 </button>
