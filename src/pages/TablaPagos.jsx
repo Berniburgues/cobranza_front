@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import Select from 'react-select';
 import {
   fetchDataPagos,
@@ -20,6 +21,7 @@ import './TablaPagos.css';
 import ModalCodigos from '../components/TablaPagos/ModalCodigos';
 
 const TablaPagos = () => {
+  const userContext = useContext(UserContext);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -444,7 +446,13 @@ const TablaPagos = () => {
                     selectedPeriod
                       ? periodos
                           .find((periodoData) => periodoData.periodo === selectedPeriod)
-                          ?.convenios.map((convenio) => ({
+                          ?.convenios.filter((convenio) => {
+                            // Filtrar 'PARODI' si el rol del usuario es 'parcial'
+                            return (
+                              userContext.user?.rol !== 'parcial' || convenio !== 'PARODI'
+                            );
+                          })
+                          .map((convenio) => ({
                             value: convenio,
                             label: convenio,
                           }))
@@ -619,94 +627,102 @@ const TablaPagos = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {paginatedData.map((socio) => (
-                        <tr key={socio.ID} className="text-center">
-                          <td className="p-1 border-2 border-black hover:bg-black hover:text-white">
-                            <Link
-                              to={`/tablas/socio?numerosSocio=${socio.DNI}`}
-                              target="_blank"
-                              className="block w-full h-full text-center"
-                              title="Buscar Historial"
-                            >
-                              {socio.Socio}
-                            </Link>
-                          </td>
-                          <td
-                            className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem] capitalize"
-                            title={socio.NombreCompleto}
-                          >
-                            {socio.NombreCompleto}
-                          </td>
-                          <td className="p-1 border-2 border-black">{socio.DNI}</td>
-                          <td className="p-1 border-2 border-black">{socio.CUIL}</td>
-                          <td
-                            className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem]"
-                            title={socio.Convenio}
-                          >
-                            {socio.Convenio}
-                          </td>
-                          <td
-                            className={`p-1 border-2 border-black font-semibold ${
-                              socio.CBU === '027'
-                                ? 'bg-white'
-                                : socio.CBU === '004' ||
-                                  socio.CBU === '005' ||
-                                  socio.CBU === '003' ||
-                                  socio.CBU === '006'
-                                ? 'bg-violet-500'
-                                : 'bg-blue-500'
-                            }`}
-                            title={determinarBancoPorCBU(socio.CBU)}
-                          >
-                            {socio.CBU}
-                          </td>
-                          <td
-                            className={`p-1 border-2 border-black font-semibold ${
-                              socio.ExB === '027'
-                                ? 'bg-white'
-                                : socio.ExB === 'TAR' || socio.ExB === 'PRI'
-                                ? 'bg-violet-500'
-                                : 'bg-blue-500'
-                            }`}
-                            title={determinarBancoPorCBU(socio.ExB)}
-                          >
-                            {socio.ExB}
-                          </td>
-                          {uniqueDates.map((date) => {
-                            const codigo = socio[date];
-                            let backgroundColorClass = '';
-                            if (
-                              !codigo &&
-                              socio.CBU !== '027' &&
-                              !Object.values(socio).includes('ACE')
-                            ) {
-                              backgroundColorClass = 'bg-slate-500';
-                            } else if (codigo === 'ACE') {
-                              backgroundColorClass = 'bg-green-500';
-                            } else if (codigo === 'R10') {
-                              backgroundColorClass = 'bg-yellow-400';
-                            } else if (codigo) {
-                              backgroundColorClass = 'bg-red-500';
-                            }
-                            return (
-                              <td
-                                key={date}
-                                className={`border-2 border-black font-semibold ${backgroundColorClass} ${
-                                  codigo ? 'hover:cursor-pointer' : ''
-                                }`}
-                                title={descripcionCodigo(codigo)}
-                                onClick={() => {
-                                  if (codigo) {
-                                    setModalIsOpen(true);
-                                  }
-                                }}
+                      {paginatedData
+                        .filter(
+                          (socio) =>
+                            !(
+                              userContext.user?.rol === 'parcial' &&
+                              socio.Convenio === 'PARODI'
+                            ),
+                        )
+                        .map((socio) => (
+                          <tr key={socio.ID} className="text-center">
+                            <td className="p-1 border-2 border-black hover:bg-black hover:text-white">
+                              <Link
+                                to={`/tablas/socio?numerosSocio=${socio.DNI}`}
+                                target="_blank"
+                                className="block w-full h-full text-center"
+                                title="Buscar Historial"
                               >
-                                {codigo}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
+                                {socio.Socio}
+                              </Link>
+                            </td>
+                            <td
+                              className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem] capitalize"
+                              title={socio.NombreCompleto}
+                            >
+                              {socio.NombreCompleto}
+                            </td>
+                            <td className="p-1 border-2 border-black">{socio.DNI}</td>
+                            <td className="p-1 border-2 border-black">{socio.CUIL}</td>
+                            <td
+                              className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem]"
+                              title={socio.Convenio}
+                            >
+                              {socio.Convenio}
+                            </td>
+                            <td
+                              className={`p-1 border-2 border-black font-semibold ${
+                                socio.CBU === '027'
+                                  ? 'bg-white'
+                                  : socio.CBU === '004' ||
+                                    socio.CBU === '005' ||
+                                    socio.CBU === '003' ||
+                                    socio.CBU === '006'
+                                  ? 'bg-violet-500'
+                                  : 'bg-blue-500'
+                              }`}
+                              title={determinarBancoPorCBU(socio.CBU)}
+                            >
+                              {socio.CBU}
+                            </td>
+                            <td
+                              className={`p-1 border-2 border-black font-semibold ${
+                                socio.ExB === '027'
+                                  ? 'bg-white'
+                                  : socio.ExB === 'TAR' || socio.ExB === 'PRI'
+                                  ? 'bg-violet-500'
+                                  : 'bg-blue-500'
+                              }`}
+                              title={determinarBancoPorCBU(socio.ExB)}
+                            >
+                              {socio.ExB}
+                            </td>
+                            {uniqueDates.map((date) => {
+                              const codigo = socio[date];
+                              let backgroundColorClass = '';
+                              if (
+                                !codigo &&
+                                socio.CBU !== '027' &&
+                                !Object.values(socio).includes('ACE')
+                              ) {
+                                backgroundColorClass = 'bg-slate-500';
+                              } else if (codigo === 'ACE') {
+                                backgroundColorClass = 'bg-green-500';
+                              } else if (codigo === 'R10') {
+                                backgroundColorClass = 'bg-yellow-400';
+                              } else if (codigo) {
+                                backgroundColorClass = 'bg-red-500';
+                              }
+                              return (
+                                <td
+                                  key={date}
+                                  className={`border-2 border-black font-semibold ${backgroundColorClass} ${
+                                    codigo ? 'hover:cursor-pointer' : ''
+                                  }`}
+                                  title={descripcionCodigo(codigo)}
+                                  onClick={() => {
+                                    if (codigo) {
+                                      setModalIsOpen(true);
+                                    }
+                                  }}
+                                >
+                                  {codigo}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>

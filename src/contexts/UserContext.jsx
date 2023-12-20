@@ -7,7 +7,7 @@ export const UserProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   const saveUser = (userData, authToken) => {
-    setUser(userData);
+    setUser({ ...userData, rol: obtenerRolUsuario(userData) });
     setToken(authToken);
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', authToken);
@@ -18,6 +18,11 @@ export const UserProvider = ({ children }) => {
     setToken(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+  };
+
+  const obtenerRolUsuario = (userData) => {
+    // Lógica para obtener el rol del usuario según la estructura de tu objeto de usuario
+    return userData ? userData.rol : null;
   };
 
   const value = { user, token, saveUser, removeUser };

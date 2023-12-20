@@ -4,6 +4,7 @@ import Layout from '../src/components/Common/Layout';
 import ProtectedRoute from './components/Common/ProtectedRoute';
 import ReportesDirectos from './components/Reportes/ReportesDirectos';
 import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
+import ReportesParciales from './components/Reportes/ReportesParciales';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
 import Socio from './pages/Socio';
@@ -81,6 +82,10 @@ export const router = createBrowserRouter([
       {
         path: 'indirectos',
         element: <ReportesIndirectos />,
+      },
+      {
+        path: 'parciales',
+        element: <ReportesParciales />,
       },
     ],
   },

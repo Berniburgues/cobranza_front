@@ -10,7 +10,7 @@ const Reportes = () => {
   const location = useLocation();
   // Verifica si el usuario tiene permisos para acceder a la ruta actual
   const accesoDirecto = rolesPermitidos.includes('/reportes/directos');
-  const accesoIndirecto = rolesPermitidos.includes('/reportes/indirectos');
+  const accesoIndirecto = rolesPermitidos.includes('/reportes/parciales');
 
   // Si el usuario no tiene acceso a directos ni a indirectos, redirige a home
   if (!accesoDirecto && !accesoIndirecto) {
@@ -21,30 +21,55 @@ const Reportes = () => {
     <div className="flex flex-col items-center h-full mt-1 mb-10">
       <div className="space-x-5 mt-1 mb-10">
         {accesoDirecto && (
-          <Link
-            to="directos"
-            className={`bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
-              location.pathname === '/reportes/directos'
-                ? 'opacity-50 cursor-not-allowed'
-                : ''
-            }`}
-          >
-            Directos
-          </Link>
+          <>
+            <Link
+              to="directos"
+              className={`bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+                location.pathname === '/reportes/directos'
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              Directos
+            </Link>
+
+            <Link
+              to="indirectos"
+              className={`bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+                location.pathname === '/reportes/indirectos'
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              Indirectos
+            </Link>
+            <Link
+              to="parciales"
+              className={`bg-orange-500 hover:bg-orange-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+                location.pathname === '/reportes/parciales'
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              Parciales
+            </Link>
+          </>
         )}
+
         {accesoIndirecto && (
           <Link
-            to="indirectos"
-            className={`bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
-              location.pathname === '/reportes/indirectos'
+            to="parciales"
+            className={`bg-orange-500 hover:bg-orange-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+              location.pathname === '/reportes/parciales'
                 ? 'opacity-50 cursor-not-allowed'
                 : ''
             }`}
           >
-            Indirectos
+            Parciales
           </Link>
         )}
       </div>
+
       <Outlet />
     </div>
   );
