@@ -328,73 +328,89 @@ const TablaPagos = () => {
             <LoaderFiltros />
           ) : (
             <>
-              <div className="flex items-center gap-2 text-xs z-50 whitespace-nowrap">
-                <Select
-                  className={`border-2 rounded-md w-28 h-full focus:outline-none ${
-                    !selectedPeriod ? 'border-red-500' : 'border-black'
-                  }`}
-                  value={
-                    selectedPeriod
-                      ? {
-                          value: selectedPeriod,
-                          label: getNombrePeriodo(selectedPeriod),
-                        }
-                      : null
-                  }
-                  name="selectedPeriod"
-                  options={periodos.map((periodoData) => ({
-                    value: periodoData.periodo,
-                    label: getNombrePeriodo(periodoData.periodo),
-                  }))}
-                  onChange={(selectedOption) =>
-                    handleSelectChange('selectedPeriod', selectedOption)
-                  }
-                  placeholder="Período"
-                  styles={{
-                    indicatorSeparator: () => ({ display: 'none' }),
-                  }}
-                />
-
-                <Select
-                  className="border-2 border-black rounded-md w-28 h-full"
-                  value={
-                    selectedBanco
-                      ? {
-                          value: selectedBanco,
-                          label: determinarBancoPorCBU(selectedBanco),
-                        }
-                      : {
-                          value: '027', // Valor de Supervielle o el que corresponda
-                        }
-                  }
-                  name="selectedBanco"
-                  options={
-                    selectedPeriod
-                      ? [
-                          {
-                            value: '', // Valor vacío para representar "Todos"
-                            label: 'Todos',
-                          },
-                          ...periodos
-                            .find((periodoData) => periodoData.periodo === selectedPeriod)
-                            ?.bancos.map((banco) => ({
-                              value: banco,
-                              label: determinarBancoPorCBU(banco),
-                            })),
-                        ]
-                      : []
-                  }
-                  onChange={(selectedOption) =>
-                    handleSelectChange('selectedBanco', selectedOption)
-                  }
-                  placeholder="Banco"
-                  styles={{
-                    indicatorSeparator: () => ({ display: 'none' }),
-                  }}
-                />
-                <div className="flex flex-col pb-4">
+              <div className="flex items-center gap-2 text-xs z-50 whitespace-nowrap pb-2">
+                <div className="flex flex-col items-center">
                   <label
-                    className="hover:cursor-pointer text-blue-700 font-semibold hover:text-blue-500 text-center text-xs mb-0" // Agrega la clase 'mb-0' para quitar el margen inferior
+                    className="text-center text-xs mb-0 italic font-semibold"
+                    htmlFor="selectedPeriod"
+                  >
+                    Período
+                  </label>
+                  <Select
+                    className={`border-2 rounded-md w-28 h-full focus:outline-none ${
+                      !selectedPeriod ? 'border-red-500' : 'border-black'
+                    }`}
+                    value={
+                      selectedPeriod
+                        ? {
+                            value: selectedPeriod,
+                            label: getNombrePeriodo(selectedPeriod),
+                          }
+                        : null
+                    }
+                    name="selectedPeriod"
+                    options={periodos.map((periodoData) => ({
+                      value: periodoData.periodo,
+                      label: getNombrePeriodo(periodoData.periodo),
+                    }))}
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedPeriod', selectedOption)
+                    }
+                    placeholder="Período"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <label htmlFor="selectedBanco" className="italic font-semibold">
+                    Banco
+                  </label>
+                  <Select
+                    className="border-2 border-black rounded-md w-28 h-full"
+                    value={
+                      selectedBanco
+                        ? {
+                            value: selectedBanco,
+                            label: determinarBancoPorCBU(selectedBanco),
+                          }
+                        : {
+                            value: '027', // Valor de Supervielle o el que corresponda
+                          }
+                    }
+                    name="selectedBanco"
+                    options={
+                      selectedPeriod
+                        ? [
+                            {
+                              value: '', // Valor vacío para representar "Todos"
+                              label: 'Todos',
+                            },
+                            ...periodos
+                              .find(
+                                (periodoData) => periodoData.periodo === selectedPeriod,
+                              )
+                              ?.bancos.map((banco) => ({
+                                value: banco,
+                                label: determinarBancoPorCBU(banco),
+                              })),
+                          ]
+                        : []
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedBanco', selectedOption)
+                    }
+                    placeholder="Banco"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <label
+                    className="hover:cursor-pointer text-blue-700 font-semibold hover:text-blue-500 text-center text-xs mb-0"
                     onClick={() => setModalIsOpen(true)}
                     htmlFor="selectedCodigo"
                   >
@@ -428,77 +444,94 @@ const TablaPagos = () => {
                   />
                 </div>
 
-                <input
-                  type="number"
-                  value={dniFilter}
-                  onChange={(e) => setDniFilter(e.target.value)}
-                  placeholder="DNI (ej 14)"
-                  className="border-2 border-black rounded-md p-1 text-center w-20 h-[42px]"
-                />
+                <div className="flex flex-col items-center">
+                  <label htmlFor="dniFilter" className="italic font-semibold">
+                    DNI
+                  </label>
+                  <input
+                    type="number"
+                    value={dniFilter}
+                    onChange={(e) => setDniFilter(e.target.value)}
+                    placeholder="DNI (ej 14)"
+                    className="border-2 border-black rounded-md p-1 text-center w-20 h-[42px]"
+                  />
+                </div>
 
-                <Select
-                  className="border-2 border-black rounded-md w-28 h-full"
-                  value={
-                    selectedConvenio
-                      ? { value: selectedConvenio, label: selectedConvenio }
-                      : null
-                  }
-                  name="selectedConvenio"
-                  options={
-                    selectedPeriod
-                      ? periodos
-                          .find((periodoData) => periodoData.periodo === selectedPeriod)
-                          ?.convenios.filter((convenio) => {
-                            // Filtrar 'PARODI' si el rol del usuario es 'parcial'
-                            return (
-                              userContext.user?.rol !== 'parcial' || convenio !== 'PARODI'
-                            );
-                          })
-                          .map((convenio) => ({
-                            value: convenio,
-                            label: convenio,
-                          }))
-                      : []
-                  }
-                  onChange={(selectedOption) =>
-                    handleSelectChange('selectedConvenio', selectedOption)
-                  }
-                  placeholder="Canal de Venta"
-                  styles={{
-                    indicatorSeparator: () => ({ display: 'none' }),
-                  }}
-                />
+                <div className="flex flex-col items-center">
+                  <label htmlFor="selectedConvenio" className="italic font-semibold">
+                    Canal de Venta
+                  </label>
+                  <Select
+                    className="border-2 border-black rounded-md w-28 h-full"
+                    value={
+                      selectedConvenio
+                        ? { value: selectedConvenio, label: selectedConvenio }
+                        : null
+                    }
+                    name="selectedConvenio"
+                    options={
+                      selectedPeriod
+                        ? periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.convenios.filter((convenio) => {
+                              // Filtrar 'PARODI' si el rol del usuario es 'parcial'
+                              return (
+                                userContext.user?.rol !== 'parcial' ||
+                                convenio !== 'PARODI'
+                              );
+                            })
+                            .map((convenio) => ({
+                              value: convenio,
+                              label: convenio,
+                            }))
+                        : []
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedConvenio', selectedOption)
+                    }
+                    placeholder="Canal de Venta"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+                </div>
 
-                <Select
-                  className="border-2 border-black rounded-md w-28 h-full"
-                  value={
-                    selectedExb
-                      ? {
-                          value: selectedExb,
-                          label: determinarBancoPorCBU(selectedExb),
-                        }
-                      : null
-                  }
-                  name="selectedExb"
-                  options={
-                    selectedPeriod
-                      ? periodos
-                          .find((periodoData) => periodoData.periodo === selectedPeriod)
-                          ?.exbs.map((exb) => ({
-                            value: exb,
-                            label: determinarBancoPorCBU(exb),
-                          }))
-                      : []
-                  }
-                  onChange={(selectedOption) =>
-                    handleSelectChange('selectedExb', selectedOption)
-                  }
-                  placeholder="Banco Envío"
-                  styles={{
-                    indicatorSeparator: () => ({ display: 'none' }),
-                  }}
-                />
+                <div className="flex flex-col items-center">
+                  <label htmlFor="selectedExb" className="italic font-semibold">
+                    Banco Envío
+                  </label>
+                  <Select
+                    className="border-2 border-black rounded-md w-28 h-full"
+                    value={
+                      selectedExb
+                        ? {
+                            value: selectedExb,
+                            label: determinarBancoPorCBU(selectedExb),
+                          }
+                        : null
+                    }
+                    name="selectedExb"
+                    options={
+                      selectedPeriod
+                        ? periodos
+                            .find((periodoData) => periodoData.periodo === selectedPeriod)
+                            ?.exbs.map((exb) => ({
+                              value: exb,
+                              label: determinarBancoPorCBU(exb),
+                            }))
+                        : []
+                    }
+                    onChange={(selectedOption) =>
+                      handleSelectChange('selectedExb', selectedOption)
+                    }
+                    placeholder="Banco Envío"
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+                </div>
               </div>
+
               <div className="flex items-center gap-2 text-xs pb-2">
                 <button
                   className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
