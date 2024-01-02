@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import EnviosFuturos from '../components/Reportes/EnviosFuturos';
 
 const Home = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(true); // Abre el modal al principio
+  const [modalIsOpen, setModalIsOpen] = useState(false); // Abre el modal al principio
 
   const closeModal = () => {
     setModalIsOpen(false);
@@ -12,7 +12,7 @@ const Home = () => {
   // Llamamos a openModal en el efecto, después de que el componente se haya montado
   useEffect(() => {
     const openModal = () => {
-      setModalIsOpen(true);
+      setModalIsOpen(false);
     };
 
     openModal();
