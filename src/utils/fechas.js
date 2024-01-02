@@ -28,12 +28,12 @@ export const formatFechaSocio = (fecha) => {
 
 // Función que recibe una fecha en formato YYYY-MM-DD y devuelve un nombre de mes y año
 export const getNombrePeriodo = (fecha) => {
-  // Crear un objeto Date a partir de la fecha
-  const date = new Date(fecha);
-  // Obtener el año de la fecha y obtener solo los dos últimos dígitos
-  const year = date.getFullYear().toString().slice(-2);
-  // Obtener el mes de la fecha (0-11)
-  const month = date.getMonth() + 1;
+  // Dividir la fecha en partes (año, mes, día)
+  const [year, month, day] = fecha.split('-');
+  // Crear un objeto Date con las partes de la fecha
+  const date = new Date(year, month - 1, day);
+  // Obtener solo los dos últimos dígitos del año
+  const yearShort = date.getFullYear().toString().slice(-2);
   // Crear un arreglo con los nombres de los meses en español
   const meses = [
     'Enero',
@@ -50,7 +50,7 @@ export const getNombrePeriodo = (fecha) => {
     'Diciembre',
   ];
   // Obtener el nombre del mes correspondiente al índice
-  const nombreMes = meses[month];
+  const nombreMes = meses[date.getMonth()];
   // Devolver el nombre del período en formato "Mes Año"
-  return `${nombreMes} ${year}`;
+  return `${nombreMes} ${yearShort}`;
 };
