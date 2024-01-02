@@ -66,12 +66,15 @@ export const fetchSociosData = async (numerosSocio) => {
 };
 
 //Obtener Datos para Historial de DNI
-export const fetchHistorialDNI = async (banco, periodo) => {
+export const fetchHistorialDNI = async (banco, periodo, dniComienzaCon) => {
   try {
-    // Realizar la solicitud GET al servidor con los parámetros banco y periodo
-    const response = await axios.get(
-      `https://cobranza.2.us-1.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}`,
-    );
+    // Construir la URL de la solicitud GET con los parámetros
+    const url = `https://cobranza.2.us-1.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
+      dniComienzaCon || ''
+    }`;
+
+    // Realizar la solicitud GET al servidor
+    const response = await axios.get(url);
 
     // Verificar si la respuesta tiene datos
     if (response.data && response.data.data) {

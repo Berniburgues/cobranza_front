@@ -9,6 +9,7 @@ import FiltroLoader from '../components/Historial DNI/FiltroLoader';
 const HistorialDNI = () => {
   const [banco, setBanco] = useState(null);
   const [periodo, setPeriodo] = useState('');
+  const [dniComienzaCon, setDniComienzaCon] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [data, setData] = useState([]);
@@ -40,16 +41,22 @@ const HistorialDNI = () => {
 
     try {
       const selectedPeriodos = periodo.includes('todos')
-        ? filtrosData.data.periodos.map((p) => p.value) // Si se selecciona 'todos', usar todos los periodos
-        : periodo.map((p) => p.value); // De lo contrario, usar los periodos seleccionados
+        ? filtrosData.data.periodos.map((p) => p.value)
+        : periodo.map((p) => p.value);
 
-      const historialData = await fetchHistorialDNI(banco.value, selectedPeriodos);
+      const historialData = await fetchHistorialDNI(
+        banco.value,
+        selectedPeriodos,
+        dniComienzaCon,
+      );
 
       if (historialData) {
         setData(historialData);
       } else {
         setData([]);
-        setErrorMessage('No se encontraron datos para el Banco y período proporcionados');
+        setErrorMessage(
+          'No se encontraron datos para el Banco, período y DNI proporcionados',
+        );
       }
     } catch (error) {
       console.error('Error al cargar los datos:', error);
@@ -119,6 +126,15 @@ const HistorialDNI = () => {
               isMulti
               placeholder="Período(s)"
               className="max-h-40 min-w-[64px] "
+            />
+          </div>
+          <div className="w-40 text-xs">
+            <input
+              type="text"
+              placeholder="Comienzo DNI"
+              value={dniComienzaCon}
+              onChange={(e) => setDniComienzaCon(e.target.value)}
+              className="border-2 border-gray-300 rounded-md p-1 h-9"
             />
           </div>
           <button
