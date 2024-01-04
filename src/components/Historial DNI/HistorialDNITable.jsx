@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 
 const HistorialDNITable = ({ data }) => {
-  const [ordenDNI, setOrdenDNI] = useState('asc'); // Estado para el orden de DNI
+  const [ordenDNI, setOrdenDNI] = useState('desc'); // Estado para el orden de DNI
 
   // Función para cambiar el orden de DNI al hacer clic en la columna
   const handleOrdenarDNIClick = () => {
@@ -133,6 +133,7 @@ const HistorialDNITable = ({ data }) => {
               <span
                 className="hover:text-yellow-500 cursor-pointer ml-1"
                 onClick={handleOrdenarDNIClick}
+                title="Invertir orden"
               >
                 {ordenDNI === 'asc' ? '▼' : '▲'}
               </span>
@@ -153,13 +154,16 @@ const HistorialDNITable = ({ data }) => {
         </thead>
         <tbody>
           {dataOrdenadaPorDNI.map((socio, index) => {
+            const colorFondo = index % 2 === 0 ? 'bg-white' : 'bg-gray-700';
+            const colorTexto = index % 2 === 0 ? 'text-black' : 'text-white';
+
             return Object.keys(socio.Pagos).map((periodo, periodoIndex) => {
               return (
-                <tr key={`${socio.Socio}_${periodo}`}>
+                <tr key={`${socio.Socio}_${periodo}`} className={colorFondo}>
                   {periodoIndex === 0 && (
                     <td
                       rowSpan={Object.keys(socio.Pagos).length}
-                      className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white cursor-pointer"
+                      className={`border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white cursor-pointer ${colorTexto}`}
                     >
                       <Link
                         to={`/tablas/socio?numerosSocio=${socio.DNI}`}
@@ -172,12 +176,14 @@ const HistorialDNITable = ({ data }) => {
                   {periodoIndex === 0 && (
                     <td
                       rowSpan={Object.keys(socio.Pagos).length}
-                      className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap"
+                      className={`border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap ${colorTexto}`}
                     >
                       {socio.DNI}
                     </td>
                   )}
-                  <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap italic">
+                  <td
+                    className={`border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap ${colorTexto}`}
+                  >
                     {getNombrePeriodo(periodo)}
                   </td>
                   {diasOrdenados.map((dia) => {

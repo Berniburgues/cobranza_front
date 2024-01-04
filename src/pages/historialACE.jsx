@@ -164,6 +164,12 @@ const HistorialDNI = () => {
           <p className="italic font-semibold text-red-500">{errorMessage}</p>
         ) : (
           <>
+            <div className="text-center">
+              <h3 className="font-bold text-2xl underline">
+                Banco: {banco && determinarBancoPorCBU(banco.value)}
+              </h3>
+              <p>Cantidad de Socios encontrados: {data.count}</p>
+            </div>
             <HistorialDNITable data={data.data} />
           </>
         )}
