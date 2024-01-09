@@ -248,7 +248,7 @@ const HistorialDNI = () => {
                 </span>
               </p>
             </div>
-            <HistorialDNITable data={data.data} />
+            <HistorialDNITable data={data.data} banco={banco} />
           </>
         )}
       </div>

@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { formatFecha, getNombrePeriodo } from '../../utils/fechas';
 import { Link } from 'react-router-dom';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
+import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 
-const HistorialDNITable = ({ data }) => {
-  const [ordenDNI, setOrdenDNI] = useState('desc'); // Estado para el orden de DNI
+const HistorialDNITable = ({ data, banco }) => {
+  const [ordenDNI, setOrdenDNI] = useState('desc');
 
-  // Función para cambiar el orden de DNI al hacer clic en la columna
   const handleOrdenarDNIClick = () => {
     setOrdenDNI(ordenDNI === 'asc' ? 'desc' : 'asc');
   };
 
-  // Función para ordenar los datos por DNI
   const ordenarPorDNI = (a, b) => {
     const dniA = a.DNI;
     const dniB = b.DNI;
@@ -23,13 +22,10 @@ const HistorialDNITable = ({ data }) => {
     }
   };
 
-  // Ordenar los datos por DNI
   const dataOrdenadaPorDNI = data ? [...data].sort(ordenarPorDNI) : [];
 
-  // Obtener la lista de todos los días presentes en los pagos
   const dias = new Set();
 
-  // Obtener los días únicos y ordenarlos
   if (data) {
     data.forEach((socio) => {
       Object.values(socio.Pagos).forEach((periodo) => {
@@ -42,14 +38,20 @@ const HistorialDNITable = ({ data }) => {
 
   const diasOrdenados = [...dias].sort((a, b) => a - b);
 
-  // Función para exportar los datos a Excel
-  const exportToExcel = () => {
-    const wb = XLSX.utils.book_new();
-    const wsData = [
-      ['Socio', 'DNI', 'Período', ...diasOrdenados.map((dia) => `Día ${dia}`)],
-    ];
+  const exportToExcel = async () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet(
+      `Histórico ACE-R10 Banco ${determinarBancoPorCBU(banco.value)}`,
+    );
 
-    const sociosProcesados = new Set(); // Para rastrear a los socios ya procesados
+    worksheet.addRow([
+      'Socio',
+      'DNI',
+      'Período',
+      ...diasOrdenados.map((dia) => `Día ${dia}`),
+    ]);
+
+    const sociosProcesados = new Set();
 
     dataOrdenadaPorDNI.forEach((socio) => {
       const periodos = Object.keys(socio.Pagos);
@@ -59,9 +61,8 @@ const HistorialDNITable = ({ data }) => {
         const rowData = [socio.Socio, socio.DNI];
 
         if (periodos.length === 0) {
-          // Agregar una fila con datos vacíos si el socio no tiene ningún período
           rowData.push('Sin periodos', ...diasOrdenados.map(() => '-'));
-          wsData.push(rowData);
+          worksheet.addRow(rowData);
         } else {
           periodos.forEach((periodo, index) => {
             const periodoData = [getNombrePeriodo(periodo)];
@@ -75,20 +76,16 @@ const HistorialDNITable = ({ data }) => {
             });
 
             if (index === 0) {
-              // Agregar socio y DNI solo en la primera fila del socio
-              wsData.push([...rowData, ...periodoData]);
+              worksheet.addRow([...rowData, ...periodoData]);
             } else {
-              // Agregar filas vacías para el mismo socio
-              wsData.push(['', '', ...periodoData]);
+              worksheet.addRow(['', '', ...periodoData]);
             }
           });
         }
       } else {
-        // Agregar filas vacías para el mismo socio
         if (periodos.length === 0) {
-          // Agregar una fila con datos vacíos si el socio no tiene ningún período
           const rowData = ['', '', 'Sin periodos', ...diasOrdenados.map(() => '-')];
-          wsData.push(rowData);
+          worksheet.addRow(rowData);
         } else {
           periodos.forEach((periodo) => {
             const periodoData = [getNombrePeriodo(periodo)];
@@ -101,50 +98,41 @@ const HistorialDNITable = ({ data }) => {
               periodoData.push(diaColumnData.length > 0 ? diaColumnData.join('-') : '-');
             });
 
-            wsData.push(['', '', ...periodoData]);
+            worksheet.addRow(['', '', ...periodoData]);
           });
         }
       }
     });
 
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    worksheet.eachRow({ includeEmpty: true }, (row, rowNumber) => {
+      row.eachCell((cell, colNumber) => {
+        const cellString = String(cell.value);
 
-    // Iterar sobre las celdas para aplicar estilos
-    ws['!cols'] = [];
-    for (let i = 0; i < wsData[0].length; i++) {
-      ws['!cols'][i] = { wch: 15 }; // Establecer el ancho de la columna (puedes ajustarlo según tus necesidades)
-    }
-
-    // Iterar sobre las celdas para aplicar estilos
-    wsData.forEach((row, rowIndex) => {
-      row.forEach((cell, colIndex) => {
-        const cellAddress = XLSX.utils.encode_cell({ c: colIndex, r: rowIndex });
-
-        // Asegúrate de que cell sea una cadena antes de utilizar includes
-        const cellString = String(cell.v); // Accede al valor de la celda utilizando .v
-
-        // Aplicar estilos según las condiciones
-        if (cellString.includes('ACE')) {
-          XLSX.utils.cell_add_style(ws, cellAddress, {
-            fill: { fgColor: { rgb: '00FF00' } },
-          });
-        } else if (cellString.includes('R10')) {
-          XLSX.utils.cell_add_style(ws, cellAddress, {
-            fill: { fgColor: { rgb: 'FFFF00' } },
-          });
-        } else if (cellString.includes('ACE-R10') || cellString.includes('R10-ACE')) {
-          XLSX.utils.cell_add_style(ws, cellAddress, {
-            fill: {
-              fgColor: { rgb: 'FFFF00' },
-              patternType: 'lightHorizontal',
-            },
-          });
+        if (cellString === 'ACE') {
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '00FF00' } };
+        } else if (cellString === 'R10') {
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFF00' } };
+        } else if (cellString === 'ACE-R10' || cellString === 'R10-ACE') {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFA500' },
+          };
         }
+
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
       });
     });
 
-    XLSX.utils.book_append_sheet(wb, ws, 'HistorialDNI');
-    XLSX.writeFile(wb, 'historial_dni.xlsx');
+    const blob = await workbook.xlsx.writeBuffer();
+    const blobUrl = URL.createObjectURL(new Blob([blob]));
+
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.download = `Histórico ACE-R10 Banco ${determinarBancoPorCBU(banco.value)}.xlsx`;
+    link.click();
+
+    URL.revokeObjectURL(blobUrl);
   };
 
   return (
