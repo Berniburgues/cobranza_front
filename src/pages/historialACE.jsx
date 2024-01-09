@@ -10,11 +10,13 @@ const HistorialDNI = () => {
   const [banco, setBanco] = useState(null);
   const [periodo, setPeriodo] = useState('');
   const [dniComienzaCon, setDniComienzaCon] = useState('');
+  const [terminacionDni, setTerminacionDni] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [data, setData] = useState([]);
   const [filtrosData, setFiltrosData] = useState([]);
   const [isLoadingFiltros, setIsLoadingFiltros] = useState(true);
+  const [diasConMasAce, setDiasConMasAce] = useState([]);
 
   useEffect(() => {
     async function fetchInitialData() {
@@ -29,6 +31,47 @@ const HistorialDNI = () => {
 
     fetchInitialData();
   }, []);
+
+  const findMostFrequentDaysForACE = (historialData) => {
+    const dayCount = {};
+
+    // Recorre todos los socios en historialData
+    historialData.forEach((socio) => {
+      const payments = socio.Pagos || {};
+
+      // Recorre todos los pagos de cada socio
+      for (const date in payments) {
+        const day = payments[date].reduce((acc, payment) => {
+          // Solo cuenta los códigos 'ACE'
+          if (
+            payment.Codigo === 'ACE' ||
+            payment.Codigo === 'ACE-R10' ||
+            payment.Codigo === 'R10-ACE'
+          ) {
+            acc.push(payment.dia);
+          }
+          return acc;
+        }, []);
+
+        // Actualiza el conteo de días
+        day.forEach((d) => {
+          dayCount[d] = (dayCount[d] || 0) + 1;
+        });
+      }
+    });
+
+    // Encuentra el día con la mayor frecuencia
+    const sortedDays = Object.keys(dayCount).sort((a, b) => dayCount[b] - dayCount[a]);
+    const mostFrequentDays = sortedDays.slice(0, 3);
+
+    // Obtiene la cantidad de 'ACE' en cada día
+    const aceCountPerDay = mostFrequentDays.map((day) => ({
+      day,
+      aceCount: dayCount[day],
+    }));
+
+    return aceCountPerDay;
+  };
 
   const handleBuscarClick = async () => {
     if (!banco) {
@@ -48,10 +91,15 @@ const HistorialDNI = () => {
         banco.value,
         selectedPeriodos,
         dniComienzaCon,
+        terminacionDni,
       );
 
       if (historialData) {
         setData(historialData);
+
+        // Encontrar el día promedio con más códigos 'ACE'
+        const mostFrequentDayForACE = findMostFrequentDaysForACE(historialData.data);
+        setDiasConMasAce(mostFrequentDayForACE);
       } else {
         setData([]);
         setErrorMessage(
@@ -69,9 +117,12 @@ const HistorialDNI = () => {
   const handleResetClick = () => {
     // Función para reiniciar la tabla
     setBanco(null);
-    setPeriodo(['todos']); // Restablecer a 'todos'
+    setPeriodo(''); // Restablecer a 'todos'
     setData([]);
     setErrorMessage(null);
+    setDniComienzaCon('');
+    setTerminacionDni('');
+    setDiasConMasAce([]);
   };
 
   return (
@@ -128,13 +179,28 @@ const HistorialDNI = () => {
               className="max-h-40 min-w-[64px] "
             />
           </div>
-          <div className="w-40 text-xs">
+          <div className="w-auto text-xs">
             <input
-              type="text"
+              type="number"
               placeholder="Comienzo DNI"
               value={dniComienzaCon}
               onChange={(e) => setDniComienzaCon(e.target.value)}
-              className="border-2 border-gray-300 rounded-md p-1 h-9"
+              className="border-2 border-gray-300 rounded-md p-1 h-[38px] w-20"
+              title="Primeros dos dígitos del DNI"
+              min="00"
+              max="99"
+            />
+          </div>
+          <div className="w-auto text-xs">
+            <input
+              type="number"
+              placeholder="Terminación DNI"
+              value={terminacionDni}
+              onChange={(e) => setTerminacionDni(e.target.value)}
+              className="border-2 border-gray-300 rounded-md p-1 h-[38px] w-20"
+              title="Último dígito del DNI"
+              min="0"
+              max="9"
             />
           </div>
           <button
@@ -149,11 +215,9 @@ const HistorialDNI = () => {
           <button
             onClick={handleResetClick}
             className={`w-auto rounded-md justify-center bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 text-center text-sm border-2 border-black flex items-center ${
-              isLoading || data.length === 0 || !banco
-                ? 'cursor-not-allowed opacity-50'
-                : ''
+              isLoading || !banco ? 'cursor-not-allowed opacity-50' : ''
             }`}
-            disabled={isLoading || data.length === 0 || !banco}
+            disabled={isLoading || !banco}
           >
             Nueva Consulta
           </button>
@@ -164,11 +228,25 @@ const HistorialDNI = () => {
           <p className="italic font-semibold text-red-500">{errorMessage}</p>
         ) : (
           <>
-            <div className="text-center">
+            <div className="text-center flex flex-col">
               <h3 className="font-bold text-2xl underline">
                 Banco: {banco && determinarBancoPorCBU(banco.value)}
               </h3>
-              <p>Cantidad de Socios encontrados: {data.count}</p>
+              <p className="underline">
+                Cantidad de Socios encontrados:{' '}
+                <span className="font-semibold no-underline">{data.count}</span>
+              </p>
+              <p className="underline">
+                Días con más cobros:{' '}
+                <span className="font-semibold text-green-500 no-underline">
+                  {diasConMasAce.map((dia) => (
+                    <span key={dia.day}>
+                      {`${dia.day} (${dia.aceCount})`}
+                      {diasConMasAce.indexOf(dia) !== diasConMasAce.length - 1 && ', '}
+                    </span>
+                  ))}
+                </span>
+              </p>
             </div>
             <HistorialDNITable data={data.data} />
           </>

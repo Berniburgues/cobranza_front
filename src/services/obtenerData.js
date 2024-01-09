@@ -8,6 +8,7 @@ export const fetchDataPagos = async (
   convenio,
   ExB,
   dniComienzaCon,
+  terminacionDni,
 ) => {
   try {
     let url = `https://cobranza.2.us-1.fl0.io/clientes/cobranzaSocios?periodo=${periodo}`;
@@ -33,6 +34,10 @@ export const fetchDataPagos = async (
 
     if (dniComienzaCon) {
       url += `&dniComienzaCon=${dniComienzaCon}`;
+    }
+
+    if (terminacionDni) {
+      url += `&terminacionDni=${terminacionDni}`;
     }
 
     const response = await axios.get(url);
@@ -66,12 +71,17 @@ export const fetchSociosData = async (numerosSocio) => {
 };
 
 //Obtener Datos para Historial de DNI
-export const fetchHistorialDNI = async (banco, periodo, dniComienzaCon) => {
+export const fetchHistorialDNI = async (
+  banco,
+  periodo,
+  dniComienzaCon,
+  terminacionDni,
+) => {
   try {
     // Construir la URL de la solicitud GET con los parámetros
     const url = `https://cobranza.2.us-1.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
       dniComienzaCon || ''
-    }`;
+    }&terminacionDni=${terminacionDni || ''}`;
 
     // Realizar la solicitud GET al servidor
     const response = await axios.get(url);

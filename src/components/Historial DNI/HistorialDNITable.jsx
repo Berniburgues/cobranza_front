@@ -71,7 +71,7 @@ const HistorialDNITable = ({ data }) => {
                 .filter((pago) => pago.dia === dia)
                 .map((pago) => pago.Codigo);
 
-              periodoData.push(diaColumnData.length > 0 ? diaColumnData.join(', ') : '-');
+              periodoData.push(diaColumnData.length > 0 ? diaColumnData.join('-') : '-');
             });
 
             if (index === 0) {
@@ -98,7 +98,7 @@ const HistorialDNITable = ({ data }) => {
                 .filter((pago) => pago.dia === dia)
                 .map((pago) => pago.Codigo);
 
-              periodoData.push(diaColumnData.length > 0 ? diaColumnData.join(', ') : '-');
+              periodoData.push(diaColumnData.length > 0 ? diaColumnData.join('-') : '-');
             });
 
             wsData.push(['', '', ...periodoData]);
@@ -108,6 +108,41 @@ const HistorialDNITable = ({ data }) => {
     });
 
     const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+    // Iterar sobre las celdas para aplicar estilos
+    ws['!cols'] = [];
+    for (let i = 0; i < wsData[0].length; i++) {
+      ws['!cols'][i] = { wch: 15 }; // Establecer el ancho de la columna (puedes ajustarlo según tus necesidades)
+    }
+
+    // Iterar sobre las celdas para aplicar estilos
+    wsData.forEach((row, rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        const cellAddress = XLSX.utils.encode_cell({ c: colIndex, r: rowIndex });
+
+        // Asegúrate de que cell sea una cadena antes de utilizar includes
+        const cellString = String(cell.v); // Accede al valor de la celda utilizando .v
+
+        // Aplicar estilos según las condiciones
+        if (cellString.includes('ACE')) {
+          XLSX.utils.cell_add_style(ws, cellAddress, {
+            fill: { fgColor: { rgb: '00FF00' } },
+          });
+        } else if (cellString.includes('R10')) {
+          XLSX.utils.cell_add_style(ws, cellAddress, {
+            fill: { fgColor: { rgb: 'FFFF00' } },
+          });
+        } else if (cellString.includes('ACE-R10') || cellString.includes('R10-ACE')) {
+          XLSX.utils.cell_add_style(ws, cellAddress, {
+            fill: {
+              fgColor: { rgb: 'FFFF00' },
+              patternType: 'lightHorizontal',
+            },
+          });
+        }
+      });
+    });
+
     XLSX.utils.book_append_sheet(wb, ws, 'HistorialDNI');
     XLSX.writeFile(wb, 'historial_dni.xlsx');
   };
@@ -140,7 +175,7 @@ const HistorialDNITable = ({ data }) => {
             </th>
 
             <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky inset-0">
-              Período
+              Período(s)
             </th>
             {diasOrdenados.map((dia) => (
               <th

@@ -35,6 +35,7 @@ const TablaPagos = () => {
   const [selectedConvenio, setSelectedConvenio] = useState('');
   const [selectedExb, setSelectedExb] = useState('');
   const [dniFilter, setDniFilter] = useState('');
+  const [terminacionDni, setTerminacionDni] = useState('');
   const [uniqueDates, setUniqueDates] = useState([]);
   const [pageSize, setPageSize] = useState(5000);
   const [pageNumber, setPageNumber] = useState(1);
@@ -122,6 +123,7 @@ const TablaPagos = () => {
         selectedConvenio,
         selectedExb,
         dniFilter,
+        terminacionDni,
       );
 
       // Se agrega esta verificación para asegurarse de que result.data[0] no sea undefined o null
@@ -275,6 +277,7 @@ const TablaPagos = () => {
     setSelectedConvenio('');
     setSelectedExb('');
     setDniFilter('');
+    setTerminacionDni('');
     setData([]);
     setError(null);
     setUniqueDates([]);
@@ -446,14 +449,31 @@ const TablaPagos = () => {
 
                 <div className="flex flex-col items-center">
                   <label htmlFor="dniFilter" className="italic font-semibold">
-                    DNI
+                    Inicio DNI
                   </label>
                   <input
                     type="number"
                     value={dniFilter}
                     onChange={(e) => setDniFilter(e.target.value)}
-                    placeholder="DNI (ej 14)"
                     className="border-2 border-black rounded-md p-1 text-center w-20 h-[42px]"
+                    title="Primeros dos dígitos del DNI"
+                    min="00"
+                    max="99"
+                  />
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <label htmlFor="terminacionDni" className="italic font-semibold">
+                    Final DNI
+                  </label>
+                  <input
+                    type="number"
+                    value={terminacionDni}
+                    onChange={(e) => setTerminacionDni(e.target.value)}
+                    className="border-2 border-black rounded-md p-1 text-center w-20 h-[42px]"
+                    min="0"
+                    max="0"
+                    title="Último dígito del DNI"
                   />
                 </div>
 
