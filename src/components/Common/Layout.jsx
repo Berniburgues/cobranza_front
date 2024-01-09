@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
 import { UserContext } from '../../contexts/UserContext';
+import ScrollTop from '../Common/ScrollTop';
 
 const Layout = ({ children }) => {
   const { user, removeUser } = useContext(UserContext); // Obtén el usuario y la función removeUser del contexto
@@ -13,6 +14,7 @@ const Layout = ({ children }) => {
 
   return (
     <section className="flex flex-col">
+      <ScrollTop />
       <nav className="bg-gray-800 border-b-2 border-b-slate-500 px-4 py-2 text-white text-sm md:text-base font-semibold flex justify-between">
         <div>
           <Link to="/home" className="hover:text-gray-300">

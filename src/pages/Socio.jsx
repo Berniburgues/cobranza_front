@@ -23,14 +23,6 @@ const Socio = () => {
     setBuscadorVisible(!buscadorVisible);
   };
 
-  //Función que activa el scrolleo hacia el tope de la página
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
-
   //Función que se activa cuando cambian los dnis en el input text del componente hijo SocioSearch
   const handleNumerosSocioChange = (event) => {
     const numeros = event.target.value.split(',').map((num) => num.trim());
@@ -115,12 +107,6 @@ const Socio = () => {
 
   return (
     <section className="relative flex flex-col items-center justify-center">
-      <button
-        onClick={() => scrollToTop()}
-        className="fixed bottom-4 left-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
-      >
-        ▲
-      </button>
       <button
         className="fixed bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
         onClick={toggleBuscador}
