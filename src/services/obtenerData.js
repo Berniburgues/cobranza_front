@@ -77,9 +77,9 @@ export const fetchHistorialDNI = async (
 ) => {
   try {
     // Construir la URL de la solicitud GET con los parámetros
-    const url = `https://cobranza.2.us-1.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
+    const url = `http://localhost:8080/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
       dniComienzaCon || ''
-    }&terminacionDni=${terminacionDni || ''}`;
+    }&${terminacionDni.map((value) => `terminacionDni=${value}`).join('&')}`;
 
     // Realizar la solicitud GET al servidor
     const response = await axios.get(url);

@@ -10,7 +10,7 @@ const HistorialDNI = () => {
   const [banco, setBanco] = useState(null);
   const [periodo, setPeriodo] = useState('');
   const [dniComienzaCon, setDniComienzaCon] = useState('');
-  const [terminacionDni, setTerminacionDni] = useState('');
+  const [terminacionDni, setTerminacionDni] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [data, setData] = useState([]);
@@ -126,10 +126,20 @@ const HistorialDNI = () => {
     setData([]);
     setErrorMessage(null);
     setDniComienzaCon('');
-    setTerminacionDni('');
+    setTerminacionDni([]);
     setDiasConMasAce([]);
     setTotalSocios('');
     setBusqueda(false);
+  };
+
+  const terminacionDniOptions = [...Array(10).keys()].map((digit) => ({
+    value: digit.toString(),
+    label: digit.toString(),
+  }));
+
+  const handleTerminacionDniChange = (selectedOptions) => {
+    const selectedValues = selectedOptions.map((option) => option.value);
+    setTerminacionDni(selectedValues);
   };
 
   return (
@@ -192,22 +202,21 @@ const HistorialDNI = () => {
               placeholder="Comienzo DNI"
               value={dniComienzaCon}
               onChange={(e) => setDniComienzaCon(e.target.value)}
-              className="border-2 border-gray-300 rounded-md p-1 h-[38px] w-20"
+              className="border border-gray-300 rounded-md p-1 h-[38px] w-20"
               title="Primeros dos dígitos del DNI"
               min="00"
               max="99"
             />
           </div>
           <div className="w-auto text-xs">
-            <input
-              type="number"
+            <Select
+              isMulti
+              value={terminacionDniOptions.filter((option) =>
+                terminacionDni.includes(option.value),
+              )}
+              options={terminacionDniOptions}
+              onChange={(selectedOptions) => handleTerminacionDniChange(selectedOptions)}
               placeholder="Terminación DNI"
-              value={terminacionDni}
-              onChange={(e) => setTerminacionDni(e.target.value)}
-              className="border-2 border-gray-300 rounded-md p-1 h-[38px] w-20"
-              title="Último dígito del DNI"
-              min="0"
-              max="9"
             />
           </div>
           <button

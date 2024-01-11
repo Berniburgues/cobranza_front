@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { formatFecha, getNombrePeriodo } from '../../utils/fechas';
 import { Link } from 'react-router-dom';
 import ExcelJS from 'exceljs';
@@ -6,23 +6,66 @@ import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 
 const HistorialDNITable = ({ data, banco }) => {
   const [ordenDNI, setOrdenDNI] = useState('desc');
+  const [ordenUltimoDigito, setOrdenUltimoDigito] = useState('asc');
+  const [ordenData, setOrdenData] = useState('primerosDigitos');
+
+  // Establecer ordenación por defecto al cargar el componente
+  useEffect(() => {
+    // Ordenar por primeros dígitos de mayor a menor
+    setOrdenDNI('desc');
+    // Ordenar por último dígito de menor a mayor
+    setOrdenUltimoDigito('asc');
+    // Seleccionar la ordenación por primeros dígitos
+    setOrdenData('primerosDigitos');
+  }, []);
 
   const handleOrdenarDNIClick = () => {
     setOrdenDNI(ordenDNI === 'asc' ? 'desc' : 'asc');
+    setOrdenUltimoDigito('desc');
+    setOrdenData('primerosDigitos');
+  };
+
+  const handleOrdenarUltimoDigitoClick = () => {
+    setOrdenUltimoDigito(ordenUltimoDigito === 'asc' ? 'desc' : 'asc');
+    setOrdenDNI('desc');
+    setOrdenData('ultimoDigito');
   };
 
   const ordenarPorDNI = (a, b) => {
     const dniA = a.DNI;
     const dniB = b.DNI;
 
-    if (ordenDNI === 'asc') {
-      return dniA.localeCompare(dniB);
+    // Comparación por primeros dígitos
+    const comparacionPrimerosDigitos = dniA.localeCompare(dniB);
+
+    if (comparacionPrimerosDigitos !== 0) {
+      return ordenDNI === 'asc'
+        ? comparacionPrimerosDigitos
+        : -comparacionPrimerosDigitos;
+    }
+
+    // Si los primeros dígitos son iguales, comparar por último dígito
+    const ultimoDigitoA = parseInt(dniA.charAt(dniA.length - 1), 10);
+    const ultimoDigitoB = parseInt(dniB.charAt(dniB.length - 1), 10);
+
+    return ordenUltimoDigito === 'asc'
+      ? ultimoDigitoA - ultimoDigitoB
+      : ultimoDigitoB - ultimoDigitoA;
+  };
+
+  const ordenarPorUltimoDigito = (a, b) => {
+    const ultimoDigitoA = parseInt(a.DNI.charAt(a.DNI.length - 1), 10);
+    const ultimoDigitoB = parseInt(b.DNI.charAt(b.DNI.length - 1), 10);
+
+    if (ordenUltimoDigito === 'asc') {
+      return ultimoDigitoA - ultimoDigitoB;
     } else {
-      return dniB.localeCompare(dniA);
+      return ultimoDigitoB - ultimoDigitoA;
     }
   };
 
-  const dataOrdenadaPorDNI = data ? [...data].sort(ordenarPorDNI) : [];
+  const funcionOrdenacion =
+    ordenData === 'primerosDigitos' ? ordenarPorDNI : ordenarPorUltimoDigito;
 
   const dias = new Set();
 
@@ -53,7 +96,7 @@ const HistorialDNITable = ({ data, banco }) => {
 
     const sociosProcesados = new Set();
 
-    dataOrdenadaPorDNI.forEach((socio) => {
+    data?.sort(ordenarPorDNI).forEach((socio) => {
       const periodos = Object.keys(socio.Pagos);
 
       if (!sociosProcesados.has(socio.Socio)) {
@@ -156,9 +199,16 @@ const HistorialDNITable = ({ data, banco }) => {
               <span
                 className="hover:text-yellow-500 cursor-pointer ml-1"
                 onClick={handleOrdenarDNIClick}
-                title="Invertir orden"
+                title="Invertir orden primeros dígitos"
               >
                 {ordenDNI === 'asc' ? '▼' : '▲'}
+              </span>
+              <span
+                className="hover:text-yellow-500 cursor-pointer ml-1"
+                onClick={handleOrdenarUltimoDigitoClick}
+                title="Invertir orden último digito"
+              >
+                {ordenUltimoDigito === 'asc' ? '▼' : '▲'}
               </span>
             </th>
 
@@ -176,7 +226,7 @@ const HistorialDNITable = ({ data, banco }) => {
           </tr>
         </thead>
         <tbody>
-          {dataOrdenadaPorDNI.map((socio, index) => {
+          {data?.sort(funcionOrdenacion).map((socio, index) => {
             const colorFondo = index % 2 === 0 ? 'bg-white' : 'bg-gray-700';
             const colorTexto = index % 2 === 0 ? 'text-black' : 'text-white';
 
