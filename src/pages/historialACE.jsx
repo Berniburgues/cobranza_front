@@ -17,6 +17,8 @@ const HistorialDNI = () => {
   const [filtrosData, setFiltrosData] = useState([]);
   const [isLoadingFiltros, setIsLoadingFiltros] = useState(true);
   const [diasConMasAce, setDiasConMasAce] = useState([]);
+  const [totalSocios, setTotalSocios] = useState('');
+  const [busqueda, setBusqueda] = useState(false);
 
   useEffect(() => {
     async function fetchInitialData() {
@@ -95,11 +97,14 @@ const HistorialDNI = () => {
       );
 
       if (historialData) {
-        setData(historialData);
+        // Actualizar la cantidad total de socios sin filtros
+        setTotalSocios(historialData.totalSocios);
 
+        setData(historialData);
         // Encontrar el día promedio con más códigos 'ACE'
         const mostFrequentDayForACE = findMostFrequentDaysForACE(historialData.data);
         setDiasConMasAce(mostFrequentDayForACE);
+        setBusqueda(true);
       } else {
         setData([]);
         setErrorMessage(
@@ -123,6 +128,8 @@ const HistorialDNI = () => {
     setDniComienzaCon('');
     setTerminacionDni('');
     setDiasConMasAce([]);
+    setTotalSocios('');
+    setBusqueda(false);
   };
 
   return (
@@ -228,26 +235,31 @@ const HistorialDNI = () => {
           <p className="italic font-semibold text-red-500">{errorMessage}</p>
         ) : (
           <>
-            <div className="text-center flex flex-col">
-              <h3 className="font-bold text-2xl underline">
-                Banco: {banco && determinarBancoPorCBU(banco.value)}
-              </h3>
-              <p className="underline">
-                Cantidad de Socios encontrados:{' '}
-                <span className="font-semibold no-underline">{data.count}</span>
-              </p>
-              <p className="underline">
-                Días con más cobros:{' '}
-                <span className="font-semibold text-green-500 no-underline">
-                  {diasConMasAce.map((dia) => (
-                    <span key={dia.day}>
-                      {`${dia.day} (${dia.aceCount})`}
-                      {diasConMasAce.indexOf(dia) !== diasConMasAce.length - 1 && ', '}
-                    </span>
-                  ))}
-                </span>
-              </p>
-            </div>
+            {busqueda && (
+              <div className="text-center flex flex-col">
+                <h3 className="font-bold text-2xl underline">
+                  Banco: {banco && determinarBancoPorCBU(banco.value)}
+                </h3>
+                <p className="underline">
+                  Cantidad de Socios encontrados:{' '}
+                  <span className="font-semibold no-underline">
+                    {data.count} de {totalSocios} (
+                    {((data.count / totalSocios) * 100).toFixed(2)}%)
+                  </span>
+                </p>
+                <p className="underline">
+                  Días con más cobros:{' '}
+                  <span className="font-semibold text-green-500 no-underline">
+                    {diasConMasAce.map((dia) => (
+                      <span key={dia.day}>
+                        {`${dia.day} (${dia.aceCount})`}
+                        {diasConMasAce.indexOf(dia) !== diasConMasAce.length - 1 && ', '}
+                      </span>
+                    ))}
+                  </span>
+                </p>
+              </div>
+            )}
             <HistorialDNITable data={data.data} banco={banco} />
           </>
         )}

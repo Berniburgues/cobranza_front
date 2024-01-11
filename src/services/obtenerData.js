@@ -68,7 +68,7 @@ export const fetchSociosData = async (numerosSocio) => {
   }
 };
 
-//Obtener Datos para Historial de DNI
+// Obtener Datos para Historial de DNI
 export const fetchHistorialDNI = async (
   banco,
   periodo,
@@ -77,7 +77,7 @@ export const fetchHistorialDNI = async (
 ) => {
   try {
     // Construir la URL de la solicitud GET con los parámetros
-    const url = `https://cobranza.2.us-1.fl0.io/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
+    const url = `http://localhost:8080/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
       dniComienzaCon || ''
     }&terminacionDni=${terminacionDni || ''}`;
 
@@ -89,12 +89,12 @@ export const fetchHistorialDNI = async (
       return response.data; // Devuelve tanto el count como los datos
     } else {
       // Si la respuesta está vacía o no tiene datos, devuelve un objeto vacío
-      return { count: 0, data: [] };
+      return { count: 0, totalSocios: 0, data: [] };
     }
   } catch (error) {
     // Manejar cualquier error que ocurra durante la solicitud
     console.error('Error al obtener los datos del historial:', error);
-    return { count: 0, data: [] }; // Devuelve un objeto vacío en caso de error
+    return { count: 0, totalSocios: 0, data: [] }; // Devuelve un objeto vacío en caso de error
   }
 };
 
