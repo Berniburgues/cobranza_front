@@ -264,10 +264,27 @@ const HistorialDNITable = ({ data, banco }) => {
                       (pago) => pago.dia === dia,
                     );
 
+                    const importePorCodigo = {};
+
+                    // Calcula el importe total por código
+                    códigosDelDía.forEach((pago) => {
+                      if (!importePorCodigo[pago.codigo]) {
+                        importePorCodigo[pago.codigo] = 0;
+                      }
+                      importePorCodigo[pago.codigo] += pago.Importe;
+                    });
+
                     const contenidoDelDía =
                       códigosDelDía.length > 0 ? (
                         <div
-                          title={formatFecha(códigosDelDía[0].FechaCobro)}
+                          title={códigosDelDía
+                            .map(
+                              (pago) =>
+                                `${formatFecha(pago.FechaCobro)} - ${pago.Codigo}: $${
+                                  pago.Importe
+                                }`,
+                            )
+                            .join('\n')}
                           className={`${
                             códigosDelDía.some((pago) => pago.Codigo === 'ACE')
                               ? 'bg-green-500'
