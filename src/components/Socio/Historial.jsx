@@ -68,15 +68,15 @@ const Historial = ({ datosFijos, cobranza }) => {
           </tr>
         </thead>
         <tbody>
-          {periodos.map((periodo, index) => (
-            <tr key={index}>
+          {periodos.map((periodo, periodoIndex) => (
+            <tr key={periodoIndex}>
               <td
                 className="border-2 border-gray-800 text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap font-mono bg-white text-black"
                 title={getNombrePeriodo(periodo)}
               >
                 {getNombrePeriodo(periodo)}
               </td>
-              {diasCobro.map((dia, index) => {
+              {diasCobro.map((dia, diaIndex) => {
                 const clave = `${periodo}-${dia}`;
                 const cobroDia = Object.values(datosAgrupados).filter(
                   (item) => item.dia === dia && item.periodo === periodo,
@@ -86,10 +86,15 @@ const Historial = ({ datosFijos, cobranza }) => {
                   .map((item) => item.codigo)
                   .filter((value, index, self) => self.indexOf(value) === index)
                   .join('-');
-                const importeTotal = cobroDia.reduce(
-                  (total, item) => total + item.importeTotal,
-                  0,
-                );
+                const importePorCodigo = {};
+
+                // Calcula el importe total por código
+                cobroDia.forEach((item) => {
+                  if (!importePorCodigo[item.codigo]) {
+                    importePorCodigo[item.codigo] = 0;
+                  }
+                  importePorCodigo[item.codigo] += item.importeTotal;
+                });
 
                 const ultimoCodigo = cobroDia[cobroDia.length - 1]?.codigo || '';
                 const descripcion = ultimoCodigo ? descripcionCodigo(ultimoCodigo) : '';
@@ -120,12 +125,19 @@ const Historial = ({ datosFijos, cobranza }) => {
                   : '';
 
                 const titleText = codigosAplanados
-                  ? `${fechaCobroFormateada} - ${descripcion} - $${importeTotal}`
+                  ? Object.keys(importePorCodigo)
+                      .map(
+                        (codigo) =>
+                          `${fechaCobroFormateada} - ${descripcionCodigo(codigo)} - $${
+                            importePorCodigo[codigo]
+                          }`,
+                      )
+                      .join('\n')
                   : null;
 
                 return (
                   <td
-                    key={index}
+                    key={diaIndex}
                     className={`border-2 border-black text-center text-[0.50rem] md:text-sm font-mono font-bold truncate whitespace-nowrap ${cellColorClass}`}
                     title={titleText}
                   >
