@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import { fetchHistorialDNI, fetchFiltrosDNI } from '../services/obtenerData';
 import HistorialDNITable from '../components/Historial DNI/HistorialDNITable';
@@ -7,6 +7,7 @@ import { getNombrePeriodo } from '../utils/fechas';
 import FiltroLoader from '../components/Historial DNI/FiltroLoader';
 
 const HistorialDNI = () => {
+  const terminacionDniRef = useRef(null);
   const [banco, setBanco] = useState(null);
   const [periodo, setPeriodo] = useState('');
   const [dniComienzaCon, setDniComienzaCon] = useState('');
@@ -19,6 +20,7 @@ const HistorialDNI = () => {
   const [diasConMasAce, setDiasConMasAce] = useState([]);
   const [totalSocios, setTotalSocios] = useState('');
   const [busqueda, setBusqueda] = useState(false);
+  const [mostrarCheckboxes, setMostrarCheckboxes] = useState(false);
 
   useEffect(() => {
     async function fetchInitialData() {
@@ -34,50 +36,81 @@ const HistorialDNI = () => {
     fetchInitialData();
   }, []);
 
-  const findMostFrequentDaysForACE = (historialData) => {
-    const dayCount = {};
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        terminacionDniRef.current &&
+        !terminacionDniRef.current.contains(event.target)
+      ) {
+        // Verificar que el clic no ocurra dentro de los checkboxes antes de cerrar
+        const checkboxesContainer = document.getElementById('checkboxesContainer');
+        if (checkboxesContainer && checkboxesContainer.contains(event.target)) {
+          return;
+        }
 
-    // Recorre todos los socios en historialData
+        setMostrarCheckboxes(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const findMostFrequentDaysForACE = (historialData) => {
+    const daysByPeriod = {};
+
     historialData.forEach((socio) => {
       const payments = socio.Pagos || {};
 
-      // Recorre todos los pagos de cada socio
       for (const date in payments) {
         const day = payments[date].reduce((acc, payment) => {
-          // Solo cuenta los códigos 'ACE'
           if (
             payment.Codigo === 'ACE' ||
             payment.Codigo === 'ACE-R10' ||
             payment.Codigo === 'R10-ACE'
           ) {
-            acc.push(payment.dia);
+            acc.push({ day: payment.dia, period: date }); // Guardar el día y el periodo
           }
           return acc;
         }, []);
 
-        // Actualiza el conteo de días
-        day.forEach((d) => {
-          dayCount[d] = (dayCount[d] || 0) + 1;
+        day.forEach(({ day, period }) => {
+          if (!daysByPeriod[period]) {
+            daysByPeriod[period] = {};
+          }
+
+          daysByPeriod[period][day] = (daysByPeriod[period][day] || 0) + 1;
         });
       }
     });
 
-    // Encuentra el día con la mayor frecuencia
-    const sortedDays = Object.keys(dayCount).sort((a, b) => dayCount[b] - dayCount[a]);
-    const mostFrequentDays = sortedDays.slice(0, 3);
+    const daysWithMaxACEByPeriod = {};
 
-    // Obtiene la cantidad de 'ACE' en cada día
-    const aceCountPerDay = mostFrequentDays.map((day) => ({
-      day,
-      aceCount: dayCount[day],
-    }));
+    for (const period in daysByPeriod) {
+      const dayCount = daysByPeriod[period];
+      const sortedDays = Object.keys(dayCount).sort((a, b) => dayCount[b] - dayCount[a]);
+      const mostFrequentDays = sortedDays.slice(0, 3);
 
-    return aceCountPerDay;
+      daysWithMaxACEByPeriod[period] = mostFrequentDays.map((day) => ({
+        day,
+        aceCount: dayCount[day],
+      }));
+    }
+
+    return daysWithMaxACEByPeriod;
   };
 
   const handleBuscarClick = async () => {
     if (!banco) {
       setErrorMessage('Seleccione un banco');
+      return;
+    }
+
+    if (!periodo || (Array.isArray(periodo) && periodo.length === 0)) {
+      setErrorMessage('Seleccione al menos un Período');
       return;
     }
 
@@ -102,11 +135,15 @@ const HistorialDNI = () => {
 
         setData(historialData);
         // Encontrar el día promedio con más códigos 'ACE'
-        const mostFrequentDayForACE = findMostFrequentDaysForACE(historialData.data);
-        setDiasConMasAce(mostFrequentDayForACE);
+        const mostFrequentDaysForACEByPeriod = findMostFrequentDaysForACE(
+          historialData.data,
+        );
+        setDiasConMasAce(mostFrequentDaysForACEByPeriod);
         setBusqueda(true);
+        setMostrarCheckboxes(false);
       } else {
         setData([]);
+        setMostrarCheckboxes(false);
         setErrorMessage(
           'No se encontraron datos para el Banco, período y DNI proporcionados',
         );
@@ -130,16 +167,15 @@ const HistorialDNI = () => {
     setDiasConMasAce([]);
     setTotalSocios('');
     setBusqueda(false);
+    setMostrarCheckboxes(false);
   };
 
-  const terminacionDniOptions = [...Array(10).keys()].map((digit) => ({
-    value: digit.toString(),
-    label: digit.toString(),
-  }));
+  const handleCheckboxChange = (value) => {
+    const updatedTerminacionDni = terminacionDni.includes(value)
+      ? terminacionDni.filter((v) => v !== value)
+      : [...terminacionDni, value];
 
-  const handleTerminacionDniChange = (selectedOptions) => {
-    const selectedValues = selectedOptions.map((option) => option.value);
-    setTerminacionDni(selectedValues);
+    setTerminacionDni(updatedTerminacionDni);
   };
 
   return (
@@ -202,22 +238,43 @@ const HistorialDNI = () => {
               placeholder="Comienzo DNI"
               value={dniComienzaCon}
               onChange={(e) => setDniComienzaCon(e.target.value)}
-              className="border border-gray-300 rounded-md p-1 h-[38px] w-20"
+              className="border border-gray-300 rounded-[4px] p-1 h-[38px] w-20 hover:border-gray-400"
               title="Primeros dos dígitos del DNI"
               min="00"
               max="99"
             />
           </div>
-          <div className="w-auto text-xs">
-            <Select
-              isMulti
-              value={terminacionDniOptions.filter((option) =>
-                terminacionDni.includes(option.value),
-              )}
-              options={terminacionDniOptions}
-              onChange={(selectedOptions) => handleTerminacionDniChange(selectedOptions)}
-              placeholder="Terminación DNI"
-            />
+          <div className="relative w-auto text-xs">
+            <div
+              ref={terminacionDniRef}
+              onClick={() => setMostrarCheckboxes(!mostrarCheckboxes)}
+              className="border cursor-default border-gray-300 rounded-[4px] px-1 flex items-center justify-between h-[38px] hover:border-gray-400"
+            >
+              <span className="text-gray-400">
+                Terminación DNI
+                <span className="cursor-pointer hover:text-gray-500 ml-1">&#9660;</span>
+              </span>
+            </div>
+
+            {mostrarCheckboxes && (
+              <div
+                className="absolute mt-2 border border-black w-full px-2 rounded-md text-base z-10 bg-white"
+                id="checkboxesContainer"
+              >
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => (
+                  <div key={value} className="flex items-center bg-white">
+                    <input
+                      type="checkbox"
+                      id={`terminacionDni_${value}`}
+                      value={value}
+                      checked={terminacionDni.includes(value)}
+                      onChange={() => handleCheckboxChange(value)}
+                    />
+                    <label htmlFor={`terminacionDni_${value}`}>{value}</label>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <button
             onClick={handleBuscarClick}
@@ -256,17 +313,26 @@ const HistorialDNI = () => {
                     {((data.count / totalSocios) * 100).toFixed(2)}%)
                   </span>
                 </p>
-                <p className="underline">
-                  Días con más cobros:{' '}
-                  <span className="font-semibold text-green-500 no-underline">
-                    {diasConMasAce.map((dia) => (
-                      <span key={dia.day}>
-                        {`${dia.day} (${dia.aceCount})`}
-                        {diasConMasAce.indexOf(dia) !== diasConMasAce.length - 1 && ', '}
+                {Object.keys(diasConMasAce)
+                  .sort((a, b) => new Date(a) - new Date(b)) // Ordenar los periodos
+                  .map((periodo) => (
+                    <p key={periodo} className="underline text-sm">
+                      Días con más cobros en{' '}
+                      <span className="italic font-semibold">
+                        {getNombrePeriodo(periodo)}
                       </span>
-                    ))}
-                  </span>
-                </p>
+                      :{' '}
+                      <span className="font-semibold text-green-500 no-underline">
+                        {diasConMasAce[periodo].map((dia) => (
+                          <span key={dia.day}>
+                            {`${dia.day} (${dia.aceCount})`}
+                            {diasConMasAce[periodo].indexOf(dia) !==
+                              diasConMasAce[periodo].length - 1 && ', '}
+                          </span>
+                        ))}
+                      </span>
+                    </p>
+                  ))}
               </div>
             )}
             <HistorialDNITable data={data.data} banco={banco} />

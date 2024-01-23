@@ -3,6 +3,7 @@ import { formatFecha, getNombrePeriodo } from '../../utils/fechas';
 import { Link } from 'react-router-dom';
 import ExcelJS from 'exceljs';
 import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
+import { descripcionCodigo } from '../../utils/descripcionCodigos';
 
 const HistorialDNITable = ({ data, banco }) => {
   const [ordenDNI, setOrdenDNI] = useState('desc');
@@ -280,9 +281,9 @@ const HistorialDNITable = ({ data, banco }) => {
                           title={códigosDelDía
                             .map(
                               (pago) =>
-                                `${formatFecha(pago.FechaCobro)} - ${pago.Codigo}: $${
-                                  pago.Importe
-                                }`,
+                                `${formatFecha(pago.FechaCobro)} - ${descripcionCodigo(
+                                  pago.Codigo,
+                                )}(${pago.concepto}): $${pago.Importe}`,
                             )
                             .join('\n')}
                           className={`${
@@ -294,12 +295,18 @@ const HistorialDNITable = ({ data, banco }) => {
                               ? 'bg-yellow-400'
                               : ''
                           }  ${
-                            códigosDelDía.length > 1
+                            [...new Set(códigosDelDía.map((pago) => pago.Codigo))]
+                              .length > 1
                               ? 'bg-gradient-to-b from-yellow-400 to-green-500'
                               : ''
                           }`}
                         >
-                          {códigosDelDía.map((pago) => pago.Codigo).join('-')}
+                          {códigosDelDía
+                            .map((pago) => pago.Codigo)
+                            .filter(
+                              (codigo, index, array) => array.indexOf(codigo) === index,
+                            ) // Filtra códigos duplicados
+                            .join('-')}
                         </div>
                       ) : (
                         '-'

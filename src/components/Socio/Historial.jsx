@@ -29,7 +29,11 @@ const Historial = ({ datosFijos, cobranza }) => {
   cobranza.forEach((item) => {
     const clave = `${item.periodo}-${item.dia}-${item.codigo}`;
     if (!datosAgrupados[clave]) {
-      datosAgrupados[clave] = { ...item, importeTotal: item.importe };
+      datosAgrupados[clave] = {
+        ...item,
+        importeTotal: item.importe,
+        concepto: item.concepto,
+      };
     } else {
       datosAgrupados[clave].importeTotal += item.importe;
     }
@@ -97,7 +101,6 @@ const Historial = ({ datosFijos, cobranza }) => {
                 });
 
                 const ultimoCodigo = cobroDia[cobroDia.length - 1]?.codigo || '';
-                const descripcion = ultimoCodigo ? descripcionCodigo(ultimoCodigo) : '';
 
                 const hasACE = codigosAplanados.includes('ACE');
                 const isR10 = codigosAplanados.includes('R10');
@@ -124,16 +127,17 @@ const Historial = ({ datosFijos, cobranza }) => {
                   ? fechaCobro.split('-').slice(1).reverse().join('/')
                   : '';
 
-                const titleText = codigosAplanados
-                  ? Object.keys(importePorCodigo)
-                      .map(
-                        (codigo) =>
-                          `${fechaCobroFormateada} - ${descripcionCodigo(codigo)} - $${
-                            importePorCodigo[codigo]
-                          }`,
-                      )
-                      .join('\n')
-                  : null;
+                const titleText =
+                  cobroDia.length > 0
+                    ? cobroDia
+                        .map(
+                          (item) =>
+                            `${fechaCobroFormateada} - ${descripcionCodigo(
+                              item.codigo,
+                            )} (${item.concepto}) - $${item.importeTotal}`,
+                        )
+                        .join('\n')
+                    : null;
 
                 return (
                   <td

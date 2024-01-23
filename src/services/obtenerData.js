@@ -57,6 +57,7 @@ export const fetchSociosData = async (numerosSocio) => {
   try {
     const numerosSocioArray = Array.isArray(numerosSocio) ? numerosSocio : [numerosSocio];
 
+    // const response = await axios.post('http://localhost:8080/clientes/socio', {
     const response = await axios.post('https://cobranza.2.us-1.fl0.io/clientes/socio', {
       numerosSocio: numerosSocioArray,
     });
