@@ -11,6 +11,7 @@ export const fetchDataPagos = async (
   terminacionDni,
 ) => {
   try {
+    // let url = `http://localhost:8080/clientes/cobranzaSocios?periodo=${periodo}`;
     let url = `https://cobranza.2.us-1.fl0.io/clientes/cobranzaSocios?periodo=${periodo}`;
 
     if (cbu) {
@@ -37,7 +38,7 @@ export const fetchDataPagos = async (
     }
 
     if (terminacionDni) {
-      url += `&terminacionDni=${terminacionDni}`;
+      url += `&${terminacionDni.map((value) => `terminacionDni=${value}`).join('&')}`;
     }
 
     const response = await axios.get(url);
