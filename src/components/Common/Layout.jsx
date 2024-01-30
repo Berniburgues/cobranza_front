@@ -13,34 +13,56 @@ const Layout = ({ children }) => {
   };
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col min-h-screen">
       <ScrollTop />
-      <nav className="bg-gray-800 border-b-2 border-b-slate-500 px-4 py-2 text-white text-sm md:text-base font-semibold flex justify-between">
-        <div>
-          <Link to="/home" className="hover:text-gray-300">
-            Inicio
+      <nav className="bg-slate-800 border-b border-black p-2 text-white text-sm font-semibold flex justify-between items-center">
+        <div className="flex items-center">
+          <Link to="/home" className="hover:text-blue-400">
+            INICIO
           </Link>
           {user && (
             <button
               onClick={handleLogout}
               className="text-red-500 hover:text-red-400 ml-4"
             >
-              Salir
+              SALIR
             </button>
           )}
         </div>
+        <a href="https://atsapra.com.ar/" target="blank" className="mx-auto">
+          <img
+            src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-9.png"
+            alt="Logo"
+            className="w-auto h-7"
+          />
+        </a>
+
         <div className="space-x-4">
-          <Link to="/tablas" className="hover:text-gray-300" target="_blank">
-            Tablas
+          <Link to="/tablas" className="hover:text-blue-400" target="_blank">
+            TABLAS
           </Link>
-          <Link to="/reportes" className="hover:text-gray-300" target="_blank">
-            Reportes
+          <Link to="/reportes" className="hover:text-blue-400" target="_blank">
+            REPORTES
           </Link>
         </div>
       </nav>
       <main className="container mx-auto pt-1 flex-grow max-w-screen-3xl">
         {children}
       </main>
+      <footer className="bg-slate-800 text-white gap-3 pt-1 text-center text-sm mt-auto border-t border-black flex flex-wrap items-center justify-center">
+        <p className="italic">
+          &copy; 2024{' '}
+          <a href="https://atsapra.com.ar" className="text-blue-600 hover:text-blue-500">
+            ATSAPRA
+          </a>{' '}
+          TODOS LOS DERECHOS RESERVADOS
+        </p>
+        <img
+          src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-7.png"
+          alt="Logo2"
+          className="w-auto h-8"
+        />
+      </footer>
     </section>
   );
 };

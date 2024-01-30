@@ -19,6 +19,7 @@ import ExcelBoton from '../components/TablaPagos/Excel';
 import ImportesSocios from '../components/TablaPagos/ImportesSocios';
 import './TablaPagos.css';
 import ModalCodigos from '../components/TablaPagos/ModalCodigos';
+import CheckboxOptions from '../components/TablaPagos/CheckboxOptions';
 
 const TablaPagos = () => {
   const userContext = useContext(UserContext);
@@ -35,7 +36,7 @@ const TablaPagos = () => {
   const [selectedConvenio, setSelectedConvenio] = useState('');
   const [selectedExb, setSelectedExb] = useState('');
   const [dniFilter, setDniFilter] = useState('');
-  const [terminacionDni, setTerminacionDni] = useState('');
+  const [terminacionDni, setTerminacionDni] = useState([]);
   const [uniqueDates, setUniqueDates] = useState([]);
   const [pageSize, setPageSize] = useState(5000);
   const [pageNumber, setPageNumber] = useState(1);
@@ -277,7 +278,7 @@ const TablaPagos = () => {
     setSelectedConvenio('');
     setSelectedExb('');
     setDniFilter('');
-    setTerminacionDni('');
+    setTerminacionDni([]);
     setData([]);
     setError(null);
     setUniqueDates([]);
@@ -444,6 +445,10 @@ const TablaPagos = () => {
                     styles={{
                       indicatorSeparator: () => ({ display: 'none' }),
                     }}
+                    components={{
+                      Option: (props) => <CheckboxOptions {...props} />,
+                    }}
+                    closeMenuOnSelect={false} // No cierra el menú al seleccionar opciones
                   />
                 </div>
 
@@ -466,17 +471,34 @@ const TablaPagos = () => {
                   <label htmlFor="terminacionDni" className="italic font-semibold">
                     Final DNI
                   </label>
-                  <input
-                    type="number"
-                    value={terminacionDni}
-                    onChange={(e) => setTerminacionDni(e.target.value)}
-                    className="border-2 border-black rounded-md p-1 text-center w-20 h-[42px]"
-                    min="0"
-                    max="0"
-                    title="Último dígito del DNI"
+                  <Select
+                    className="border-2 border-black rounded-md w-36 h-full"
+                    value={terminacionDni.map((value) => ({
+                      value,
+                      label: value.toString(),
+                    }))}
+                    options={[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => ({
+                      value,
+                      label: value.toString(),
+                    }))}
+                    isMulti
+                    onChange={(selectedOptions) => {
+                      setTerminacionDni(
+                        selectedOptions
+                          ? selectedOptions.map((option) => option.value)
+                          : [],
+                      );
+                    }}
+                    placeholder="Final DNI"
+                    components={{
+                      Option: (props) => <CheckboxOptions {...props} />,
+                    }}
+                    closeMenuOnSelect={false}
+                    styles={{
+                      indicatorSeparator: () => ({ display: 'none' }),
+                    }}
                   />
                 </div>
-
                 <div className="flex flex-col items-center">
                   <label htmlFor="selectedConvenio" className="italic font-semibold">
                     Canal de Venta
