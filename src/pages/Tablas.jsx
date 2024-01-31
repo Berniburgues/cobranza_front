@@ -17,7 +17,7 @@ const Tablas = () => {
               : ''
           }`}
         >
-          Tabla General
+          TABLA GENERAL
         </Link>
         <Link
           to="socio"
@@ -26,7 +26,7 @@ const Tablas = () => {
             location.pathname === '/tablas/socio' ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
-          Historial Socio
+          HISTORIAL SOCIO
         </Link>
         <Link
           to="historialACE"
@@ -37,7 +37,7 @@ const Tablas = () => {
               : ''
           }`}
         >
-          Historial ACE
+          HISTORIAL ACE
         </Link>
       </div>
       <Outlet />

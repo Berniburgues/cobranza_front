@@ -3,23 +3,23 @@ import React from 'react';
 const ReportesDirectos = () => {
   const informes = [
     {
-      title: 'Ratios',
+      title: 'RATIOS',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiODVkM2E5NjAtODI2My00ZDlhLThjYjEtY2FlYmFiZjk5OTk2IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
     {
-      title: 'Cobranza por Período',
+      title: 'COBRANZA POR PERÍODO',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZTZhM2JkZDAtMDFmYy00OGI1LWEwMTYtZjI2Y2UzZWRiZGE1IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
     {
-      title: 'Info Bancos',
+      title: 'INFO BANCOS',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZjRkMGZlYjYtMWY1OS00ODMyLWJjZjEtZTEyOTgyNWE0NjgzIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
     {
-      title: 'Importes Enviados',
+      title: 'IMPORTES ENVIADOS',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiNWEyNDg1Y2ItMTg3Yi00YWM5LWI2NDMtNDVkZGJlOWNlNTVkIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
     {
-      title: 'Cuiles por Banco',
+      title: 'CUILES POR BANCO',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiN2UxMTA1MGMtYzI0Zi00ZTViLWJlMGYtNWQ5ZDZhODkzNjI2IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
     },
   ];

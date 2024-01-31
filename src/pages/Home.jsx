@@ -27,21 +27,21 @@ const Home = () => {
           </button>
         </Link>
       </div>
-      <section className="grid grid-cols-3 gap-5 mt-10">
-        <article className="p-4 border-2 border-black rounded-md py-2 bg-gradient-to-r from-white to-gray-300">
+      <section className="grid grid-cols-3 gap-5 mt-10 text-white">
+        <article className="p-4 border-2 border-black rounded-md py-2 bg-gradient-to-r from-slate-800 to-slate-700">
           <div className="text-center flex flex-col">
             <AnimatedCounter value={132753} />
             RESPONSABLES ACTIVOS
           </div>
         </article>
 
-        <article className="p-4 border-2 border-black rounded-md py-2 bg-gradient-to-b from-white to-gray-300">
+        <article className="p-4 border-2 border-black rounded-md py-2 bg-gradient-to-b from-slate-800 to-slate-700">
           <div className="text-center flex flex-col">
             <AnimatedCounter value={217931} />
             SERVICIOS
           </div>
         </article>
-        <article className="p-4 border-2 border-black rounded-md py-2 bg-gradient-to-l from-white to-gray-300">
+        <article className="p-4 border-2 border-black rounded-md py-2 bg-gradient-to-l from-slate-800 to-slate-700">
           <div className="text-center flex flex-col">
             <AnimatedCounter value={29751} />
             ADHERENTES

@@ -30,7 +30,7 @@ const Reportes = () => {
                   : ''
               }`}
             >
-              Directos
+              DIRECTOS
             </Link>
 
             <Link
@@ -41,7 +41,7 @@ const Reportes = () => {
                   : ''
               }`}
             >
-              Indirectos
+              INDIRECTOS
             </Link>
             <Link
               to="parciales"
@@ -51,7 +51,7 @@ const Reportes = () => {
                   : ''
               }`}
             >
-              Parciales
+              PARCIALES
             </Link>
           </>
         )}

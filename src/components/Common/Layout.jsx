@@ -57,11 +57,6 @@ const Layout = ({ children }) => {
           </a>{' '}
           TODOS LOS DERECHOS RESERVADOS
         </p>
-        <img
-          src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-7.png"
-          alt="Logo2"
-          className="w-auto h-8"
-        />
       </footer>
     </section>
   );
