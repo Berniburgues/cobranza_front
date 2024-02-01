@@ -258,7 +258,7 @@ export const loginService = async (email, password) => {
   }
 };
 
-//Servicio para subir archivos
+//Servicio para subir archivos para historial Socio
 export const uploadFile = async (file) => {
   try {
     const formData = new FormData();
@@ -273,5 +273,15 @@ export const uploadFile = async (file) => {
     // Manejar el error, mostrar un mensaje, etc.
     console.error('Error al subir el archivo:', error);
     throw error;
+  }
+};
+
+//Servicio para carga de Archivos de Novedades
+export const fetchCargaNovedades = async () => {
+  try {
+    const res = await axios.get('http://localhost:8080/archivos/cargaNovedades');
+    return res.data;
+  } catch (error) {
+    console.error(error);
   }
 };

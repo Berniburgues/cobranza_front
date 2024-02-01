@@ -10,6 +10,7 @@ export const permisosRoles = {
     '/reportes',
     '/reportes/directos',
     '/reportes/indirectos',
+    '/archivos',
   ],
   parcial: [
     '/',

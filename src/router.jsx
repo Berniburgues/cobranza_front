@@ -13,6 +13,7 @@ import Denegado from './pages/Denegado';
 import HistorialACE from './pages/historialACE';
 import Tablas from './pages/Tablas';
 import TablaPagos from './pages/TablaPagos';
+import Archivos from './pages/Archivos';
 
 export const router = createBrowserRouter([
   {
@@ -88,5 +89,15 @@ export const router = createBrowserRouter([
         element: <ReportesParciales />,
       },
     ],
+  },
+  {
+    path: '/archivos',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Archivos />
+        </ProtectedRoute>
+      </Layout>
+    ),
   },
 ]);
