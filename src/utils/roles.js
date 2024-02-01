@@ -17,6 +17,7 @@ export const permisosRoles = {
     '/tablas',
     '/tablas/tablaPagos',
     '/tablas/socio',
+    '/tablas/historialACE',
     '/reportes',
     '/reportes/parciales',
   ],

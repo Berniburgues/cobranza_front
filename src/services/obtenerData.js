@@ -231,6 +231,20 @@ export const fetchFiltroSocio = async (ace) => {
   }
 };
 
+//Servicio para los contadores del Home
+export const fetchInfoHome = async () => {
+  try {
+    const res = await axios.get('https://cobranza.2.us-1.fl0.io/clientes/infoHome');
+    if (res.status === 200) {
+      return res.data;
+    } else {
+      throw new Error(`Error en la solicitud: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 //Servicio para el Login
 export const loginService = async (email, password) => {
   try {

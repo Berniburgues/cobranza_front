@@ -421,7 +421,7 @@ const TablaPagos = () => {
                     Ver Códigos
                   </label>
                   <Select
-                    className="border-2 border-black rounded-md w-52 h-full"
+                    className="border-2 border-black rounded-md w-auto h-full"
                     value={selectedCodigo.map((code) => ({ value: code, label: code }))}
                     name="selectedCodigo"
                     id="selectedCodigo"
@@ -441,9 +441,14 @@ const TablaPagos = () => {
                     }
                     getOptionLabel={(option) => option.label}
                     getOptionValue={(option) => option.value}
-                    placeholder="Código"
+                    placeholder="Código/s"
+                    hideSelectedOptions={false}
                     styles={{
                       indicatorSeparator: () => ({ display: 'none' }),
+                      multiValue: (provided) => ({
+                        ...provided,
+                        display: 'none', // Oculta las opciones seleccionadas
+                      }),
                     }}
                     components={{
                       Option: (props) => <CheckboxOptions {...props} />,
@@ -472,7 +477,7 @@ const TablaPagos = () => {
                     Final DNI
                   </label>
                   <Select
-                    className="border-2 border-black rounded-md w-36 h-full"
+                    className="border-2 border-black rounded-md w-auto h-full"
                     value={terminacionDni.map((value) => ({
                       value,
                       label: value.toString(),
@@ -490,12 +495,17 @@ const TablaPagos = () => {
                       );
                     }}
                     placeholder="Final DNI"
+                    hideSelectedOptions={false}
                     components={{
                       Option: (props) => <CheckboxOptions {...props} />,
                     }}
                     closeMenuOnSelect={false}
                     styles={{
                       indicatorSeparator: () => ({ display: 'none' }),
+                      multiValue: (provided) => ({
+                        ...provided,
+                        display: 'none', // Oculta las opciones seleccionadas
+                      }),
                     }}
                   />
                 </div>

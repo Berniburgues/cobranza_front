@@ -307,7 +307,7 @@ const HistorialDNI = () => {
                   Banco: {banco && determinarBancoPorCBU(banco.value)}
                 </h3>
                 <p className="underline">
-                  Cantidad de Socios encontrados:{' '}
+                  Cantidad de Socios encontrados con los filtros establecidos:{' '}
                   <span className="font-semibold no-underline">
                     {data.count} de {totalSocios} (
                     {((data.count / totalSocios) * 100).toFixed(2)}%)
@@ -316,16 +316,17 @@ const HistorialDNI = () => {
                 {Object.keys(diasConMasAce)
                   .sort((a, b) => new Date(a) - new Date(b)) // Ordenar los periodos
                   .map((periodo) => (
-                    <p key={periodo} className="underline text-sm">
+                    <p key={periodo} className="text-sm">
                       Días con más cobros en{' '}
-                      <span className="italic font-semibold">
+                      <span className="italic font-semibold underline">
                         {getNombrePeriodo(periodo)}
                       </span>
                       :{' '}
                       <span className="font-semibold text-green-500 no-underline">
                         {diasConMasAce[periodo].map((dia) => (
                           <span key={dia.day}>
-                            {`${dia.day} (${dia.aceCount})`}
+                            <span className="text-blue-500 font-bold">{`${dia.day}`}</span>{' '}
+                            {`(${dia.aceCount} ACE)`}
                             {diasConMasAce[periodo].indexOf(dia) !==
                               diasConMasAce[periodo].length - 1 && ', '}
                           </span>

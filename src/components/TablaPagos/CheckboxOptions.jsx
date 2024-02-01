@@ -8,7 +8,7 @@ const CheckboxOptions = ({ children, onChange, ...props }) => (
         type="checkbox"
         {...props.innerProps}
         checked={props.isSelected}
-        onChange={() => onChange(props.data.value)} // Pasar el valor al onChange
+        onChange={() => onChange(props.data.value)}
       />
       <label>{children}</label>
     </div>

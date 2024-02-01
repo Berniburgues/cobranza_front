@@ -10,7 +10,7 @@ const AnimatedCounter = ({ value }) => {
   });
 
   return (
-    <animated.span className="font-bold font-mono md:text-3xl font-2xl">
+    <animated.span className="font-bold font-mono md:text-3xl font-base">
       {number.to((val) => Math.floor(val))}
     </animated.span>
   );
