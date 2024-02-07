@@ -14,6 +14,7 @@ import HistorialACE from './pages/historialACE';
 import Tablas from './pages/Tablas';
 import TablaPagos from './pages/TablaPagos';
 import Archivos from './pages/Archivos';
+import Bancos from './pages/Bancos';
 
 export const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
       {
         path: 'historialACE',
         element: <HistorialACE />,
+      },
+      {
+        path: '/tablas/bancos',
+        element: <Bancos />,
       },
     ],
   },

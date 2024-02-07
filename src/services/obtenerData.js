@@ -101,6 +101,18 @@ export const fetchHistorialDNI = async (
   }
 };
 
+// Obtener Datos para Bancos
+export const getBanco = async (banco) => {
+  try {
+    // let url = `http://localhost:8080/bancos/data?banco=${banco}`;
+    let url = `https://cobranza.2.us-1.fl0.io/bancos/data?banco=${banco}`;
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 //Obtener Importes, Cuiles, Servicios
 export const fetchImportes = async (periodo, bco, exb) => {
   try {

@@ -5,6 +5,7 @@ import HistorialDNITable from '../components/Historial DNI/HistorialDNITable';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import { getNombrePeriodo } from '../utils/fechas';
 import FiltroLoader from '../components/Historial DNI/FiltroLoader';
+import { Link } from 'react-router-dom';
 
 const HistorialDNI = () => {
   const terminacionDniRef = useRef(null);
@@ -304,7 +305,16 @@ const HistorialDNI = () => {
             {busqueda && (
               <div className="text-center flex flex-col">
                 <h3 className="font-bold text-2xl underline">
-                  Banco: {banco && determinarBancoPorCBU(banco.value)}
+                  Banco:{' '}
+                  <Link
+                    to={`/tablas/bancos?banco=${banco.value}`}
+                    target="_blank"
+                    title="Buscar Datos del Banco"
+                  >
+                    <span className="hover:text-blue-400">
+                      {banco && determinarBancoPorCBU(banco.value)}
+                    </span>
+                  </Link>
                 </h3>
                 <p className="underline">
                   Cantidad de Socios encontrados con los filtros establecidos:{' '}

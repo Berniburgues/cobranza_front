@@ -629,7 +629,16 @@ const TablaPagos = () => {
           <section>
             {selectedBanco && (
               <h2 className="text-lg text-center underline font-bold">
-                Banco: {determinarBancoPorCBU(selectedBanco)}
+                Banco:{' '}
+                <Link
+                  to={`/tablas/bancos?banco=${selectedBanco}`}
+                  target="_blank"
+                  title="Buscar Datos del Banco"
+                >
+                  <span className="hover:text-blue-400">
+                    {determinarBancoPorCBU(selectedBanco)}
+                  </span>
+                </Link>
               </h2>
             )}
 

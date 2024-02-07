@@ -4,13 +4,21 @@ import { getNombrePeriodo } from '../../utils/fechas';
 import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 import { determinarColorPorBanco } from '../../utils/determinarColorPorBanco';
 import ExcelSocio from './Excel';
+import { Link } from 'react-router-dom';
 
 const Historial = ({ datosFijos, cobranza }) => {
   const informacionSocio = (
     <div>
       #{datosFijos.socio} || {datosFijos.nombre} {datosFijos.apellido} || DNI:{' '}
       {datosFijos.documento} || CUIL: {datosFijos.cuil} || Banco:{' '}
-      {determinarBancoPorCBU(datosFijos.banco)}
+      <Link
+        to={`/tablas/bancos?banco=${datosFijos.banco}`}
+        target="_blank"
+        title="Buscar Datos del Banco"
+        className="hover:text-blue-400"
+      >
+        {determinarBancoPorCBU(datosFijos.banco)}
+      </Link>
       {datosFijos.baja !== null ? ` || Baja: ${datosFijos.baja}` : ''}
       {datosFijos.baja !== null && datosFijos.motivoBaja !== ''
         ? ` || Motivo Baja: ${datosFijos.motivoBaja}`

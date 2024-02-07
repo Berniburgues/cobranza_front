@@ -6,8 +6,8 @@ const Tablas = () => {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col items-center h-full">
-      <div className="space-x-5 mt-1 mb-10">
+    <section className="flex flex-col items-center h-full">
+      <div className="space-x-5 mt-1 mb-5">
         <Link
           to="tablaPagos"
           target="_blank"
@@ -41,7 +41,7 @@ const Tablas = () => {
         </Link>
       </div>
       <Outlet />
-    </div>
+    </section>
   );
 };
 

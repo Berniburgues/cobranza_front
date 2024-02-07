@@ -17,19 +17,26 @@ const Layout = ({ children }) => {
       <ScrollTop />
       <nav className="bg-slate-800 border-b border-black p-2 text-white text-sm font-semibold flex justify-between items-center">
         <div className="flex items-center">
-          <Link to="/home" className="hover:text-blue-400">
+          <Link
+            to="/home"
+            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform hover:scale-105"
+          >
             INICIO
           </Link>
           {user && (
             <button
               onClick={handleLogout}
-              className="text-red-500 hover:text-red-400 ml-4"
+              className="text-red-500 hover:text-red-400 ml-4 border-b border-transparent hover:border-red-400 transition"
             >
               SALIR
             </button>
           )}
         </div>
-        <a href="https://atsapra.com.ar/" target="blank" className="mx-auto">
+        <a
+          href="https://atsapra.com.ar/"
+          target="blank"
+          className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-110"
+        >
           <img
             src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-9.png"
             alt="Logo"
@@ -38,21 +45,33 @@ const Layout = ({ children }) => {
         </a>
 
         <div className="space-x-4">
-          <Link to="/tablas" className="hover:text-blue-400" target="_blank">
+          <Link
+            to="/tablas"
+            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform hover:scale-110"
+            target="_blank"
+          >
             TABLAS
           </Link>
-          <Link to="/reportes" className="hover:text-blue-400" target="_blank">
+          <Link
+            to="/reportes"
+            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform hover:scale-110"
+            target="_blank"
+          >
             REPORTES
           </Link>
         </div>
       </nav>
-      <main className="container mx-auto pt-1 flex-grow max-w-screen-3xl">
+      <main className="container mx-auto pt-1 flex-grow max-w-screen-3xl transition">
         {children}
       </main>
       <footer className="bg-slate-800 text-white gap-3 pt-1 text-center text-xs mt-auto border-t border-black flex flex-wrap items-center justify-center">
         <p className="italic">
           &copy; 2024{' '}
-          <a href="https://atsapra.com.ar" className="text-blue-600 hover:text-blue-500">
+          <a
+            href="https://atsapra.com.ar"
+            className="text-blue-600 hover:text-blue-500 hover:underline transition"
+            hover:underline
+          >
             ATSAPRA
           </a>{' '}
           TODOS LOS DERECHOS RESERVADOS
