@@ -109,16 +109,16 @@ const Bancos = () => {
                       <th className="px-10 py-1 text-left text-sm font-semibold text-gray-600 uppercase">
                         Periodo
                       </th>
-                      <th className="px-10 py-1 align-middle text-center text-sm font-semibold text-gray-600 uppercase">
+                      <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase">
                         Socios
                       </th>
-                      <th className="px-10 py-1 align-middle text-center text-sm font-semibold text-gray-600 uppercase">
+                      <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase">
                         Adherentes
                       </th>
-                      <th className="px-10 py-1 align-middle text-center text-sm font-semibold text-gray-600 uppercase">
+                      <th className="px-10 py-1  text-center text-sm font-semibold text-gray-600 uppercase">
                         Servicios
                       </th>
-                      <th className="px-10 py-1 align-middle text-center text-sm font-semibold text-gray-600 uppercase">
+                      <th className="px-10 py-1  text-center text-sm font-semibold text-gray-600 uppercase">
                         Cobrado
                       </th>
                     </tr>

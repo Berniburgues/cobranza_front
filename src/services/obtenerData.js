@@ -291,7 +291,7 @@ export const uploadFile = async (file) => {
 //Servicio para carga de Archivos de Novedades
 export const fetchCargaNovedades = async () => {
   try {
-    const res = await axios.get('http://localhost:8080/archivos/cargaNovedades');
+    const res = await axios.get('https://cobranza.2.us-1.fl0.io/archivos/cargaNovedades');
     return res.data;
   } catch (error) {
     console.error(error);

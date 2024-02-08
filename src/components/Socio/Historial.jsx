@@ -26,6 +26,8 @@ const Historial = ({ datosFijos, cobranza }) => {
     </div>
   );
 
+  console.log(cobranza);
+
   // Obtener la lista única de días de cobro
   const diasCobro = [...new Set(cobranza.map((item) => item.dia))].sort((a, b) => a - b);
 
@@ -48,8 +50,8 @@ const Historial = ({ datosFijos, cobranza }) => {
   });
 
   return (
-    <article className="p-1">
-      <table className="w-full border-collapse text-center table-fixed text-xs md:text-sm">
+    <article className="p-1 ">
+      <table className="w-full border-collapse text-center table-fixed text-xs md:text-sm bg-gray-100">
         <thead>
           <tr>
             <th
@@ -116,6 +118,31 @@ const Historial = ({ datosFijos, cobranza }) => {
                   codigosAplanados.split('-').filter((codigo) => codigo.startsWith('R'))
                     .length === 2;
 
+                let bordeClass = 'border border-black';
+
+                if (
+                  cobroDia.some(
+                    (item) => item.FechaAnses === item.fecCobro && item.codigo === 'ACE',
+                  )
+                ) {
+                  bordeClass = 'border-2 border-blue-500 bg-green-300';
+                } else if (
+                  cobroDia.some(
+                    (item) => item.FechaAnses === item.fecCobro && item.codigo === 'R10',
+                  )
+                ) {
+                  bordeClass = 'border-2 border-orange-600 bg-yellow-200';
+                } else if (
+                  cobroDia.some(
+                    (item) =>
+                      item.FechaAnses === item.fecCobro &&
+                      item.codigo !== 'ACE' &&
+                      item.codigo !== 'R10',
+                  )
+                ) {
+                  bordeClass = 'border-2 border-red-900 bg-red-300';
+                }
+
                 let cellColorClass = '';
                 if (hasACE && isR10) {
                   cellColorClass = 'bg-gradient-to-b from-yellow-400 to-green-500';
@@ -150,7 +177,7 @@ const Historial = ({ datosFijos, cobranza }) => {
                 return (
                   <td
                     key={diaIndex}
-                    className={`border-2 border-black text-center text-[0.50rem] md:text-sm font-mono font-bold truncate whitespace-nowrap ${cellColorClass}`}
+                    className={`border text-center ${bordeClass} text-[0.50rem] whitespace-nowrap truncate text-ellipsis md:text-sm font-mono font-bold ${cellColorClass}`}
                     title={titleText}
                   >
                     {codigosAplanados || ''}
