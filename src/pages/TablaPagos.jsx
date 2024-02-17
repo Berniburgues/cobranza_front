@@ -770,7 +770,12 @@ const TablaPagos = () => {
                               }`}
                               title={determinarBancoPorCBU(socio.CBU)}
                             >
-                              {socio.CBU}
+                              <Link
+                                to={`/tablas/bancos?banco=${socio.CBU}`}
+                                target="_blank"
+                              >
+                                {socio.CBU}
+                              </Link>
                             </td>
                             <td
                               className={`p-1 border-2 border-black font-semibold ${

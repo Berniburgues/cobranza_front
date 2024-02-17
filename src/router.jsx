@@ -15,6 +15,7 @@ import Tablas from './pages/Tablas';
 import TablaPagos from './pages/TablaPagos';
 import Archivos from './pages/Archivos';
 import Bancos from './pages/Bancos';
+import Calendario from './pages/Calendario';
 
 export const router = createBrowserRouter([
   {
@@ -101,6 +102,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute>
           <Archivos />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: '/calendario',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Calendario />
         </ProtectedRoute>
       </Layout>
     ),

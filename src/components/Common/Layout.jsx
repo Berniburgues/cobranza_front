@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
         <div className="flex items-center">
           <Link
             to="/home"
-            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform hover:scale-105"
+            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform"
           >
             INICIO
           </Link>
@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
         <a
           href="https://atsapra.com.ar/"
           target="blank"
-          className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-110"
+          className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-105"
         >
           <img
             src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-9.png"
@@ -44,20 +44,27 @@ const Layout = ({ children }) => {
           />
         </a>
 
-        <div className="space-x-4">
+        <div className="space-x-2">
           <Link
             to="/tablas"
-            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform hover:scale-110"
+            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform"
             target="_blank"
           >
             TABLAS
           </Link>
           <Link
             to="/reportes"
-            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform hover:scale-110"
+            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform"
             target="_blank"
           >
             REPORTES
+          </Link>
+          <Link
+            to="/calendario"
+            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform"
+            target="_blank"
+          >
+            CALENDARIO
           </Link>
         </div>
       </nav>

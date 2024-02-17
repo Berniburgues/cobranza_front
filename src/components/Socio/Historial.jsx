@@ -85,7 +85,7 @@ const Historial = ({ datosFijos, cobranza }) => {
           {periodos.map((periodo, periodoIndex) => (
             <tr key={periodoIndex}>
               <td
-                className="border-2 border-gray-800 text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap font-mono bg-white text-black"
+                className="border border-gray-800 text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap font-mono bg-white text-black"
                 title={getNombrePeriodo(periodo)}
               >
                 {getNombrePeriodo(periodo)}
@@ -125,13 +125,14 @@ const Historial = ({ datosFijos, cobranza }) => {
                     (item) => item.FechaAnses === item.fecCobro && item.codigo === 'ACE',
                   )
                 ) {
-                  bordeClass = 'border-2 border-blue-500 bg-green-300';
+                  bordeClass = 'border-2 border-blue-800 bg-green-300 hover:bg-green-400';
                 } else if (
                   cobroDia.some(
                     (item) => item.FechaAnses === item.fecCobro && item.codigo === 'R10',
                   )
                 ) {
-                  bordeClass = 'border-2 border-orange-600 bg-yellow-200';
+                  bordeClass =
+                    'border-2 border-orange-600 bg-yellow-200 hover:bg-yellow-300';
                 } else if (
                   cobroDia.some(
                     (item) =>
