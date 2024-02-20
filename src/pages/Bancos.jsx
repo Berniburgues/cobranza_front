@@ -71,6 +71,18 @@ const Bancos = () => {
       const cobradoAnterior = parseFloat(
         datosBanco[indice - 1].Cobrado.replace(/[^\d.-]/g, ''),
       );
+
+      // Manejar el caso cuando el cobrado anterior es 0
+      if (cobradoAnterior === 0) {
+        if (cobradoActual > 0) {
+          return (
+            <span className="text-green-600 text-[0.7rem] italic">(+Infinity%)</span>
+          );
+        } else {
+          return <span className="text-gray-600 text-[0.7rem] italic">(0%)</span>;
+        }
+      }
+
       const diferencia = cobradoActual - cobradoAnterior;
 
       const porcentaje = ((diferencia / cobradoAnterior) * 100).toFixed(2);
@@ -82,7 +94,7 @@ const Bancos = () => {
       } else if (porcentaje < 0) {
         return <span className="text-red-600 text-[0.7rem] italic">({porcentaje}%)</span>;
       } else if (isNaN(porcentaje)) {
-        return <span className="text-gray-600 text-[0.7rem] italic">({'-'}%)</span>;
+        return <span className="text-gray-600 text-[0.7rem] italic">(-%)</span>;
       } else {
         return (
           <span className="text-gray-600 text-[0.7rem] italic">({porcentaje}%)</span>
@@ -116,7 +128,7 @@ const Bancos = () => {
         'Adherentes',
         'Servicios',
         'Cobrado',
-        'Ratio (0-90)',
+        'Ratio',
       ];
       worksheet.addRow(columnHeaders).eachCell((cell) => (cell.style = headerStyle));
 
@@ -179,7 +191,7 @@ const Bancos = () => {
                         Cobrado
                       </th>
                       <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase">
-                        Ratio (0-90)
+                        Ratio
                       </th>
                     </tr>
                   </thead>
