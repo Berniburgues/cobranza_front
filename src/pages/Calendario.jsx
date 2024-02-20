@@ -1,5 +1,6 @@
 import { React, useState } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import esLocale from 'date-fns/locale/es';
 import format from 'date-fns/format';
@@ -56,205 +57,237 @@ const generateEvents = () => {
       type: 'envio',
     },
     {
-      title: 'Envío 027 MES',
+      title: 'OBMES.E',
       start: new Date(2024, 1, 26, 10, 0),
       end: new Date(2024, 1, 26, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MES',
     },
     {
-      title: 'Envío 027 MES',
+      title: 'OBMES.E',
       start: new Date(2024, 2, 4, 10, 0),
       end: new Date(2024, 2, 4, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MES',
     },
     {
-      title: 'Envío 027 MES',
+      title: 'OBMES.E',
       start: new Date(2024, 2, 8, 10, 0),
       end: new Date(2024, 2, 8, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MES',
     },
     {
-      title: 'Envío 027 MES',
+      title: 'OBMESE.E',
       start: new Date(2024, 2, 14, 10, 0),
       end: new Date(2024, 2, 14, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MES',
     },
     {
-      title: 'Envío 027 MORA',
+      title: 'OBMORA.E',
       start: new Date(2024, 1, 27, 10, 0),
       end: new Date(2024, 1, 27, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MORA',
     },
     {
-      title: 'Envío 027 MORA',
+      title: 'OBMORA.E',
       start: new Date(2024, 2, 5, 10, 0),
       end: new Date(2024, 2, 5, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MORA',
     },
     {
-      title: 'Envío 027 MORA',
+      title: 'OBMORA.E',
       start: new Date(2024, 2, 11, 10, 0),
       end: new Date(2024, 2, 11, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MORA',
     },
     {
-      title: 'Envío 027 MORA',
+      title: 'OBMORA.E',
       start: new Date(2024, 2, 15, 10, 0),
       end: new Date(2024, 2, 15, 10, 0),
       type: 'envio',
+      customToolTip: 'Enviado 027 MORA',
     },
   ];
 
   const impactos = [
     {
-      title: 'Impacto 027 MES',
+      title: 'OBMES.I',
       start: new Date(2024, 1, 29, 10, 0),
       end: new Date(2024, 1, 29, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MES',
     },
     {
-      title: 'Impacto 027 MES',
+      title: 'OBMES.I',
       start: new Date(2024, 2, 6, 10, 0),
       end: new Date(2024, 2, 6, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MES',
     },
     {
-      title: 'Impacto 027 MES',
+      title: 'OBMES.I',
       start: new Date(2024, 2, 12, 10, 0),
       end: new Date(2024, 2, 12, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MES',
     },
     {
-      title: 'Impacto 027 MES',
+      title: 'OBMES.I',
       start: new Date(2024, 2, 18, 10, 0),
       end: new Date(2024, 2, 18, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MES',
     },
     {
-      title: 'Impacto 027 MORA',
+      title: 'OBMORA.I',
       start: new Date(2024, 2, 1, 10, 0),
       end: new Date(2024, 2, 1, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MORA',
     },
     {
-      title: 'Impacto 027 MORA',
+      title: 'OBMORA.I',
       start: new Date(2024, 2, 7, 10, 0),
       end: new Date(2024, 2, 7, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MORA',
     },
     {
-      title: 'Impacto 027 MORA',
+      title: 'OBMORA.I',
       start: new Date(2024, 2, 13, 10, 0),
       end: new Date(2024, 2, 13, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MORA',
     },
     {
-      title: 'Impacto 027 MORA',
+      title: 'OBMORA.I',
       start: new Date(2024, 2, 19, 10, 0),
       end: new Date(2024, 2, 19, 10, 0),
       type: 'impacto',
+      customToolTip: 'Impacto 027 MORA',
     },
   ];
 
   const acreditaciones = [
     {
-      title: 'Acred. 027 MES',
+      title: 'OBMES.A',
       start: new Date(2024, 2, 1, 10, 0),
       end: new Date(2024, 2, 1, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MES',
     },
     {
-      title: 'Acred. 027 MES',
+      title: 'OBMES.A',
       start: new Date(2024, 2, 7, 10, 0),
       end: new Date(2024, 2, 7, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MES',
     },
     {
-      title: 'Acred. 027 MES',
+      title: 'OBMES.A',
       start: new Date(2024, 2, 13, 10, 0),
       end: new Date(2024, 2, 13, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MES',
     },
     {
-      title: 'Acred. 027 MES',
+      title: 'OBMES.A',
       start: new Date(2024, 2, 19, 10, 0),
       end: new Date(2024, 2, 19, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MES',
     },
     {
-      title: 'Acred. 027 MORA',
+      title: 'OBMORA.A',
       start: new Date(2024, 2, 4, 10, 0),
       end: new Date(2024, 2, 4, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MORA',
     },
     {
-      title: 'Acred. 027 MORA',
+      title: 'OBMORA.A',
       start: new Date(2024, 2, 8, 10, 0),
       end: new Date(2024, 2, 8, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MORA',
     },
     {
-      title: 'Acred. 027 MORA',
+      title: 'OBMORA.A',
       start: new Date(2024, 2, 14, 10, 0),
       end: new Date(2024, 2, 14, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MORA',
     },
     {
-      title: 'Acred. 027 MORA',
+      title: 'OBMORA.A',
       start: new Date(2024, 2, 20, 10, 0),
       end: new Date(2024, 2, 20, 10, 0),
       type: 'acreditacion',
+      customToolTip: 'Acreditación 027 MORA',
     },
   ];
 
   const novedades = [
     {
-      title: 'Novedad 027 MES',
+      title: 'OBMES.N',
       start: new Date(2024, 2, 4, 10, 0),
       end: new Date(2024, 2, 4, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MES',
     },
     {
-      title: 'Novedad 027 MES',
+      title: 'OBMES.N',
       start: new Date(2024, 2, 8, 10, 0),
       end: new Date(2024, 2, 8, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MES',
     },
     {
-      title: 'Novedad 027 MES',
+      title: 'OBMES.N',
       start: new Date(2024, 2, 14, 10, 0),
       end: new Date(2024, 2, 14, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MES',
     },
     {
-      title: 'Novedad 027 MES',
+      title: 'OBMES.N',
       start: new Date(2024, 2, 20, 10, 0),
       end: new Date(2024, 2, 20, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MES',
     },
     {
-      title: 'Noved. 027 MORA',
+      title: 'OBMORA.N',
       start: new Date(2024, 2, 5, 10, 0),
       end: new Date(2024, 2, 5, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MORA',
     },
     {
-      title: 'Noved. 027 MORA',
+      title: 'OBMORA.N',
       start: new Date(2024, 2, 11, 10, 0),
       end: new Date(2024, 2, 11, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MORA',
     },
     {
-      title: 'Noved. 027 MORA',
+      title: 'OBMORA.N',
       start: new Date(2024, 2, 15, 10, 0),
       end: new Date(2024, 2, 15, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MORA',
     },
     {
-      title: 'Noved. 027 MORA',
+      title: 'OBMORA.N',
       start: new Date(2024, 2, 21, 10, 0),
       end: new Date(2024, 2, 21, 10, 0),
       type: 'novedad',
+      customToolTip: 'Novedad 027 MORA',
     },
   ];
 
@@ -264,7 +297,10 @@ const generateEvents = () => {
 };
 
 //Filtros para los dias de fines de semana y meses
-const Calendario = (props) => {
+const Calendario = () => {
+  const [filterByMonth, setFilterByMonth] = useState(true);
+  const [filterByMora, setFilterByMora] = useState(true);
+
   const [selectedEventTypes, setSelectedEventTypes] = useState([
     'envio',
     'acreditacion',
@@ -278,19 +314,21 @@ const Calendario = (props) => {
     setFiltersVisible((prevVisibility) => !prevVisibility);
   };
 
-  const events = generateEvents()
-    .filter((event) => {
-      const dayOfWeek = event.start.getDay();
-      return dayOfWeek >= 1 && dayOfWeek <= 5;
-    })
-    .filter((event) => {
-      const eventMonth = event.start.getMonth();
-      return eventMonth === 1 || eventMonth === 2;
-    })
-    .filter((event) => {
-      // Aplicar filtro según los tipos seleccionados por el usuario
-      return selectedEventTypes.length === 0 || selectedEventTypes.includes(event.type);
-    });
+  const events = generateEvents().filter((event) => {
+    const dayOfWeek = event.start.getDay();
+    const eventMonth = event.start.getMonth();
+    const eventNameIncludesFilter =
+      (filterByMora && event.title.toLowerCase().includes('mora')) ||
+      (filterByMonth && event.title.toLowerCase().includes('mes'));
+
+    return (
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      (eventMonth === 1 || eventMonth === 2) &&
+      (selectedEventTypes.length === 0 || selectedEventTypes.includes(event.type)) &&
+      (eventNameIncludesFilter || !filtersVisible)
+    );
+  });
 
   const handleEventTypeChange = (event) => {
     const { value } = event.target;
@@ -305,100 +343,138 @@ const Calendario = (props) => {
       }
     });
   };
-  //Estilos para cada tipo de evento
+  // Estilos para cada tipo de evento
   const eventStyleGetter = (event) => {
-    if (event.type === 'envio') {
-      return {
-        className:
-          'bg-blue-500 rounded-full text-xs w-3/4 text-center mx-auto text-center',
-      };
-    } else if (event.type === 'impacto') {
-      return {
-        className:
-          'bg-yellow-500 rounded-full text-xs w-3/4 text-center mx-auto text-center',
-      };
-    } else if (event.type === 'acreditacion') {
-      return {
-        className:
-          'bg-green-500 rounded-full text-xs w-3/4 text-center mx-auto text-center',
-      };
-    } else if (event.type === 'novedad') {
-      return {
-        className:
-          'bg-orange-500 rounded-full text-xs w-3/4 text-center mx-auto text-center',
-      };
+    const commonStyles = 'rounded-full text-xs w-3/4 text-center mx-auto text-center';
+
+    const baseStyles = (color) => ({
+      className: `${color} ${commonStyles}`,
+    });
+
+    if (event.title.toLowerCase().includes('mes')) {
+      //Estilos para eventos "mes"
+      if (event.type === 'envio') {
+        return baseStyles('bg-blue-500');
+      } else if (event.type === 'impacto') {
+        return baseStyles('bg-yellow-500');
+      } else if (event.type === 'acreditacion') {
+        return baseStyles('bg-green-500');
+      } else if (event.type === 'novedad') {
+        return baseStyles('bg-orange-500');
+      }
+    } else if (event.title.toLowerCase().includes('mora')) {
+      // Estilos para eventos "mora"
+      if (event.type === 'envio') {
+        return baseStyles('bg-blue-700');
+      } else if (event.type === 'impacto') {
+        return baseStyles('bg-yellow-700');
+      } else if (event.type === 'acreditacion') {
+        return baseStyles('bg-green-700');
+      } else if (event.type === 'novedad') {
+        return baseStyles('bg-orange-700');
+      }
     }
+
+    // Default styles para tipos de eventos desconocidos
     return {};
   };
 
   return (
-    <section className="flex flex-col justify-center items-center capitalize">
-      <h2 className="text-center font-bold underline uppercase text-xl">
+    <section className="flex flex-col items-center capitalize">
+      <h2 className="text-center font-bold underline uppercase text-xl mt-4">
         Calendario de Envíos
       </h2>
-      <div className="my-1 bg-gray-100 rounded-lg p-1">
-        <div className="flex justify-between items-center">
+      <div className="mt-1 bg-gray-100 rounded-lg p-1 w-auto shadow-md border">
+        <div className="flex justify-center items-center text-center">
           <button
-            className="text-blue-500 font-semibold italic"
+            className="text-blue-500 font-semibold italic hover:text-blue-600 underline"
             onClick={toggleFiltersVisibility}
           >
-            {filtersVisible ? 'Ocultar Filtros' : 'Mostrar Filtros'}
+            {filtersVisible ? 'Ocultar Filtros' : 'Filtros'}
           </button>
         </div>
-        {filtersVisible && (
-          <div className="flex flex-col text-sm">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                value="envio"
-                checked={selectedEventTypes.includes('envio')}
-                onChange={handleEventTypeChange}
-                className="form-checkbox text-blue-500"
-              />
-              <span className="ml-2 text-blue-500">Envíos</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                value="acreditacion"
-                checked={selectedEventTypes.includes('acreditacion')}
-                onChange={handleEventTypeChange}
-                className="form-checkbox text-green-500"
-              />
-              <span className="ml-2 text-green-500">Acreditaciones</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                value="impacto"
-                checked={selectedEventTypes.includes('impacto')}
-                onChange={handleEventTypeChange}
-                className="form-checkbox text-yellow-500"
-              />
-              <span className="ml-2 text-yellow-500">Impactos</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                value="novedad"
-                checked={selectedEventTypes.includes('novedad')}
-                onChange={handleEventTypeChange}
-                className="form-checkbox text-orange-500"
-              />
-              <span className="ml-2 text-orange-500">Novedades</span>
-            </label>
-          </div>
-        )}
+        <div className="flex flex-col items-center text-sm mt-1 w-full">
+          {filtersVisible && (
+            <>
+              <div className="flex mb-1 w-full justify-center font-semibold">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    value="filterByMonth"
+                    checked={filterByMonth}
+                    onChange={() => setFilterByMonth(!filterByMonth)}
+                    className="form-checkbox"
+                  />
+                  <span className="ml-1">Mes</span>
+                </label>
+                <label className="flex items-center ml-4">
+                  <input
+                    type="checkbox"
+                    value="filterByMora"
+                    checked={filterByMora}
+                    onChange={() => setFilterByMora(!filterByMora)}
+                    className="form-checkbox"
+                  />
+                  <span className="ml-1">Mora</span>
+                </label>
+              </div>
+
+              <div className="flex justify-center w-full font-semibold">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    value="envio"
+                    checked={selectedEventTypes.includes('envio')}
+                    onChange={handleEventTypeChange}
+                    className="form-checkbox text-blue-500"
+                  />
+                  <span className="ml-1 text-blue-500">Envíos</span>
+                </label>
+                <label className="flex items-center ml-4">
+                  <input
+                    type="checkbox"
+                    value="acreditacion"
+                    checked={selectedEventTypes.includes('acreditacion')}
+                    onChange={handleEventTypeChange}
+                    className="form-checkbox text-green-500"
+                  />
+                  <span className="ml-1 text-green-500">Acreditaciones</span>
+                </label>
+                <label className="flex items-center ml-4">
+                  <input
+                    type="checkbox"
+                    value="impacto"
+                    checked={selectedEventTypes.includes('impacto')}
+                    onChange={handleEventTypeChange}
+                    className="form-checkbox text-yellow-500"
+                  />
+                  <span className="ml-1 text-yellow-500">Impactos</span>
+                </label>
+                <label className="flex items-center ml-4">
+                  <input
+                    type="checkbox"
+                    value="novedad"
+                    checked={selectedEventTypes.includes('novedad')}
+                    onChange={handleEventTypeChange}
+                    className="form-checkbox text-orange-500"
+                  />
+                  <span className="ml-1 text-orange-500">Novedades</span>
+                </label>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       <Calendar
-        className="rounded-lg shadow-lg py-2"
+        className="rounded-lg shadow-lg py-2 mt-4"
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
         eventPropGetter={eventStyleGetter}
         dayPropGetter={dayStyleGetter}
+        tooltipAccessor="customToolTip"
         views={{ month: true, day: true, agenda: true }}
         culture="es"
         messages={{
@@ -408,7 +484,7 @@ const Calendario = (props) => {
           previous: 'Anterior',
           next: 'Siguiente',
         }}
-        style={{ height: 650, width: 1100 }}
+        style={{ height: 650, width: '100%' }}
         components={{
           month: {
             header: ({ label }) => (
@@ -419,7 +495,7 @@ const Calendario = (props) => {
           },
         }}
       />
-      <p className="bg-red-400 rounded-lg italic p-2 my-2 text-xs">
+      <p className="bg-red-400 rounded-lg italic p-1 my-2 text-xs shadow-lg border">
         En rojo días Feriados
       </p>
     </section>
