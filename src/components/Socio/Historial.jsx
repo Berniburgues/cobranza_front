@@ -141,7 +141,7 @@ const Historial = ({ datosFijos, cobranza }) => {
                       item.codigo !== 'R10',
                   )
                 ) {
-                  bordeClass = 'border-2 border-red-900 bg-red-300';
+                  bordeClass = 'border-2 border-red-900 hover:bg-red-400 bg-red-300';
                 }
 
                 let cellColorClass = '';
