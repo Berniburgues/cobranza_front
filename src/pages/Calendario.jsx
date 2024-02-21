@@ -1,6 +1,6 @@
-import { React, useState } from 'react';
+import { React, useState, useRef } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import { useReactToPrint } from 'react-to-print';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import esLocale from 'date-fns/locale/es';
 import format from 'date-fns/format';
@@ -309,6 +309,11 @@ const Calendario = () => {
   ]);
 
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const componentRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const toggleFiltersVisibility = () => {
     setFiltersVisible((prevVisibility) => !prevVisibility);
@@ -467,6 +472,7 @@ const Calendario = () => {
       </div>
 
       <Calendar
+        ref={componentRef}
         className="rounded-lg shadow-lg py-2 mt-4"
         localizer={localizer}
         events={events}
@@ -498,6 +504,12 @@ const Calendario = () => {
       <p className="bg-red-400 rounded-lg italic p-1 my-2 text-xs shadow-lg border">
         En rojo días Feriados
       </p>
+      <button
+        className="bg-red-500 hover:bg-red-700 text-white font-semibold italic border border-black shadow-md p-1 rounded mb-2"
+        onClick={handlePrint}
+      >
+        Exportar
+      </button>
     </section>
   );
 };
