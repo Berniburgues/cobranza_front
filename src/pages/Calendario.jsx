@@ -313,6 +313,7 @@ const Calendario = () => {
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+    documentTitle: 'Calendario de Envíos',
   });
 
   const toggleFiltersVisibility = () => {

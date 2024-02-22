@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
 import { UserContext } from '../contexts/UserContext';
 import Select from 'react-select';
 import {
@@ -78,6 +79,12 @@ const TablaPagos = () => {
   const [serviciosTitulares, setServiciosTitulares] = useState('-');
   const [serviciosAdherentes, setServiciosAdherentes] = useState('-');
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const tablaRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => tablaRef.current,
+    documentTitle: `Historico Banco ${determinarBancoPorCBU(selectedBanco)}`,
+  });
 
   const closeModal = () => {
     setModalIsOpen(false);
@@ -620,6 +627,12 @@ const TablaPagos = () => {
                   selectedExb={selectedExb}
                   dniFilter={dniFilter}
                 />
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white rounded-md p-1 border-2 border-black w-28"
+                  onClick={handlePrint}
+                >
+                  ▼ PDF
+                </button>
               </div>
             </>
           )}
@@ -683,7 +696,7 @@ const TablaPagos = () => {
             <div className="overflow-x-auto">
               <div className="max-h-screen overflow-y-auto">
                 <div className="w-auto">
-                  <table className="w-full border-collapse border text-xs">
+                  <table className="w-full border-collapse border text-xs" ref={tablaRef}>
                     <thead>
                       <tr className="bg-black text-white sticky top-0 z-10">
                         <th className="py-1 border-2 border-gray-700">NºS</th>

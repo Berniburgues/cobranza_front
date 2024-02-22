@@ -1,11 +1,14 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useState, useRef } from 'react';
+import { useReactToPrint } from 'react-to-print';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import EnviosFuturos from '../components/Reportes/EnviosFuturos';
 import { fetchInfoHome } from '../services/obtenerData';
 import Tarjetas from '../components/Home/Tarjetas';
 
 const Home = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [fechaActual, setFechaActual] = useState('');
   const [infoHome, setInfoHome] = useState({
     SociosActivos: '',
     SociosSupervielle: '',
@@ -14,6 +17,30 @@ const Home = () => {
     Adherentes: '',
     Servicios: '',
   });
+  const referencia = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => referencia.current,
+    documentTitle: `Tarjetas Inicio, ${fechaActual}`,
+  });
+
+  useEffect(() => {
+    const obtenerFechaActual = () => {
+      const fecha = format(new Date(), 'dd/MM/yyyy, HH:mm', {
+        timeZone: 'America/Argentina/Buenos_Aires',
+      });
+      setFechaActual(fecha);
+    };
+
+    // Llamada inicial para establecer la fecha con el formato deseado
+    obtenerFechaActual();
+
+    // Configura el intervalo para actualizar la fecha cada minuto
+    const intervalo = setInterval(obtenerFechaActual, 60000);
+
+    // Limpia el intervalo cuando el componente se desmonta
+    return () => clearInterval(intervalo);
+  }, []);
 
   useEffect(() => {
     const fetchDataInfoHome = async () => {
@@ -56,7 +83,18 @@ const Home = () => {
           </button>
         </Link>
       </div>
-      <Tarjetas infoHome={infoHome} />
+      <div ref={referencia} className="flex flex-col justify-center items-center ">
+        <Tarjetas infoHome={infoHome} />
+        <p className=" md:text-base text-xs p-1 mt-2 border-2 border-black rounded-md w-[25%] font-bold italic text-center bg-white text-black">
+          {fechaActual}
+        </p>
+      </div>
+      <button
+        className="bg-red-500 hover:bg-red-700 text-white border-2 border-black h-auto  rounded-lg text-sm shadow-md w-1/12 my-2"
+        onClick={handlePrint}
+      >
+        PDF
+      </button>
       {modalIsOpen && (
         <EnviosFuturos isOpen={modalIsOpen} closeModal={() => setModalIsOpen(false)} />
       )}
