@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getBanco } from '../services/obtenerData';
+import { useReactToPrint } from 'react-to-print';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import { getNombrePeriodo } from '../utils/fechas';
 import { saveAs } from 'file-saver';
@@ -13,6 +14,7 @@ const Bancos = () => {
   const banco = searchParams.get('banco');
   const [datosBanco, setDatosBanco] = useState(null);
   const [error, setError] = useState(null);
+  const tablaRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +28,11 @@ const Bancos = () => {
 
     fetchData();
   }, [banco]);
+
+  const handlePrint = useReactToPrint({
+    content: () => tablaRef.current,
+    documentTitle: `Historico Banco ${determinarBancoPorCBU(banco)} (Tramo 0-90)`,
+  });
 
   const calcularDiferencia = (indice, actual, anterior) => {
     if (indice > 0) {
@@ -160,118 +167,128 @@ const Bancos = () => {
   };
 
   return (
-    <section className="mx-auto my-2">
-      <h2 className="text-2xl font-bold mb-4 text-center bg-gray-200 p-1">
-        Banco seleccionado: {determinarBancoPorCBU(banco)} (Tramo 0-90)
-      </h2>
+    <section>
+      <article className="mx-auto my-2" ref={tablaRef}>
+        <h2 className="text-2xl font-bold mb-4 text-center bg-gray-200 p-1">
+          Banco seleccionado: {determinarBancoPorCBU(banco)} (Tramo 0-90)
+        </h2>
 
-      {error ? (
-        <p className="text-xl font-semibold text-red-600 text-center">Error: {error}</p>
-      ) : (
-        <>
-          {datosBanco ? (
-            datosBanco.length > 0 ? (
-              <div className="flex flex-col items-center">
-                <table className="w-full border border-collapse shadow-lg">
-                  <thead className="bg-gray-100 border">
-                    <tr>
-                      <th className="px-10 py-1 text-left text-sm font-semibold text-gray-600 uppercase border-r">
-                        Periodo
-                      </th>
-                      <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase border-r">
-                        Socios
-                      </th>
-                      <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase border-r">
-                        Adherentes
-                      </th>
-                      <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase border-r">
-                        Servicios
-                      </th>
-                      <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase">
-                        Cobrado
-                      </th>
-                      <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase">
-                        Ratio
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white">
-                    {datosBanco.map((dato, index) => (
-                      <tr
-                        key={dato.Periodo}
-                        className={`border-t border-b ${
-                          index === datosBanco.length - 1
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : ''
-                        }`}
-                      >
-                        <td className="px-10 whitespace-nowrap text-left uppercase text-sm border-r">
-                          {getNombrePeriodo(dato.Periodo)}
-                        </td>
-                        <td className="px-10 whitespace-nowrap align-middle border-r">
-                          {dato.Socios} {calcularDiferenciaSocios(index)}
-                        </td>
-                        <td className="px-10 whitespace-nowrap align-middle border-r">
-                          {dato.Adherentes} {calcularDiferenciaAdherentes(index)}
-                        </td>
-                        <td className="px-10 whitespace-nowrap align-middle border-r">
-                          {dato.Servicios} {calcularDiferenciaServicios(index)}
-                        </td>
-                        <td className="px-10 whitespace-nowrap align-middle border-r">
-                          {dato.Cobrado} {calcularDiferenciaPorcentajeCobrado(index)}
-                        </td>
-                        <td className="px-10 whitespace-nowrap align-middle">
-                          {dato.Ratio}%
-                        </td>
+        {error ? (
+          <p className="text-xl font-semibold text-red-600 text-center">Error: {error}</p>
+        ) : (
+          <>
+            {datosBanco ? (
+              datosBanco.length > 0 ? (
+                <div className="flex flex-col items-center">
+                  <table className="w-full border border-collapse shadow-lg">
+                    <thead className="bg-gray-100 border">
+                      <tr>
+                        <th className="px-10 py-1 text-left text-sm font-semibold text-gray-600 uppercase border-r">
+                          Periodo
+                        </th>
+                        <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase border-r">
+                          Socios
+                        </th>
+                        <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase border-r">
+                          Adherentes
+                        </th>
+                        <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase border-r">
+                          Servicios
+                        </th>
+                        <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase">
+                          Cobrado
+                        </th>
+                        <th className="px-10 py-1 text-center text-sm font-semibold text-gray-600 uppercase">
+                          Ratio
+                        </th>
                       </tr>
-                    ))}
-                    {/* Fila adicional para mostrar la suma de lo cobrado en cada periodo */}
-                    <tr className="border-t border-b bg-green-100">
-                      <td className="px-10 py-1 text-left text-sm uppercase text-green-700 font-semibold">
-                        Total Cobrado (Julio 23 - Hoy)
-                      </td>
-                      <td className="px-10 py-1 text-center font-semibold"></td>
-                      <td className="px-10 py-1 text-center font-semibold"></td>
-                      <td className="px-10 py-1 text-center font-semibold border-r"></td>
-                      <td className="px-10 whitespace-nowrap align-middle italic font-semibold text-green-700">
-                        {datosBanco
-                          .reduce(
-                            (total, dato) =>
-                              total + parseFloat(dato.Cobrado.replace(/[^\d,-]/g, '')),
-                            0,
-                          )
-                          .toLocaleString('es-AR', {
-                            style: 'currency',
-                            currency: 'ARS',
-                          })}
-                      </td>
-                      <td className="px-10 whitespace-nowrap align-middle italic font-semibold text-green-700"></td>
-                    </tr>
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="bg-white">
+                      {datosBanco.map((dato, index) => (
+                        <tr
+                          key={dato.Periodo}
+                          className={`border-t border-b ${
+                            index === datosBanco.length - 1
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : ''
+                          }`}
+                        >
+                          <td className="px-10 whitespace-nowrap text-left uppercase text-sm border-r">
+                            {getNombrePeriodo(dato.Periodo)}
+                          </td>
+                          <td className="px-10 whitespace-nowrap align-middle border-r">
+                            {dato.Socios} {calcularDiferenciaSocios(index)}
+                          </td>
+                          <td className="px-10 whitespace-nowrap align-middle border-r">
+                            {dato.Adherentes} {calcularDiferenciaAdherentes(index)}
+                          </td>
+                          <td className="px-10 whitespace-nowrap align-middle border-r">
+                            {dato.Servicios} {calcularDiferenciaServicios(index)}
+                          </td>
+                          <td className="px-10 whitespace-nowrap align-middle border-r">
+                            {dato.Cobrado} {calcularDiferenciaPorcentajeCobrado(index)}
+                          </td>
+                          <td className="px-10 whitespace-nowrap align-middle">
+                            {dato.Ratio}%
+                          </td>
+                        </tr>
+                      ))}
+                      {/* Fila adicional para mostrar la suma de lo cobrado en cada periodo */}
+                      <tr className="border-t border-b bg-green-100">
+                        <td className="px-5 text-left text-sm uppercase text-green-700 font-semibold">
+                          Total Cobrado (Julio 23 - Hoy)
+                        </td>
+                        <td className="px-10 py-1 text-center font-semibold"></td>
+                        <td className="px-10 py-1 text-center font-semibold"></td>
+                        <td className="px-10 py-1 text-center font-semibold border-r"></td>
+                        <td className="px-10 whitespace-nowrap align-middle italic font-semibold text-green-700">
+                          {datosBanco
+                            .reduce(
+                              (total, dato) =>
+                                total + parseFloat(dato.Cobrado.replace(/[^\d,-]/g, '')),
+                              0,
+                            )
+                            .toLocaleString('es-AR', {
+                              style: 'currency',
+                              currency: 'ARS',
+                            })}
+                        </td>
+                        <td className="px-10 whitespace-nowrap align-middle italic font-semibold text-green-700"></td>
+                      </tr>
+                    </tbody>
+                  </table>
 
-                <p className="text-center text-xs text-gray-500 mt-2 rounded italic bg-yellow-100 p-1">
-                  En Amarillo Período en Curso
+                  <p className="text-center text-xs text-gray-500 mt-2 rounded italic bg-yellow-100 p-1">
+                    En Amarillo Período en Curso
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xl font-semibold text-gray-700 text-center">
+                  No hay datos disponibles.
                 </p>
-                <button
-                  onClick={exportarExcel}
-                  className="text-center border border-black hover:bg-green-600 bg-green-500 text-white p-1 rounded my-1"
-                >
-                  Exportar a Excel
-                </button>
-              </div>
+              )
             ) : (
-              <p className="text-xl font-semibold text-gray-700 text-center">
-                No hay datos disponibles.
+              <p className="text-xl font-semibold text-gray-700 text-center boton_parpadeo">
+                Cargando...
               </p>
-            )
-          ) : (
-            <p className="text-xl font-semibold text-gray-700 text-center boton_parpadeo">
-              Cargando...
-            </p>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </article>
+      <div className="flex gap-5 my-2 items-center justify-center">
+        <button
+          onClick={exportarExcel}
+          className="text-center border italic border-black font-semibold hover:bg-green-600 bg-green-500 text-white p-1 rounded shadow-md"
+        >
+          Exportar a Excel
+        </button>
+        <button
+          className="bg-red-500 hover:bg-red-600 text-white font-semibold italic border border-black shadow-md p-1 rounded"
+          onClick={handlePrint}
+        >
+          Exportar a PDF
+        </button>
+      </div>
     </section>
   );
 };
