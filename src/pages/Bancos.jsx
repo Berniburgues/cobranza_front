@@ -155,14 +155,14 @@ const Bancos = () => {
       });
 
       // Descargar el archivo
-      saveAs(blob, `Datos Banco ${determinarBancoPorCBU(banco)}.xlsx`);
+      saveAs(blob, `Datos Banco ${determinarBancoPorCBU(banco)} (Tramo 0-90).xlsx`);
     }
   };
 
   return (
     <section className="mx-auto my-2">
       <h2 className="text-2xl font-bold mb-4 text-center bg-gray-200 p-1">
-        Banco seleccionado: {determinarBancoPorCBU(banco)}
+        Banco seleccionado: {determinarBancoPorCBU(banco)} (Tramo 0-90)
       </h2>
 
       {error ? (
@@ -250,12 +250,12 @@ const Bancos = () => {
                   </tbody>
                 </table>
 
-                <p className="text-center text-xs text-gray-500 mt-2 italic bg-yellow-100 p-1">
+                <p className="text-center text-xs text-gray-500 mt-2 rounded italic bg-yellow-100 p-1">
                   En Amarillo Período en Curso
                 </p>
                 <button
                   onClick={exportarExcel}
-                  className="text-center border border-black hover:bg-green-600 bg-green-500 text-white p-1 rounded-md my-1"
+                  className="text-center border border-black hover:bg-green-600 bg-green-500 text-white p-1 rounded my-1"
                 >
                   Exportar a Excel
                 </button>

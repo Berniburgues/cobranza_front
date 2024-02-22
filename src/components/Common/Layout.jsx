@@ -32,18 +32,30 @@ const Layout = ({ children }) => {
             </button>
           )}
         </div>
-        <a
-          href="https://atsapra.com.ar/"
-          target="blank"
-          className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-105"
-        >
-          <img
-            src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-9.png"
-            alt="Logo"
-            className="w-auto h-7"
-          />
-        </a>
-
+        <div className="flex items-center justify-center gap-5">
+          <a
+            href="https://atsapra.com.ar/"
+            target="blank"
+            className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-105"
+          >
+            <img
+              src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-9.png"
+              alt="Logo Atsapra"
+              className="w-auto h-7"
+            />
+          </a>
+          <a
+            href="https://www.asistirservicios.com.ar/"
+            target="blank"
+            className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-105"
+          >
+            <img
+              src="https://www.asistirservicios.com.ar/assets/img/logo.png"
+              alt="Logo Asistir"
+              className="w-auto h-9"
+            />
+          </a>
+        </div>
         <div className="space-x-2">
           <Link
             to="/tablas"
