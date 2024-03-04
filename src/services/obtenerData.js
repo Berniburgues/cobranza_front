@@ -9,6 +9,7 @@ export const fetchDataPagos = async (
   ExB,
   dniComienzaCon,
   terminacionDni,
+  tramo,
 ) => {
   try {
     // let url = `http://localhost:8080/clientes/cobranzaSocios?periodo=${periodo}`;
@@ -39,6 +40,10 @@ export const fetchDataPagos = async (
 
     if (terminacionDni) {
       url += `&${terminacionDni.map((value) => `terminacionDni=${value}`).join('&')}`;
+    }
+
+    if (tramo) {
+      url += `&tramo=${tramo}`;
     }
 
     const response = await axios.get(url);

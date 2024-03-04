@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
             </button>
           )}
         </div>
-        <div className="flex items-center justify-center gap-5">
+        <div className="flex items-center justify-center gap-20">
           <a
             href="https://atsapra.com.ar/"
             target="blank"
@@ -47,7 +47,7 @@ const Layout = ({ children }) => {
           <a
             href="https://www.asistirservicios.com.ar/"
             target="blank"
-            className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-105"
+            className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-110"
           >
             <img
               src="https://www.asistirservicios.com.ar/assets/img/logo.png"
@@ -86,11 +86,7 @@ const Layout = ({ children }) => {
       <footer className="bg-slate-800 text-white gap-3 pt-1 text-center text-xs mt-auto border-t border-black flex flex-wrap items-center justify-center">
         <p className="italic">
           &copy; 2024{' '}
-          <a
-            href="https://atsapra.com.ar"
-            className="text-blue-600 hover:text-blue-500 hover:underline transition"
-            hover:underline
-          >
+          <a href="https://atsapra.com.ar" className="text-blue-600 hover:text-blue-500">
             ATSAPRA
           </a>{' '}
           TODOS LOS DERECHOS RESERVADOS

@@ -13,6 +13,7 @@ const ExcelBoton = ({
   selectedCodigo,
   selectedExb,
   dniFilter,
+  tramo,
 }) => {
   const [exporting, setExporting] = useState(false);
 
@@ -37,13 +38,13 @@ const ExcelBoton = ({
 
       const workName = `${getBancoText(selectedBanco)}${getNombrePeriodo(
         selectedPeriod,
-      )}${
+      )} ${
         selectedCodigo && selectedCodigo.length > 0
           ? ` - ${selectedCodigo.join(', ')}`
           : ''
-      }${dniFilter ? ` - DNI's menores e iguales a ${dniFilter}` : ''}${
-        selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''
-      }`;
+      }${tramo ? ` - Tramo ${tramo}` : ''}${
+        dniFilter ? ` - DNI's menores e iguales a ${dniFilter}` : ''
+      }${selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''}`;
 
       //Nombre de la hoja/archivo
       const worksheet = workbook.addWorksheet(workName);
@@ -142,13 +143,13 @@ const ExcelBoton = ({
   return (
     <button
       id="excel-button"
-      className={`bg-green-500 hover:bg-green-600 text-white rounded-md p-1 border-2 border-black w-28 ${
+      className={`bg-green-500 hover:bg-green-600 text-white rounded-md p-1 border-2 border-black w-14 ${
         exporting || loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
       }`}
       onClick={exportToExcel}
       disabled={exporting}
     >
-      {exporting ? 'Exportando...' : '▼ Excel'}
+      {exporting ? '...' : '▼ Excel'}
     </button>
   );
 };

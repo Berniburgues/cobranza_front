@@ -34,6 +34,7 @@ const TablaPagos = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('');
   const [selectedBanco, setSelectedBanco] = useState('027');
   const [selectedCodigo, setSelectedCodigo] = useState([]);
+  const [tramo, setTramo] = useState('');
   const [selectedConvenio, setSelectedConvenio] = useState('');
   const [selectedExb, setSelectedExb] = useState('');
   const [dniFilter, setDniFilter] = useState('');
@@ -83,7 +84,9 @@ const TablaPagos = () => {
 
   const handlePrint = useReactToPrint({
     content: () => tablaRef.current,
-    documentTitle: `Historico Banco ${determinarBancoPorCBU(selectedBanco)}`,
+    documentTitle: `${getNombrePeriodo(selectedPeriod)} - Banco ${determinarBancoPorCBU(
+      selectedBanco,
+    )} -${selectedCodigo ? selectedCodigo : ''}`,
   });
 
   const closeModal = () => {
@@ -132,6 +135,7 @@ const TablaPagos = () => {
         selectedExb,
         dniFilter,
         terminacionDni,
+        tramo,
       );
 
       // Se agrega esta verificación para asegurarse de que result.data[0] no sea undefined o null
@@ -142,6 +146,7 @@ const TablaPagos = () => {
 
         const fechasCobro = Object.keys(result.data[0]).filter(
           (key) =>
+            key !== 'Tramo' &&
             key !== 'ID' &&
             key !== 'Socio' &&
             key !== 'NombreCompleto' &&
@@ -281,6 +286,7 @@ const TablaPagos = () => {
     setSearchClicked(false);
     setSelectedPeriod('');
     setSelectedBanco('027');
+    setTramo('');
     setSelectedCodigo([]);
     setSelectedConvenio('');
     setSelectedExb('');
@@ -373,7 +379,6 @@ const TablaPagos = () => {
                     }}
                   />
                 </div>
-
                 <div className="flex flex-col items-center">
                   <label htmlFor="selectedBanco" className="italic font-semibold">
                     Banco
@@ -415,6 +420,26 @@ const TablaPagos = () => {
                     placeholder="Banco"
                     styles={{
                       indicatorSeparator: () => ({ display: 'none' }),
+                    }}
+                  />
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <label htmlFor="tramo" className="italic font-semibold">
+                    Tramo
+                  </label>
+                  <Select
+                    name="tramo"
+                    id="tramo"
+                    options={[
+                      { value: '1', label: '1' },
+                      { value: '2', label: '2' },
+                      { value: '3', label: '3' },
+                      { value: '4', label: '4' },
+                    ]}
+                    className="border-2 border-black rounded-md w-15 h-full"
+                    onChange={(selectedOption) => {
+                      setTramo(selectedOption.value);
                     }}
                   />
                 </div>
@@ -463,7 +488,6 @@ const TablaPagos = () => {
                     closeMenuOnSelect={false} // No cierra el menú al seleccionar opciones
                   />
                 </div>
-
                 <div className="flex flex-col items-center">
                   <label htmlFor="dniFilter" className="italic font-semibold">
                     Inicio DNI
@@ -478,7 +502,6 @@ const TablaPagos = () => {
                     max="99"
                   />
                 </div>
-
                 <div className="flex flex-col items-center">
                   <label htmlFor="terminacionDni" className="italic font-semibold">
                     Final DNI
@@ -554,7 +577,6 @@ const TablaPagos = () => {
                     }}
                   />
                 </div>
-
                 <div className="flex flex-col items-center">
                   <label htmlFor="selectedExb" className="italic font-semibold">
                     Banco Envío
@@ -594,8 +616,8 @@ const TablaPagos = () => {
               <div className="flex items-center gap-2 text-xs pb-2">
                 <button
                   className={`bg-orange-600 hover:bg-orange-500 text-white rounded-md p-1 border-2 border-black w-28
-      ${loading || !selectedPeriod ? 'cursor-not-allowed opacity-50' : ''}
-      ${selectChanges ? 'boton_parpadeo' : ''}`}
+                    ${loading || !selectedPeriod ? 'cursor-not-allowed opacity-50' : ''}
+                    ${selectChanges ? 'boton_parpadeo' : ''}`}
                   onClick={() => {
                     handleSearch();
                     setSelectChanges(false);
@@ -626,9 +648,12 @@ const TablaPagos = () => {
                   selectedCodigo={selectedCodigo}
                   selectedExb={selectedExb}
                   dniFilter={dniFilter}
+                  tramo={tramo}
                 />
                 <button
-                  className="bg-red-500 hover:bg-red-600 text-white rounded-md p-1 border-2 border-black w-28"
+                  className={`bg-red-500 hover:bg-red-600 border-2 border-black text-white rounded-md p-1 w-14 ${
+                    loading ? 'cursor-not-allowed opacity-50' : ''
+                  }`}
                   onClick={handlePrint}
                 >
                   ▼ PDF
@@ -700,6 +725,7 @@ const TablaPagos = () => {
                     <thead>
                       <tr className="bg-black text-white sticky top-0 z-10">
                         <th className="py-1 border-2 border-gray-700">NºS</th>
+                        <th className="py-1 border-2 border-gray-700">Tramo</th>
                         <th className="p-1 border-2 border-gray-700">Nombre</th>
                         <th className="py-1 border-2 border-gray-700">DNI</th>
                         <th className="py-1 border-2 border-gray-700">CUIL</th>
@@ -756,6 +782,7 @@ const TablaPagos = () => {
                                 {socio.Socio}
                               </Link>
                             </td>
+                            <td className="p-1 border-2 border-black">{socio.Tramo}</td>
                             <td
                               className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem] capitalize"
                               title={socio.NombreCompleto}

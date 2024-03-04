@@ -26,8 +26,6 @@ const Historial = ({ datosFijos, cobranza }) => {
     </div>
   );
 
-  console.log(cobranza);
-
   // Obtener la lista única de días de cobro
   const diasCobro = [...new Set(cobranza.map((item) => item.dia))].sort((a, b) => a - b);
 
