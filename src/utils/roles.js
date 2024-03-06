@@ -23,5 +23,6 @@ export const permisosRoles = {
     '/tablas/historialACE',
     '/reportes',
     '/reportes/parciales',
+    '/calendario',
   ],
 };
