@@ -15,11 +15,11 @@ const ReportesIndirectos = () => {
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZWYxOTk0ZmUtNDg4OC00ZmE3LWI3NjYtZmRiMThhNDhjZGYwIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
-      title: 'LLAMADAS ISLA DE RETENCIÓN',
+      title: 'DR. EN VIVO',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYjI5OGI1YWMtYTFhNS00OGM4LWJmM2ItMGE5NDkwZWJmMGY0IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
-      title: 'DR. EN VIVO',
+      title: 'LLAMADAS ISLAS DE RETENCIÓN',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZGI4NDEwNjktYjNiYi00OGJlLTgwNmYtZGMwMjc3ODIyZjJmIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
   ];

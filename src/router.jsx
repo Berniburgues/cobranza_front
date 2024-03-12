@@ -13,6 +13,7 @@ import Denegado from './pages/Denegado';
 import HistorialACE from './pages/historialACE';
 import Tablas from './pages/Tablas';
 import TablaPagos from './pages/TablaPagos';
+import TablaImportes from './pages/TablaImportes';
 import Archivos from './pages/Archivos';
 import Bancos from './pages/Bancos';
 import Calendario from './pages/Calendario';
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: 'tablaPagos',
         element: <TablaPagos />,
+      },
+      {
+        path: 'tablaImportes',
+        element: <TablaImportes />,
       },
       {
         path: 'socio',

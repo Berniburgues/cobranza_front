@@ -106,6 +106,17 @@ export const fetchHistorialDNI = async (
   }
 };
 
+export const getTablaImportes = async (banco, periodo) => {
+  try {
+    let url = `http://localhost:8080/clientes/tablaImportes?periodo=${periodo}&banco=${banco}}`;
+    const res = await axios.get(url);
+    console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 // Obtener Datos para Bancos
 export const getBanco = async (banco) => {
   try {
