@@ -240,6 +240,16 @@ const TablaImportes = () => {
                     Object.keys(socio.Pagos[date].Codigos).length > 1,
                 };
 
+                // Renderización condicional del título y del contenido de la celda
+                const cellTitle =
+                  totalImporte > 0
+                    ? `MES: $${totalImporteMes}\nMORA: $${totalImporteMora}\n${Object.entries(
+                        codigos,
+                      )
+                        .map(([codigo, importe]) => `${codigo}: $${importe}`)
+                        .join('\n')}`
+                    : '';
+
                 return (
                   <td
                     key={`${socio.DNI}_${date}`}
@@ -250,15 +260,7 @@ const TablaImportes = () => {
                             .join(' ')
                         : ''
                     }`}
-                    title={
-                      totalImporte > 0
-                        ? `MES: $${totalImporteMes}\nMORA: $${totalImporteMora}\n${Object.entries(
-                            codigos,
-                          )
-                            .map(([codigo, importe]) => `${codigo}: $${importe}`)
-                            .join('\n')}`
-                        : ''
-                    }
+                    title={cellTitle}
                   >
                     {totalImporte > 0 ? `$${totalImporte}` : null}
                   </td>

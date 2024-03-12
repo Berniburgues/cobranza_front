@@ -3,24 +3,12 @@ import React from 'react';
 const ReportesIndirectos = () => {
   const informesVarios = [
     {
-      title: 'VENTAS',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiYTZiODA4ZDQtNGVmNy00MGNjLTlmZTctOTA5MzE5NzI2YmFkIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
-    },
-    {
-      title: 'STOCK/VENTAS',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiZjAxNzZiZDYtZDA2ZC00MGE2LWFiMjQtY2JlOWQ5NGFlZTA0IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
-    },
-    {
       title: 'RECLAMOS',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZWYxOTk0ZmUtNDg4OC00ZmE3LWI3NjYtZmRiMThhNDhjZGYwIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
     {
       title: 'DR. EN VIVO',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYjI5OGI1YWMtYTFhNS00OGM4LWJmM2ItMGE5NDkwZWJmMGY0IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
-    },
-    {
-      title: 'LLAMADAS ISLAS DE RETENCIÓN',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiZGI4NDEwNjktYjNiYi00OGJlLTgwNmYtZGMwMjc3ODIyZjJmIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
   ];
   const informesPeriodos = [
