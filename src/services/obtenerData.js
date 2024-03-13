@@ -106,11 +106,16 @@ export const fetchHistorialDNI = async (
   }
 };
 
-export const getTablaImportes = async (banco, periodo) => {
+export const getTablaImportes = async (banco, periodo, codigo) => {
   try {
-    let url = `http://localhost:8080/clientes/tablaImportes?periodo=${periodo}&banco=${banco}}`;
+    let url = `http://localhost:8080/clientes/tablaImportes?periodo=${periodo}&banco=${banco}`;
+
+    // Agregar la condición para el código
+    if (codigo) {
+      url += `&codigo=${codigo}`;
+    }
+
     const res = await axios.get(url);
-    console.log(res.data);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -238,6 +243,15 @@ export const fetchFiltrosPagos = async () => {
 export const fetchFiltrosDNI = async () => {
   try {
     const res = await axios.get('https://cobranza.2.us-1.fl0.io/filtros/DNI');
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+};
+//Obtener FIltros para Tabla Importes
+export const fetchFiltrosTablaImportes = async () => {
+  try {
+    const res = await axios.get('http://localhost:8080/filtros/filtrosTablaImportes');
     return res.data;
   } catch (error) {
     throw error;

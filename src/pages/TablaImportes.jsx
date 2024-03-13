@@ -1,14 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { getTablaImportes } from '../services/obtenerData';
-import { formatFecha } from '../utils/fechas';
+import ExcelImportes from '../components/TablaImportes/ExcelImportes';
+import { Link } from 'react-router-dom';
+import { getTablaImportes, fetchFiltrosTablaImportes } from '../services/obtenerData';
+import { formatFecha, getNombrePeriodo } from '../utils/fechas';
+import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import ReactPaginate from 'react-paginate';
+import './TablaPagos.css';
 
 const TablaImportes = () => {
   const [data, setData] = useState([]);
-  const [selectedBanco, setSelectedBanco] = useState('014');
-  const [selectedPeriodo, setSelectedPeriodo] = useState('2024-01-01');
+  const [selectedBanco, setSelectedBanco] = useState('');
+  const [selectedPeriodo, setSelectedPeriodo] = useState('');
+  const [selectedCodigo, setSelectedCodigo] = useState('');
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 2500; // Puedes ajustar el número de elementos por página según tus necesidades
+  const [loadingData, setLoadingData] = useState(false);
+  const [loadingFiltros, setLoadingFiltros] = useState(true);
+  const [bancosOptions, setBancosOptions] = useState([]); // Nuevo estado para opciones de bancos
+  const [periodosOptions, setPeriodosOptions] = useState([]); // Nuevo estado para opciones de periodos
+  const itemsPerPage = 2000;
+
+  useEffect(() => {
+    const fetchFiltrosData = async () => {
+      try {
+        const filtrosData = await fetchFiltrosTablaImportes();
+        setBancosOptions(filtrosData.data.bancos);
+        setPeriodosOptions(filtrosData.data.periodos);
+        setLoadingFiltros(false); // Marcar que los filtros han sido cargados
+      } catch (error) {
+        console.error('Error fetching filter data:', error);
+        setLoadingFiltros(false); // Marcar que ha ocurrido un error al cargar los filtros
+      }
+    };
+
+    fetchFiltrosData();
+  }, []);
 
   const handleBancoChange = (event) => {
     setSelectedBanco(event.target.value);
@@ -18,10 +43,20 @@ const TablaImportes = () => {
     setSelectedPeriodo(event.target.value);
   };
 
+  const handleCodigoChange = (event) => {
+    setSelectedCodigo(event.target.value);
+  };
+
   const handleSearch = async () => {
-    const tablaImportesData = await getTablaImportes(selectedBanco, selectedPeriodo);
+    setLoadingData(true);
+    const tablaImportesData = await getTablaImportes(
+      selectedBanco,
+      selectedPeriodo,
+      selectedCodigo,
+    );
     setData(tablaImportesData.data);
     setCurrentPage(0);
+    setLoadingData(false);
   };
 
   const handleReset = async () => {
@@ -29,6 +64,8 @@ const TablaImportes = () => {
     setCurrentPage(0);
     setSelectedBanco('');
     setSelectedPeriodo('');
+    setSelectedCodigo('');
+    setLoadingData(false);
   };
 
   const getConsolidatedData = () => {
@@ -37,7 +74,6 @@ const TablaImportes = () => {
     data.forEach((socio) => {
       const consolidatedSocio = {
         Socio: socio.Socio,
-        DNI: socio.DNI,
         CUIL: socio.CUIL,
         Pagos: {},
       };
@@ -56,9 +92,11 @@ const TablaImportes = () => {
           }
 
           consolidatedSocio.Pagos[fechaCobro].TotalImporte += pago.Importe;
-          consolidatedSocio.Pagos[fechaCobro][
-            pago.Concepto === 'MES' ? 'TotalImporteMes' : 'TotalImporteMora'
-          ] += pago.Importe;
+          if (pago.concepto === 'MES') {
+            consolidatedSocio.Pagos[fechaCobro].TotalImporteMes += pago.Importe;
+          } else if (pago.concepto === 'MORA') {
+            consolidatedSocio.Pagos[fechaCobro].TotalImporteMora += pago.Importe;
+          }
 
           if (!consolidatedSocio.Pagos[fechaCobro].Codigos[pago.Codigo]) {
             consolidatedSocio.Pagos[fechaCobro].Codigos[pago.Codigo] = 0;
@@ -103,56 +141,135 @@ const TablaImportes = () => {
 
   return (
     <section className="p-1">
-      <div className="flex space-x-4 mb-4 justify-center items-center text-sm">
-        <div className="flex flex-col items-center">
-          <label htmlFor="selectBanco" className="italic">
-            Banco:
-          </label>
-          <select
-            id="selectBanco"
-            value={selectedBanco}
-            onChange={handleBancoChange}
-            className="border px-2 py-1 rounded"
-          >
-            <option value="014">Provincia</option>
-            <option value="011">Nación</option>
-            <option value="027">Supervielle</option>
-          </select>
-        </div>
-
+      <div className="flex space-x-4 mb-2 justify-center items-center text-sm">
         <div className="flex flex-col items-center">
           <label htmlFor="selectPeriodo" className="italic">
             Período:
           </label>
-          <select
-            id="selectPeriodo"
-            value={selectedPeriodo}
-            onChange={handlePeriodoChange}
-            className="border px-2 py-1 rounded"
-          >
-            <option value="2024-01-01">Enero 2024</option>
-            <option value="2024-02-01">Febrero 2024</option>
-            <option value="2024-03-01">Marzo 2024</option>
-          </select>
+          {/* Mostrar "Cargando" si los filtros están cargando */}
+          {loadingFiltros ? (
+            <span className="border border-black italic p-1 rounded">Cargando...</span>
+          ) : (
+            <select
+              id="selectPeriodo"
+              value={selectedPeriodo}
+              onChange={handlePeriodoChange}
+              className="border border-black px-2 py-1 rounded"
+              autoFocus
+            >
+              <option value="" disabled>
+                Período
+              </option>
+              {periodosOptions.map((periodo) => (
+                <option key={periodo} value={periodo}>
+                  {getNombrePeriodo(periodo)}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
+        <div className="flex flex-col items-center">
+          <label htmlFor="selectBanco" className="italic">
+            Banco:
+          </label>
+          {/* Mostrar "Cargando" si los filtros están cargando */}
+          {loadingFiltros ? (
+            <span className="border border-black italic p-1 rounded">Cargando...</span>
+          ) : (
+            <select
+              id="selectBanco"
+              value={selectedBanco}
+              onChange={handleBancoChange}
+              className="border border-black px-2 py-1 rounded"
+            >
+              <option value="" disabled>
+                Banco
+              </option>
+              {bancosOptions.map((banco) => (
+                <option key={banco} value={banco}>
+                  {determinarBancoPorCBU(banco)}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
+
+        <div className="flex flex-col items-center">
+          <label htmlFor="selectCodigo" className="italic">
+            Código:
+          </label>
+          <select
+            id="selectCodigo"
+            value={selectedCodigo}
+            onChange={handleCodigoChange}
+            className="border border-black px-2 py-1 rounded"
+          >
+            <option value="" disabled>
+              Código
+            </option>
+            <option value="ACE">ACE</option>
+            <option value="R10">R10</option>
+            <option value="Rechazos">Rechazos</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="flex justify-center items-center gap-5 text-sm mb-2">
         <button
           onClick={handleSearch}
-          className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700 mt-5"
+          className={`bg-orange-500 border border-black text-white px-2 w-20 rounded hover:bg-orange-700 ${
+            loadingData ? 'cursor-not-allowed opacity-50' : ''
+          } ${selectedPeriodo && selectedBanco ? '' : 'cursor-not-allowed opacity-50'} ${
+            selectedPeriodo && selectedBanco && !loadingData ? 'boton_parpadeo' : ''
+          }`}
+          disabled={loadingData || !selectedPeriodo || !selectedBanco}
         >
-          Buscar
+          {loadingData ? 'Cargando' : 'Buscar'}
         </button>
 
         <button
           onClick={handleReset}
-          className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-700 mt-5"
+          className={`bg-yellow-500 border border-black text-white px-2 rounded hover:bg-yellow-700 ${
+            loadingData ? 'cursor-not-allowed opacity-50' : ''
+          }`}
+          disabled={loadingData}
         >
           Nueva Consulta
         </button>
+
+        <ExcelImportes
+          uniqueDates={uniqueDates}
+          loadingData={loadingData}
+          data={data}
+          selectedBanco={selectedBanco}
+          selectedCodigo={selectedCodigo}
+          selectedPeriodo={selectedPeriodo}
+          totalImportes={data.map((socio) =>
+            uniqueDates.map((date) => socio.Pagos[date]?.TotalImporte || 0),
+          )}
+        />
       </div>
 
+      {selectedBanco && selectedPeriodo && (
+        <div className="flex justify-center mb-2">
+          <h2 className="text-xl font-bold">
+            <Link
+              to={`/tablas/bancos?banco=${selectedBanco}`}
+              target="_blank"
+              title="Buscar Datos del Banco"
+              className="hover:text-blue-500"
+            >
+              {determinarBancoPorCBU(selectedBanco)}
+            </Link>
+            {' | '}
+            {getNombrePeriodo(selectedPeriodo)}
+          </h2>
+        </div>
+      )}
+
       {pageCount > 1 && (
-        <div className="flex justify-center my-2 text-sm">
+        <div className="flex justify-center mb-2 mt-5 text-sm">
           <ReactPaginate
             previousLabel={'Anterior'}
             nextLabel={'Siguiente'}
@@ -162,7 +279,7 @@ const TablaImportes = () => {
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName={'flex justify-between items-center'}
-            pageClassName={'mx-3'}
+            pageClassName={'mx-1'}
             previousClassName={
               'border p-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300'
             }
@@ -208,12 +325,24 @@ const TablaImportes = () => {
               <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap">
                 {socio.Socio}
               </td>
-              <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap">
-                {socio.DNI}
+              <td
+                className="border-2 border-black hover:text-white hover:bg-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap"
+                title={socio.CUIL.substring(2, 10)}
+              >
+                <Link to={`/tablas/socio?numerosSocio=${socio.DNI}`} target="_blank">
+                  {socio.CUIL.substring(2, 10)}
+                </Link>
               </td>
-              <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap">
-                {socio.CUIL}
+              <td
+                className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap"
+                title={socio.CUIL}
+              >
+                {`${socio.CUIL.substring(0, 2)}-${socio.CUIL.substring(
+                  2,
+                  10,
+                )}-${socio.CUIL.substring(10)}`}
               </td>
+
               {uniqueDates.map((date) => {
                 const totalImporte = socio.Pagos[date]?.TotalImporte || 0;
                 const totalImporteMes = socio.Pagos[date]?.TotalImporteMes || 0;
@@ -282,7 +411,7 @@ const TablaImportes = () => {
             pageRangeDisplayed={5}
             onPageChange={handlePageClick}
             containerClassName={'flex justify-between items-center'}
-            pageClassName={'mx-3'}
+            pageClassName={'mx-1'}
             previousClassName={
               'border p-1 rounded bg-gray-200 text-gray-700 hover:bg-gray-300'
             }
