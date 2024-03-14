@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ExcelImportes from '../components/TablaImportes/ExcelImportes';
+import { useReactToPrint } from 'react-to-print';
 import { Link } from 'react-router-dom';
 import { getTablaImportes, fetchFiltrosTablaImportes } from '../services/obtenerData';
 import { formatFecha, getNombrePeriodo } from '../utils/fechas';
@@ -15,9 +16,10 @@ const TablaImportes = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [loadingData, setLoadingData] = useState(false);
   const [loadingFiltros, setLoadingFiltros] = useState(true);
-  const [bancosOptions, setBancosOptions] = useState([]); // Nuevo estado para opciones de bancos
-  const [periodosOptions, setPeriodosOptions] = useState([]); // Nuevo estado para opciones de periodos
+  const [bancosOptions, setBancosOptions] = useState([]);
+  const [periodosOptions, setPeriodosOptions] = useState([]);
   const itemsPerPage = 2000;
+  const tablaRef = useRef();
 
   useEffect(() => {
     const fetchFiltrosData = async () => {
@@ -34,6 +36,13 @@ const TablaImportes = () => {
 
     fetchFiltrosData();
   }, []);
+
+  const handlePrint = useReactToPrint({
+    content: () => tablaRef.current,
+    documentTitle: `Banco ${determinarBancoPorCBU(selectedBanco)} - ${getNombrePeriodo(
+      selectedPeriodo,
+    )} ${selectedCodigo ? ` - ${selectedCodigo}` : ''} - Importes`,
+  });
 
   const handleBancoChange = (event) => {
     setSelectedBanco(event.target.value);
@@ -249,12 +258,17 @@ const TablaImportes = () => {
           totalImportes={consolidatedData.map((socio) =>
             uniqueDates.map((date) => socio.Pagos[date]?.TotalImporte),
           )}
-          codigoImportes={consolidatedData.map((socio) =>
-            uniqueDates.map((date) =>
-              Object.keys(socio.Pagos[date]?.Codigos || {}).join(''),
-            ),
-          )}
         />
+
+        <button
+          className={`bg-red-500 border border-black text-white px-2 rounded hover:bg-red-700 ${
+            loadingData ? 'cursor-not-allowed opacity-50' : ''
+          }`}
+          onClick={handlePrint}
+          disabled={loadingData}
+        >
+          ▼ PDF
+        </button>
       </div>
 
       {selectedBanco && selectedPeriodo && (
@@ -303,7 +317,10 @@ const TablaImportes = () => {
         </div>
       )}
 
-      <table className="w-full border-collapse text-center table-fixed text-xs md:text-sm">
+      <table
+        className="w-full border-collapse text-center table-fixed text-xs md:text-sm"
+        ref={tablaRef}
+      >
         <thead>
           <tr>
             <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky inset-0">

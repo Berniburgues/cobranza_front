@@ -12,7 +12,6 @@ const ExcelImportes = ({
   selectedCodigo,
   loadingData,
   totalImportes,
-  codigoImportes,
   consolidatedData,
 }) => {
   const [exporting, setExporting] = useState(false);
