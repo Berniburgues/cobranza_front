@@ -245,8 +245,14 @@ const TablaImportes = () => {
           selectedBanco={selectedBanco}
           selectedCodigo={selectedCodigo}
           selectedPeriodo={selectedPeriodo}
-          totalImportes={data.map((socio) =>
-            uniqueDates.map((date) => socio.Pagos[date]?.TotalImporte || 0),
+          consolidatedData={consolidatedData}
+          totalImportes={consolidatedData.map((socio) =>
+            uniqueDates.map((date) => socio.Pagos[date]?.TotalImporte),
+          )}
+          codigoImportes={consolidatedData.map((socio) =>
+            uniqueDates.map((date) =>
+              Object.keys(socio.Pagos[date]?.Codigos || {}).join(''),
+            ),
           )}
         />
       </div>

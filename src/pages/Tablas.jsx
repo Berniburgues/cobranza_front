@@ -17,7 +17,18 @@ const Tablas = () => {
               : ''
           }`}
         >
-          TABLA GENERAL
+          TABLA CÓDIGOS
+        </Link>
+        <Link
+          to="tablaImportes"
+          target="_blank"
+          className={`bg-orange-500 hover:bg-orange-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+            location.pathname === '/tablas/tablaImportes'
+              ? 'opacity-50 cursor-not-allowed'
+              : ''
+          }`}
+        >
+          TABLA IMPORTES
         </Link>
         <Link
           to="socio"

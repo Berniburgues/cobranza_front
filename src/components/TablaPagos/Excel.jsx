@@ -44,7 +44,9 @@ const ExcelBoton = ({
           : ''
       }${tramo ? ` - Tramo ${tramo}` : ''}${
         dniFilter ? ` - DNI's menores e iguales a ${dniFilter}` : ''
-      }${selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''}`;
+      }${
+        selectedExb ? ` - Enviado Por ${determinarBancoPorCBU(selectedExb)}` : ''
+      } - Códigos`;
 
       //Nombre de la hoja/archivo
       const worksheet = workbook.addWorksheet(workName);
