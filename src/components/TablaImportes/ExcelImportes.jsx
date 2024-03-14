@@ -134,6 +134,124 @@ const ExcelImportes = ({
                   cell.fill = gradient;
                   cell.value = `$${importe}`; // Agregar el signo "$" al importe
                 }
+
+                // Obtener los importes de mes y mora
+                const totalImporteMes = socio.Pagos[date]?.TotalImporteMes || 0;
+                const totalImporteMora = socio.Pagos[date]?.TotalImporteMora || 0;
+
+                // Agregar título al comentario de la celda
+                const cellTitle = `MES: $${totalImporteMes}\nMORA: $${totalImporteMora}\n${Object.entries(
+                  codigos,
+                )
+                  .map(([codigo, importe]) => `${codigo}: $${importe}`)
+                  .join('\n')}`;
+                cell.comment = { text: cellTitle };
+              }
+            }
+          });
+        }
+      });
+
+      // Aplicar estilos de fondo y renderizar importes solo a las filas de datos
+      worksheet.eachRow((row, rowIndex) => {
+        if (rowIndex > 1) {
+          const socio = consolidatedData[rowIndex - 2]; // Obtener el socio correspondiente a la fila actual
+          row.eachCell((cell, colIndex) => {
+            if (colIndex > 3) {
+              const date = uniqueDates[colIndex - 4]; // Obtener la fecha correspondiente a la columna actual
+              const importe = totalImportes[rowIndex - 2][colIndex - 4]; // Obtener el importe correspondiente a la celda actual
+
+              // Obtener el total de importe de mes y de mora
+              const totalImporteMes = socio.Pagos[date]?.TotalImporteMes || 0;
+              const totalImporteMora = socio.Pagos[date]?.TotalImporteMora || 0;
+
+              // Verificar si el importe es diferente de 0
+              if (importe !== 0) {
+                const codigos = socio.Pagos[date]?.Codigos || {}; // Obtener los códigos para la fecha actual
+                let fillColor = '';
+                let gradient = null;
+
+                // Aplicar colores basados en los códigos
+                if (Object.keys(codigos).length === 1) {
+                  const codigo = Object.keys(codigos)[0];
+                  if (codigo === 'ACE') {
+                    fillColor = '66FF66'; // Verde
+                  } else if (codigo === 'R10') {
+                    fillColor = 'FFFF99'; // Amarillo
+                  } else {
+                    fillColor = 'FF9999'; // Rojo
+                  }
+                } else if (Object.keys(codigos).length > 1) {
+                  // Aquí defines los degradados según las combinaciones de códigos
+                  const hasACE = codigos['ACE'];
+                  const hasR10 = codigos['R10'];
+
+                  if ((hasACE && hasR10) || (!hasACE && !hasR10)) {
+                    // Color sólido basado en el primer código encontrado
+                    const codigo = Object.keys(codigos)[0];
+                    if (codigo === 'ACE') {
+                      fillColor = '66FF66'; // Verde
+                    } else if (codigo === 'R10') {
+                      fillColor = 'FFFF99'; // Amarillo
+                    } else {
+                      fillColor = 'FF9999'; // Rojo
+                    }
+                  } else if (hasACE && !hasR10) {
+                    // Verde y Rojo
+                    gradient = {
+                      type: 'gradient',
+                      gradient: 'angle',
+                      degree: 45,
+                      stops: [
+                        { position: 0, color: { argb: '66FF66' } }, // Verde
+                        { position: 1, color: { argb: 'FF9999' } }, // Rojo
+                      ],
+                    };
+                  } else if (hasR10 && !hasACE) {
+                    // Amarillo y Rojo
+                    gradient = {
+                      type: 'gradient',
+                      gradient: 'angle',
+                      degree: 45,
+                      stops: [
+                        { position: 0, color: { argb: 'FFFF99' } }, // Amarillo
+                        { position: 1, color: { argb: 'FF9999' } }, // Rojo
+                      ],
+                    };
+                  }
+                }
+
+                // Aplicar estilos de fondo y renderizar importe en la celda
+                if (fillColor) {
+                  cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: fillColor },
+                  };
+                  cell.value = `$${importe}`; // Agregar el signo "$" al importe
+                } else if (gradient) {
+                  cell.fill = gradient;
+                  cell.value = `$${importe}`; // Agregar el signo "$" al importe
+                }
+
+                // Construir la cadena de información de códigos
+                let codigosInfo = '';
+                Object.entries(codigos).forEach(([codigo, importe]) => {
+                  codigosInfo += `${codigo}: $${importe}\n`;
+                });
+
+                // Construir el comentario basado en la condición de importe de mes y mora
+                let cellNote = '';
+                if (totalImporteMes > 0) {
+                  cellNote += `MES: $${totalImporteMes}\n`;
+                }
+                if (totalImporteMora > 0) {
+                  cellNote += `MORA: $${totalImporteMora}\n`;
+                }
+                cellNote += codigosInfo;
+
+                // Agregar el comentario a la celda
+                cell.note = cellNote;
               }
             }
           });
