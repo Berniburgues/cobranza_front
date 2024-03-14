@@ -84,14 +84,22 @@ const ExcelImportes = ({
                     fillColor = 'FF9999'; // Rojo
                   }
                 } else if (Object.keys(codigos).length > 1) {
-                  // Aquí puedes definir los degradados según la combinación de códigos
-                  // En este ejemplo, se aplicará un degradado verde-rojo para 'ACE' y otro código diferente a 'R10'
-                  // y un degradado amarillo-rojo para 'R10' y otro código diferente a 'ACE'
-                  // y un degradado verde-amarillo para 'ACE' y 'R10'
+                  // Aquí defines los degradados según las combinaciones de códigos
                   const hasACE = codigos['ACE'];
                   const hasR10 = codigos['R10'];
 
-                  if (hasACE && !hasR10) {
+                  if ((hasACE && hasR10) || (!hasACE && !hasR10)) {
+                    // Color sólido basado en el primer código encontrado
+                    const codigo = Object.keys(codigos)[0];
+                    if (codigo === 'ACE') {
+                      fillColor = '66FF66'; // Verde
+                    } else if (codigo === 'R10') {
+                      fillColor = 'FFFF99'; // Amarillo
+                    } else {
+                      fillColor = 'FF9999'; // Rojo
+                    }
+                  } else if (hasACE && !hasR10) {
+                    // Verde y Rojo
                     gradient = {
                       type: 'gradient',
                       gradient: 'angle',
@@ -102,23 +110,13 @@ const ExcelImportes = ({
                       ],
                     };
                   } else if (hasR10 && !hasACE) {
+                    // Amarillo y Rojo
                     gradient = {
                       type: 'gradient',
                       gradient: 'angle',
                       degree: 45,
                       stops: [
                         { position: 0, color: { argb: 'FFFF99' } }, // Amarillo
-                        { position: 1, color: { argb: 'FF9999' } }, // Rojo
-                      ],
-                    };
-                  } else if (hasACE && hasR10) {
-                    gradient = {
-                      type: 'gradient',
-                      gradient: 'angle',
-                      degree: 45,
-                      stops: [
-                        { position: 0, color: { argb: '66FF66' } }, // Verde
-                        { position: 0.5, color: { argb: 'FFFF99' } }, // Amarillo
                         { position: 1, color: { argb: 'FF9999' } }, // Rojo
                       ],
                     };
@@ -132,10 +130,10 @@ const ExcelImportes = ({
                     pattern: 'solid',
                     fgColor: { argb: fillColor },
                   };
-                  cell.value = importe;
+                  cell.value = `$${importe}`; // Agregar el signo "$" al importe
                 } else if (gradient) {
                   cell.fill = gradient;
-                  cell.value = importe;
+                  cell.value = `$${importe}`; // Agregar el signo "$" al importe
                 }
               }
             }
