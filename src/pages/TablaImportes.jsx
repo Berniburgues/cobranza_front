@@ -352,7 +352,10 @@ const TablaImportes = () => {
                 className="border-2 border-black hover:text-white hover:bg-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap"
                 title={socio.CUIL.substring(2, 10)}
               >
-                <Link to={`/tablas/socio?numerosSocio=${socio.DNI}`} target="_blank">
+                <Link
+                  to={`/tablas/socio?numerosSocio=${socio.CUIL.substring(2, 10)}`}
+                  target="_blank"
+                >
                   {socio.CUIL.substring(2, 10)}
                 </Link>
               </td>
@@ -366,11 +369,17 @@ const TablaImportes = () => {
                 )}-${socio.CUIL.substring(10)}`}
               </td>
 
-              {uniqueDates.map((date) => {
+              {uniqueDates.map((date, index) => {
                 const totalImporte = socio.Pagos[date]?.TotalImporte || 0;
                 const totalImporteMes = socio.Pagos[date]?.TotalImporteMes || 0;
                 const totalImporteMora = socio.Pagos[date]?.TotalImporteMora || 0;
                 const codigos = socio.Pagos[date]?.Codigos || {};
+
+                // Verificar si es el último día o si el importe es diferente al del día anterior
+                const isLastDay = index === uniqueDates.length - 1;
+                const isDifferentFromPrevious =
+                  !isLastDay &&
+                  socio.Pagos[uniqueDates[index + 1]]?.TotalImporte !== totalImporte;
 
                 // Clases condicionales basadas en la combinación de códigos
                 const hasACE = codigos['ACE'];
@@ -414,7 +423,9 @@ const TablaImportes = () => {
                     }`}
                     title={cellTitle}
                   >
-                    {totalImporte > 0 ? `$${totalImporte}` : null}
+                    {totalImporte > 0 && (isLastDay || isDifferentFromPrevious)
+                      ? `$${totalImporte}`
+                      : null}
                   </td>
                 );
               })}
