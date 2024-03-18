@@ -133,7 +133,7 @@ const TablaImportes = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = consolidatedData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const getUniqueDates = () => {
+  const obtenerFechasUnicas = () => {
     let uniqueDates = [];
     consolidatedData.forEach((socio) => {
       Object.keys(socio.Pagos).forEach((fecha) => {
@@ -146,7 +146,7 @@ const TablaImportes = () => {
     return uniqueDates;
   };
 
-  const uniqueDates = getUniqueDates();
+  const fechasUnicas = obtenerFechasUnicas();
 
   return (
     <section className="p-1">
@@ -248,7 +248,7 @@ const TablaImportes = () => {
         </button>
 
         <ExcelImportes
-          uniqueDates={uniqueDates}
+          uniqueDates={fechasUnicas}
           loadingData={loadingData}
           data={data}
           selectedBanco={selectedBanco}
@@ -256,7 +256,7 @@ const TablaImportes = () => {
           selectedPeriodo={selectedPeriodo}
           consolidatedData={consolidatedData}
           totalImportes={consolidatedData.map((socio) =>
-            uniqueDates.map((date) => socio.Pagos[date]?.TotalImporte),
+            fechasUnicas.map((date) => socio.Pagos[date]?.TotalImporte),
           )}
         />
 
@@ -332,7 +332,7 @@ const TablaImportes = () => {
             <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky inset-0">
               CUIL
             </th>
-            {uniqueDates.map((date) => (
+            {fechasUnicas.map((date) => (
               <th
                 key={date}
                 className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky inset-0"
@@ -369,36 +369,47 @@ const TablaImportes = () => {
                 )}-${socio.CUIL.substring(10)}`}
               </td>
 
-              {uniqueDates.map((date, index) => {
+              {fechasUnicas.map((date, index) => {
                 const totalImporte = socio.Pagos[date]?.TotalImporte || 0;
                 const totalImporteMes = socio.Pagos[date]?.TotalImporteMes || 0;
                 const totalImporteMora = socio.Pagos[date]?.TotalImporteMora || 0;
                 const codigos = socio.Pagos[date]?.Codigos || {};
 
                 // Verificar si es el último día o si el importe es diferente al del día anterior
-                const isLastDay = index === uniqueDates.length - 1;
-                const isDifferentFromPrevious =
-                  !isLastDay &&
-                  socio.Pagos[uniqueDates[index + 1]]?.TotalImporte !== totalImporte;
+                const ultimoDiaConImporte = fechasUnicas
+                  .slice()
+                  .reverse()
+                  .findIndex((date) => socio.Pagos[date]?.TotalImporte > 0);
+
+                const ultimoDia =
+                  ultimoDiaConImporte !== -1 &&
+                  index === fechasUnicas.length - 1 - ultimoDiaConImporte;
+
+                const esDiferenteAlAnterior =
+                  !ultimoDia &&
+                  fechasUnicas.slice(index + 1).some((nextDate) => {
+                    const siguienteFechaConImporte =
+                      socio.Pagos[nextDate]?.TotalImporte || 0;
+                    return (
+                      siguienteFechaConImporte > 0 &&
+                      siguienteFechaConImporte !== totalImporte
+                    );
+                  });
 
                 // Clases condicionales basadas en la combinación de códigos
-                const hasACE = codigos['ACE'];
-                const hasR10 = codigos['R10'];
+                const esACE = codigos['ACE'];
+                const esR10 = codigos['R10'];
 
                 const gradientClasses = {
-                  'bg-green-500': hasACE && !hasR10,
-                  'bg-yellow-500': hasR10 && !hasACE,
-                  'bg-red-500': !hasR10 && !hasACE,
+                  'bg-green-500': esACE && !esR10,
+                  'bg-yellow-500': esR10 && !esACE,
+                  'bg-red-500': !esR10 && !esACE,
                   'bg-gradient-to-r from-green-500 to-yellow-500':
-                    hasACE && hasR10 && Object.keys(socio.Pagos[date].Codigos).length > 1,
+                    esACE && esR10 && Object.keys(socio.Pagos[date].Codigos).length > 1,
                   'bg-gradient-to-r from-green-500 to-red-500':
-                    hasACE &&
-                    !hasR10 &&
-                    Object.keys(socio.Pagos[date].Codigos).length > 1,
+                    esACE && !esR10 && Object.keys(socio.Pagos[date].Codigos).length > 1,
                   'bg-gradient-to-r from-yellow-500 to-red-500':
-                    !hasACE &&
-                    hasR10 &&
-                    Object.keys(socio.Pagos[date].Codigos).length > 1,
+                    !esACE && esR10 && Object.keys(socio.Pagos[date].Codigos).length > 1,
                 };
 
                 // Renderización condicional del título y del contenido de la celda
@@ -423,7 +434,7 @@ const TablaImportes = () => {
                     }`}
                     title={cellTitle}
                   >
-                    {totalImporte > 0 && (isLastDay || isDifferentFromPrevious)
+                    {totalImporte > 0 && (ultimoDia || esDiferenteAlAnterior)
                       ? `$${totalImporte}`
                       : null}
                   </td>
