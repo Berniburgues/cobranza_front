@@ -67,7 +67,7 @@ export const fetchSociosData = async (numerosSocio) => {
     const response = await axios.post('https://cobranza.2.us-1.fl0.io/clientes/socio', {
       numerosSocio: numerosSocioArray,
     });
-
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error al obtener los datos de los socios:', error);
@@ -287,6 +287,62 @@ export const fetchInfoHome = async () => {
     }
   } catch (error) {
     console.error(error);
+  }
+};
+
+//Servicio para los contadores del Home
+export const fetchDatosTarjeta = async () => {
+  try {
+    const res = await axios.get(
+      'https://cobranza.2.us-1.fl0.io/clientes/fetchDatosTarjeta',
+    );
+    if (res.status === 200) {
+      return res.data;
+    } else {
+      throw new Error(`Error en la solicitud: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Servicio para insertar datos en la tabla de Tarjetas Web
+export const insertDatosTarjeta = async () => {
+  try {
+    const res = await axios.post('https://cobranza.2.us-1.fl0.io/clientes/datosTarjeta');
+    console.log(res.data); // Muestra la respuesta del servidor en la consola
+    return res.data; // Retorna los datos de la respuesta si es necesario
+  } catch (error) {
+    console.error('Error al insertar datos de tarjeta en el servidor:', error);
+    throw error; // Lanza el error para manejarlo en el componente que llama a esta función
+  }
+};
+
+// Servicio para eliminar una fila del historial de tarjetas
+export const eliminarFilaTarjeta = async (id) => {
+  try {
+    const res = await axios.delete(
+      `https://cobranza.2.us-1.fl0.io/clientes/deleteFilaTarjeta/${id}`,
+    );
+    console.log(res.data); // Muestra la respuesta del servidor en la consola
+    return res.data; // Retorna los datos de la respuesta si es necesario
+  } catch (error) {
+    console.error('Error al eliminar fila del historial en el servidor:', error);
+    throw error; // Lanza el error para manejarlo en el componente que llama a esta función
+  }
+};
+
+//Eliminar todas las filas del historial de Tarjetas
+export const eliminarTodasLasFilasTarjeta = async (id) => {
+  try {
+    const res = await axios.delete(
+      'https://cobranza.2.us-1.fl0.io/clientes/deleteAllFilas',
+    );
+    console.log(res.data); // Muestra la respuesta del servidor en la consola
+    return res.data; // Retorna los datos de la respuesta si es necesario
+  } catch (error) {
+    console.error('Error al eliminar fila del historial en el servidor:', error);
+    throw error; // Lanza el error para manejarlo en el componente que llama a esta función
   }
 };
 

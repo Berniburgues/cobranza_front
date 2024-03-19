@@ -3,7 +3,7 @@ import AnimatedCounter from './AnimatedCounter';
 
 const Tarjetas = ({ infoHome }) => {
   return (
-    <section className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-10 text-white md:text-base text-xs">
+    <section className="grid grid-cols-2 md:grid-cols-3 gap-5 mt-5 text-white md:text-base text-xs">
       <article className="p-4 border-2 border-black rounded-md py-2 bg-gradient-to-r from-red-800 to-red-500">
         <div className="text-center flex flex-col">
           <AnimatedCounter value={infoHome.SociosSupervielle} />

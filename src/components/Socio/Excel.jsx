@@ -96,7 +96,6 @@ const ExcelSocio = ({ diasCobro, periodos, datosAgrupados, datosFijos }) => {
           // Comenzar a aplicar estilos a partir de la tercera fila (los datos)
           row.eachCell((cell, colNumber) => {
             const codigo = cell.value;
-            console.log(cell.value, 'algo');
             if (
               colNumber > 1 &&
               codigo !== undefined &&

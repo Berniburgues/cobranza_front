@@ -17,6 +17,7 @@ import TablaImportes from './pages/TablaImportes';
 import Archivos from './pages/Archivos';
 import Bancos from './pages/Bancos';
 import Calendario from './pages/Calendario';
+import TablaSocios from './pages/TablaSocios';
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute>
           <Home />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: '/tablaSocios',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <TablaSocios />
         </ProtectedRoute>
       </Layout>
     ),
