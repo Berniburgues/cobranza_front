@@ -318,16 +318,16 @@ export const insertDatosTarjeta = async () => {
   }
 };
 
-// Servicio para eliminar una fila del historial de tarjetas
-export const eliminarFilaTarjeta = async (id) => {
+// Servicio para eliminar una o varias filas del historial de tarjetas
+export const eliminarFilaTarjeta = async (ids) => {
   try {
     const res = await axios.delete(
-      `https://cobranza.2.us-1.fl0.io/clientes/deleteFilaTarjeta/${id}`,
+      `https://cobranza.2.us-1.fl0.io/clientes/deleteFilaTarjeta/${ids}`, // Incluir los IDs en la URL
     );
     console.log(res.data); // Muestra la respuesta del servidor en la consola
     return res.data; // Retorna los datos de la respuesta si es necesario
   } catch (error) {
-    console.error('Error al eliminar fila del historial en el servidor:', error);
+    console.error('Error al eliminar filas del historial en el servidor:', error);
     throw error; // Lanza el error para manejarlo en el componente que llama a esta función
   }
 };

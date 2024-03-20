@@ -11,6 +11,7 @@ import { XIcon, TrashIcon } from '@heroicons/react/solid';
 
 const TablaSocios = () => {
   const [infoHome, setInfoHome] = useState([]);
+  const [filasSeleccionadas, setFilasSeleccionadas] = useState([]);
   const tablaRef = useRef();
 
   const handlePrint = useReactToPrint({
@@ -35,6 +36,16 @@ const TablaSocios = () => {
     return <h3 className="text-center italic text-xl mt-4">No existen Datos</h3>;
   }
 
+  const handleToggleRow = (id) => {
+    if (filasSeleccionadas.includes(id)) {
+      setFilasSeleccionadas(filasSeleccionadas.filter((rowId) => rowId !== id));
+    } else {
+      setFilasSeleccionadas([...filasSeleccionadas, id]);
+    }
+  };
+
+  console.log(filasSeleccionadas);
+
   const handleEliminarTodasLasFilas = async () => {
     const confirmarEliminacion = window.confirm(
       '¿Estás seguro de eliminar todas las filas?',
@@ -49,38 +60,28 @@ const TablaSocios = () => {
       }
     }
   };
-
-  const handleEliminarFila = async (id) => {
-    const confirmarEliminacion = window.confirm('¿Estás seguro de eliminar esta fila?');
+  const handleEliminarFila = async () => {
+    const confirmarEliminacion = window.confirm('¿Estás seguro de eliminar estas filas?');
 
     if (confirmarEliminacion) {
       try {
-        await eliminarFilaTarjeta(id);
-        setInfoHome(infoHome.filter((fila) => fila.Id !== id));
+        await Promise.all(
+          filasSeleccionadas.map(async (id) => {
+            await eliminarFilaTarjeta(id);
+          }),
+        );
+
+        // Filtrar las filas eliminadas
+        setInfoHome(infoHome.filter((fila) => !filasSeleccionadas.includes(fila.Id)));
       } catch (error) {
-        console.error('Error al eliminar fila:', error);
+        console.error('Error al eliminar filas:', error);
       }
     }
   };
 
-  const filasFiltradas = [
-    infoHome[0],
-    ...infoHome.slice(1).filter((fila, index) => {
-      const prevFila = infoHome[index];
-      return (
-        fila.sociosActivos !== prevFila.sociosActivos ||
-        fila.sociosSupervielle !== prevFila.sociosSupervielle ||
-        fila.sociosOtrosBancos !== prevFila.sociosOtrosBancos ||
-        fila.sociosTarjeta !== prevFila.sociosTarjeta ||
-        fila.Adherentes !== prevFila.Adherentes ||
-        fila.Servicios !== prevFila.Servicios
-      );
-    }),
-  ];
-
   const exportarAExcel = async () => {
     const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet('TablaSocios');
+    const sheet = workbook.addWorksheet('Socios y Servicios');
 
     // Definir las columnas
     const columns = [
@@ -105,8 +106,8 @@ const TablaSocios = () => {
     sheet.getRow(1).font = { bold: true };
 
     // Agregar las filas al archivo Excel
-    filasFiltradas.forEach((fila, index) => {
-      const prevFila = index > 0 ? filasFiltradas[index - 1] : null; // Obtener la fila anterior
+    infoHome.forEach((fila, index) => {
+      const prevFila = index > 0 ? infoHome[index - 1] : null; // Obtener la fila anterior
       const sociosActivosDiff = prevFila
         ? fila.sociosActivos - prevFila.sociosActivos
         : null;
@@ -166,36 +167,37 @@ const TablaSocios = () => {
   };
 
   return (
-    <section className="container mx-auto mt-6">
+    <section className="mx-auto px-5">
       <h2 className="text-2xl font-bold text-center my-5">
         Cantidad de Socios y Servicios
       </h2>
       <div className="overflow-x-auto">
         <table
-          className="table-auto border-collapse border mx-auto border-gray-800"
+          className="table-auto w-full border-collapse border mx-auto border-gray-800"
           ref={tablaRef}
         >
           <thead>
             <tr className="bg-gray-200">
-              <th className="border border-gray-800 px-4 py-2">FECHA Y HORA</th>
+              <th className="border border-gray-800 px-4 py-2">FECHA</th>
+              <th className="border border-gray-800 px-4 py-2">HORA</th>
               <th className="border border-gray-800 px-4 py-2">ACTIVOS</th>
               <th className="border border-gray-800 px-4 py-2">SUPERVIELLE</th>
               <th className="border border-gray-800 px-4 py-2">OTROS BANCOS</th>
               <th className="border border-gray-800 px-4 py-2">TARJETA</th>
               <th className="border border-gray-800 px-4 py-2">ADHERENTES</th>
               <th className="border border-gray-800 px-4 py-2">SERVICIOS</th>
-              <th className="border border-gray-800 px-4 py-2">ELIMINAR</th>
+              <th className="border border-gray-800 px-4 py-2">SELECCIONAR</th>
             </tr>
           </thead>
           <tbody>
-            {filasFiltradas.map((fila, index) => {
-              const prevFila = index > 0 ? filasFiltradas[index - 1] : null;
+            {infoHome.map((fila, index) => {
+              const prevFila = index > 0 ? infoHome[index - 1] : null;
+              const isChecked = filasSeleccionadas.includes(fila.Id);
+              const [fecha, hora] = fila.fechaActualizacion.split(' - ');
               return (
                 <tr key={fila.Id} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
-                  <td className="border border-gray-800 px-4 py-2">
-                    {fila.fechaActualizacion}
-                  </td>
-
+                  <td className="border border-gray-800 px-4 py-2">{fecha}</td>
+                  <td className="border border-gray-800 px-4 py-2">{hora}</td>
                   <td className={`border border-gray-800 px-4 py-2`}>
                     {fila.sociosActivos}
                     {prevFila && (
@@ -308,10 +310,11 @@ const TablaSocios = () => {
                       </span>
                     )}
                   </td>
-                  <td className="border border-red-800 py-2 flex justify-center items-center">
-                    <XIcon
-                      className="h-5 w-5 text-red-500 hover:text-red-700 cursor-pointer m-0.5"
-                      onClick={() => handleEliminarFila(fila.Id)}
+                  <td className="border border-gray-800 px-4 py-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => handleToggleRow(fila.Id)}
                     />
                   </td>
                 </tr>
@@ -319,14 +322,23 @@ const TablaSocios = () => {
             })}
           </tbody>
         </table>
-        <div className="flex flex-col items-center my-2 ">
-          <button
-            className="flex items-center space-x-2 text-red-500w-full bg-black p-1 rounded text-red-500 hover:text-red-700 cursor-pointer"
-            onClick={handleEliminarTodasLasFilas}
-          >
-            <TrashIcon className="h-5 w-5" />
-            <span>Eliminar Todo</span>
-          </button>
+        <div className="flex flex-col items-center my-2">
+          <div className="flex gap-5">
+            <button
+              className="flex items-center space-x-2 w-full bg-black p-1 rounded text-red-500 hover:text-red-700 cursor-pointer"
+              onClick={handleEliminarTodasLasFilas}
+            >
+              <TrashIcon className="h-5 w-5" />
+              <span>Eliminar Todo</span>
+            </button>
+            <button
+              className="flex items-center space-x-2  w-full bg-black p-1 rounded text-red-500 hover:text-red-700 cursor-pointer"
+              onClick={handleEliminarFila}
+            >
+              <XIcon className="h-5 w-5" />
+              <span>Seleccionados</span>
+            </button>
+          </div>
           <div className="flex gap-5 mt-3">
             <button
               className="text-center border italic border-black font-semibold hover:bg-green-600 bg-green-500 text-white p-1 rounded shadow-md"
