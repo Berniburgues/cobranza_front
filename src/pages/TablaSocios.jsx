@@ -44,8 +44,6 @@ const TablaSocios = () => {
     }
   };
 
-  console.log(filasSeleccionadas);
-
   const handleEliminarTodasLasFilas = async () => {
     const confirmarEliminacion = window.confirm(
       '¿Estás seguro de eliminar todas las filas?',
@@ -312,6 +310,7 @@ const TablaSocios = () => {
                   </td>
                   <td className="border border-gray-800 px-4 py-2 text-center">
                     <input
+                      className="cursor-pointer h-5 w-10"
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => handleToggleRow(fila.Id)}
@@ -327,6 +326,7 @@ const TablaSocios = () => {
             <button
               className="flex items-center space-x-2 w-full bg-black p-1 rounded text-red-500 hover:text-red-700 cursor-pointer"
               onClick={handleEliminarTodasLasFilas}
+              title="Eliminar todas las filas"
             >
               <TrashIcon className="h-5 w-5" />
               <span>Eliminar Todo</span>
@@ -334,6 +334,7 @@ const TablaSocios = () => {
             <button
               className="flex items-center space-x-2  w-full bg-black p-1 rounded text-red-500 hover:text-red-700 cursor-pointer"
               onClick={handleEliminarFila}
+              title="Eliminar filas seleccionadas"
             >
               <XIcon className="h-5 w-5" />
               <span>Seleccionados</span>
