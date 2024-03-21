@@ -111,7 +111,7 @@ const Home = () => {
         >
           <RefreshIcon className="h-5 w-auto" />
         </button>
-        <Link to="/tablaSocios" target="blank">
+        <Link to="/tablaSocios" target="blank_">
           <button className="bg-yellow-500 hover:bg-yellow-700 text-white border-2 px-2 border-black h-auto rounded-lg text-sm shadow-md">
             TABLA
           </button>
