@@ -193,11 +193,11 @@ const TablaSocios = () => {
               const isChecked = filasSeleccionadas.includes(fila.Id);
               const [fecha, hora] = fila.fechaActualizacion.split(' - ');
               return (
-                <tr key={fila.Id} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
+                <tr key={fila?.Id} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
                   <td className="border border-gray-800 px-4 py-2">{fecha}</td>
                   <td className="border border-gray-800 px-4 py-2">{hora}</td>
                   <td className={`border border-gray-800 px-4 py-2`}>
-                    {fila.sociosActivos}
+                    {fila?.sociosActivos}
                     {prevFila && (
                       <span
                         className={`text-xs italic ${
@@ -215,7 +215,7 @@ const TablaSocios = () => {
                     )}
                   </td>
                   <td className={`border border-gray-800 px-4 py-2`}>
-                    {fila.sociosSupervielle}
+                    {fila?.sociosSupervielle}
                     {prevFila && (
                       <span
                         className={`text-xs italic ml-1 ${
@@ -235,7 +235,7 @@ const TablaSocios = () => {
                     )}
                   </td>
                   <td className={`border border-gray-800 px-4 py-2`}>
-                    {fila.sociosOtrosBancos}
+                    {fila?.sociosOtrosBancos}
                     {prevFila && (
                       <span
                         className={`text-xs italic ml-1 ${
@@ -255,7 +255,7 @@ const TablaSocios = () => {
                     )}
                   </td>
                   <td className={`border border-gray-800 px-4 py-2`}>
-                    {fila.sociosTarjeta}
+                    {fila?.sociosTarjeta}
                     {prevFila && (
                       <span
                         className={`text-xs italic ml-1 ${
@@ -273,7 +273,7 @@ const TablaSocios = () => {
                     )}
                   </td>
                   <td className={`border border-gray-800 px-4 py-2`}>
-                    {fila.Adherentes}
+                    {fila?.Adherentes}
                     {prevFila && (
                       <span
                         className={`text-xs italic ml-1 ${
@@ -291,7 +291,7 @@ const TablaSocios = () => {
                     )}
                   </td>
                   <td className={`border border-gray-800 px-4 py-2`}>
-                    {fila.Servicios}
+                    {fila?.Servicios}
                     {prevFila && (
                       <span
                         className={`text-xs italic ml-1 ${
