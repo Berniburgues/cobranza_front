@@ -32,7 +32,7 @@ const TablaSocios = () => {
     fetchData();
   }, []);
 
-  if (!infoHome.length) {
+  if (!infoHome?.length) {
     return <h3 className="text-center italic text-xl mt-4">No existen Datos</h3>;
   }
 
