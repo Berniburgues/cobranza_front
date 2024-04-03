@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-//Obtener Datos para Tabla Madre
+//Obtener Datos para Tabla Códigos
 export const fetchDataPagos = async (
   periodo,
   cbu,
@@ -59,6 +59,25 @@ export const fetchDataPagos = async (
 };
 
 // Obtener Datos de Socios
+export const fetchSocios = async (documentos) => {
+  try {
+    const documentosArray = Array.isArray(documentos) ? documentos : [documentos];
+
+    //const response = await axios.post('http://localhost:8080/clientes/historialSocios', {
+    const response = await axios.post(
+      'https://cobranza.2.us-1.fl0.io/clientes/historialSocios',
+      {
+        documentos: documentosArray,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener los datos de los socios:', error);
+    return null;
+  }
+};
+
+// Obtener Datos de Socio Individual
 export const fetchSociosData = async (numerosSocio) => {
   try {
     const numerosSocioArray = Array.isArray(numerosSocio) ? numerosSocio : [numerosSocio];
@@ -67,7 +86,6 @@ export const fetchSociosData = async (numerosSocio) => {
     const response = await axios.post('https://cobranza.2.us-1.fl0.io/clientes/socio', {
       numerosSocio: numerosSocioArray,
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error al obtener los datos de los socios:', error);

@@ -11,6 +11,7 @@ import Socio from './pages/Socio';
 import Login from './pages/Login';
 import Denegado from './pages/Denegado';
 import HistorialACE from './pages/historialACE';
+import HistorialSocios from './pages/HistorialSocios';
 import Tablas from './pages/Tablas';
 import TablaPagos from './pages/TablaPagos';
 import TablaImportes from './pages/TablaImportes';
@@ -77,6 +78,10 @@ export const router = createBrowserRouter([
       {
         path: 'socio',
         element: <Socio />,
+      },
+      {
+        path: 'historialSocios',
+        element: <HistorialSocios />,
       },
       {
         path: 'historialACE',

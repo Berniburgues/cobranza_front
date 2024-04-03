@@ -31,7 +31,7 @@ const Tablas = () => {
           TABLA IMPORTES
         </Link>
         <Link
-          to="socio"
+          to="historialSocios"
           target="_blank"
           className={`bg-yellow-500 hover:bg-yellow-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
             location.pathname === '/tablas/socio' ? 'opacity-50 cursor-not-allowed' : ''
