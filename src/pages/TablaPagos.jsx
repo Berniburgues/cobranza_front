@@ -774,7 +774,7 @@ const TablaPagos = () => {
                           <tr key={socio.ID} className="text-center">
                             <td className="p-1 border-2 border-black hover:bg-black hover:text-white">
                               <Link
-                                to={`/tablas/socio?numerosSocio=${socio.DNI}`}
+                                to={`/tablas/historialSocios?DNI=${socio.DNI}`}
                                 target="_blank"
                                 className="block w-full h-full text-center"
                                 title="Buscar Historial"
@@ -789,7 +789,16 @@ const TablaPagos = () => {
                             >
                               {socio.NombreCompleto}
                             </td>
-                            <td className="p-1 border-2 border-black">{socio.DNI}</td>
+                            <td className="p-1 border-2 border-black hover:bg-black hover:text-white">
+                              <Link
+                                to={`/tablas/historialSocios?DNI=${socio.DNI}`}
+                                target="_blank"
+                                className="block w-full h-full text-center"
+                                title="Buscar Historial"
+                              >
+                                {socio.DNI}
+                              </Link>
+                            </td>
                             <td className="p-1 border-2 border-black">{socio.CUIL}</td>
                             <td
                               className="p-1 border-2 border-black truncate min-w-[0.5rem] max-w-[0.5rem]"

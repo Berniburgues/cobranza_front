@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import { fetchSocios, uploadFile } from '../services/obtenerData';
 import { getNombrePeriodo, formatFecha } from '../utils/fechas';
 import { descripcionCodigo } from '../utils/descripcionCodigos';
@@ -6,9 +7,13 @@ import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import ExcelSocios from '../components/Socios/ExcelSocios';
 
 const HistorialSocios = () => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialDNI = searchParams.getAll('DNI');
+  const dniFromParam = initialDNI ? initialDNI.join('\n') : ''; // Convertir a string
   const [socios, setSocios] = useState([]);
   const [diasCobro, setDiasCobro] = useState(new Set());
-  const [documentos, setDocumentos] = useState('');
+  const [documentos, setDocumentos] = useState(dniFromParam);
   const [isLoading, setIsLoading] = useState(false);
 
   //Función para cargar los archivos en el input File
@@ -107,7 +112,7 @@ const HistorialSocios = () => {
             />
           </div>
         </div>
-        <div className="flex gap-5">
+        <div className="flex gap-5 mt-1">
           <button
             className={`bg-orange-500 hover:bg-orange-600 text-white px-4 border border-black rounded-md ${
               isLoading ? 'cursor-not-allowed opacity-50' : ''
@@ -129,162 +134,170 @@ const HistorialSocios = () => {
           <ExcelSocios diasCobro={diasCobro} socios={socios} isLoading={isLoading} />
         </div>
       </div>
-
-      <div className="overflow-x-auto h-[24rem] px-1">
-        <table className="border-collapse text-center table-auto text-xs md:text-sm whitespace-nowrap">
-          <thead>
-            <tr>
-              <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
-                Socio
-              </th>
-              <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
-                CBU
-              </th>
-              <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
-                DNI
-              </th>
-              <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
-                CUIL
-              </th>
-              <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
-                Periodo
-              </th>
-              {[...diasCobro].map((dia, index) => (
-                <th
-                  key={index}
-                  className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0"
-                  style={{ minWidth: '50px', minHeight: '30px' }}
-                >
-                  {dia}
+      {socios.length > 0 ? (
+        <div className="overflow-x-auto h-[24rem] px-1 mt-2">
+          <h3 className="text-center font-bold text-sm mb-2">
+            <span className="italic underline font-semibold">Socios Encontrados:</span>{' '}
+            {socios.length}
+          </h3>
+          <table className="border-collapse text-center table-auto text-xs md:text-sm whitespace-nowrap">
+            <thead>
+              <tr>
+                <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
+                  Socio
                 </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {socios?.map((socio, index) => (
-              <React.Fragment key={index}>
-                {Object.entries(socio.Pagos).map(([periodo, pagos], idx) => (
-                  <tr key={`${index}-${idx}`}>
-                    <td
-                      className={`p-1 text-xs text-center ${
-                        idx === 0 ? 'border-2 border-black' : 'bg-slate-500'
-                      }`}
-                    >
-                      {idx === 0 && socio.Socio}
-                    </td>
-                    <td
-                      className={`p-1 text-xs text-center ${
-                        idx === 0 ? 'border-2 font-bold border-black' : 'bg-slate-500'
-                      } ${
-                        idx === 0 && socio.CBU === '027'
-                          ? 'bg-white'
-                          : idx === 0 &&
-                            (socio.CBU === '004' ||
-                              socio.CBU === '005' ||
-                              socio.CBU === '003' ||
-                              socio.CBU === '006')
-                          ? 'bg-violet-500'
-                          : idx === 0
-                          ? 'bg-blue-500'
-                          : ''
-                      }`}
-                      title={`${idx === 0 ? determinarBancoPorCBU(socio.CBU) : ''}`}
-                    >
-                      {idx === 0 && socio.CBU}
-                    </td>
+                <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
+                  CBU
+                </th>
+                <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
+                  DNI
+                </th>
+                <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
+                  CUIL
+                </th>
+                <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
+                  Periodo
+                </th>
+                {[...diasCobro].map((dia, index) => (
+                  <th
+                    key={index}
+                    className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0"
+                    style={{ minWidth: '50px', minHeight: '30px' }}
+                  >
+                    {dia}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {socios?.map((socio, index) => (
+                <React.Fragment key={index}>
+                  {Object.entries(socio.Pagos).map(([periodo, pagos], idx) => (
+                    <tr key={`${index}-${idx}`}>
+                      <td
+                        className={`p-1 text-xs text-center ${
+                          idx === 0 ? 'border-2 border-black' : 'bg-slate-500'
+                        }`}
+                      >
+                        {idx === 0 && socio.Socio}
+                      </td>
+                      <td
+                        className={`p-1 text-xs text-center ${
+                          idx === 0 ? 'border-2 font-bold border-black' : 'bg-slate-500'
+                        } ${
+                          idx === 0 && socio.CBU === '027'
+                            ? 'bg-white'
+                            : idx === 0 &&
+                              (socio.CBU === '004' ||
+                                socio.CBU === '005' ||
+                                socio.CBU === '003' ||
+                                socio.CBU === '006')
+                            ? 'bg-violet-500'
+                            : idx === 0
+                            ? 'bg-blue-500'
+                            : ''
+                        }`}
+                        title={`${idx === 0 ? determinarBancoPorCBU(socio.CBU) : ''}`}
+                      >
+                        <Link to={`/tablas/bancos?banco=${socio.CBU}`} target="_blank">
+                          {idx === 0 && socio.CBU}
+                        </Link>
+                      </td>
 
-                    <td
-                      className={`p-1 text-xs text-center ${
-                        idx === 0 ? 'border-2 border-black' : 'bg-slate-500'
-                      } `}
-                    >
-                      {idx === 0 && socio.DNI}
-                    </td>
-                    <td
-                      className={`p-1 text-xs text-center ${
-                        idx === 0 ? 'border-2 border-black' : 'bg-slate-500'
-                      }`}
-                    >
-                      {idx === 0 && socio.CUIL}
-                    </td>
-                    <td className="p-1 text-xs border border-black text-center">
-                      {getNombrePeriodo(periodo)}
-                    </td>
-                    {[...diasCobro].map((dia, diaIndex) => {
-                      const cobroDia = pagos.filter((pago) => pago.Dia === dia);
+                      <td
+                        className={`p-1 text-xs text-center ${
+                          idx === 0 ? 'border-2 border-black' : 'bg-slate-500'
+                        } `}
+                      >
+                        {idx === 0 && socio.DNI}
+                      </td>
+                      <td
+                        className={`p-1 text-xs text-center ${
+                          idx === 0 ? 'border-2 border-black' : 'bg-slate-500'
+                        }`}
+                      >
+                        {idx === 0 && socio.CUIL}
+                      </td>
+                      <td className="p-1 text-xs border border-black text-center">
+                        {getNombrePeriodo(periodo)}
+                      </td>
+                      {[...diasCobro].map((dia, diaIndex) => {
+                        const cobroDia = pagos.filter((pago) => pago.Dia === dia);
 
-                      // Filtrar los códigos válidos y eliminar null
-                      const validCodes = cobroDia
-                        .map((pago) => pago.Codigo)
-                        .filter((codigo) => codigo !== null);
+                        // Filtrar los códigos válidos y eliminar null
+                        const validCodes = cobroDia
+                          .map((pago) => pago.Codigo)
+                          .filter((codigo) => codigo !== null);
 
-                      // Usar un conjunto para almacenar los códigos únicos
-                      const uniqueCodes = new Set(validCodes);
-                      const codigos = [...uniqueCodes].join('-'); // Unir los códigos únicos
+                        // Usar un conjunto para almacenar los códigos únicos
+                        const uniqueCodes = new Set(validCodes);
+                        const codigos = [...uniqueCodes].join('-'); // Unir los códigos únicos
 
-                      const hasCodes = uniqueCodes.size > 0; // Verificar si hay al menos un código presente
+                        const hasCodes = uniqueCodes.size > 0; // Verificar si hay al menos un código presente
 
-                      // Determinar la clase de color para el fondo de la celda
-                      let cellColorClass = '';
-                      if (hasCodes) {
-                        if (uniqueCodes.size === 1) {
-                          const codigo = [...uniqueCodes][0];
-                          if (codigo === 'R10') {
-                            cellColorClass = 'bg-yellow-400';
-                          } else if (codigo === 'ACE') {
-                            cellColorClass = 'bg-green-500';
+                        // Determinar la clase de color para el fondo de la celda
+                        let cellColorClass = '';
+                        if (hasCodes) {
+                          if (uniqueCodes.size === 1) {
+                            const codigo = [...uniqueCodes][0];
+                            if (codigo === 'R10') {
+                              cellColorClass = 'bg-yellow-400';
+                            } else if (codigo === 'ACE') {
+                              cellColorClass = 'bg-green-500';
+                            } else {
+                              cellColorClass = 'bg-red-500';
+                            }
                           } else {
-                            cellColorClass = 'bg-red-500';
-                          }
-                        } else {
-                          const isR10Present = uniqueCodes.has('R10');
-                          const isACEPresent = uniqueCodes.has('ACE');
-                          if (isR10Present && isACEPresent) {
-                            cellColorClass =
-                              'bg-gradient-to-b from-yellow-400 to-green-500';
-                          } else if (isR10Present && !isACEPresent) {
-                            cellColorClass =
-                              'bg-gradient-to-b from-yellow-500 to-red-500';
-                          } else if (!isR10Present && isACEPresent) {
-                            cellColorClass = 'bg-gradient-to-b from-green-500 to-red-500';
-                          } else {
-                            cellColorClass = 'bg-red-500';
+                            const isR10Present = uniqueCodes.has('R10');
+                            const isACEPresent = uniqueCodes.has('ACE');
+                            if (isR10Present && isACEPresent) {
+                              cellColorClass =
+                                'bg-gradient-to-b from-yellow-400 to-green-500';
+                            } else if (isR10Present && !isACEPresent) {
+                              cellColorClass =
+                                'bg-gradient-to-b from-yellow-500 to-red-500';
+                            } else if (!isR10Present && isACEPresent) {
+                              cellColorClass =
+                                'bg-gradient-to-b from-green-500 to-red-500';
+                            } else {
+                              cellColorClass = 'bg-red-500';
+                            }
                           }
                         }
-                      }
 
-                      // Construir el título solo si hay al menos un código presente
-                      const titleText = hasCodes
-                        ? cobroDia
-                            .map(
-                              (item) =>
-                                `${formatFecha(item.FechaCobro)} - ${descripcionCodigo(
-                                  item.Codigo,
-                                )} (${item.Concepto}) - $${item.Importe}`,
-                            )
-                            .join('\n')
-                        : null;
+                        // Construir el título solo si hay al menos un código presente
+                        const titleText = hasCodes
+                          ? cobroDia
+                              .map(
+                                (item) =>
+                                  `${formatFecha(item.FechaCobro)} - ${descripcionCodigo(
+                                    item.Codigo,
+                                  )} (${item.Concepto}) - $${item.Importe}`,
+                              )
+                              .join('\n')
+                          : null;
 
-                      return (
-                        <td
-                          key={diaIndex}
-                          title={titleText}
-                          className={`font-bold p-1 font-mono text-xs border border-black text-center ${
-                            hasCodes ? cellColorClass : ''
-                          }`}
-                          style={{ minWidth: '50px', minHeight: '30px' }} // Establecer el ancho y alto mínimo
-                        >
-                          {codigos}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                        return (
+                          <td
+                            key={diaIndex}
+                            title={titleText}
+                            className={`font-bold p-1 font-mono text-xs border border-black text-center ${
+                              hasCodes ? cellColorClass : ''
+                            }`}
+                            style={{ minWidth: '50px', minHeight: '30px' }} // Establecer el ancho y alto mínimo
+                          >
+                            {codigos}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
     </section>
   );
 };

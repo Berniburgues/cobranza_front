@@ -155,7 +155,6 @@ const TablaImportes = () => {
           <label htmlFor="selectPeriodo" className="italic">
             Período:
           </label>
-          {/* Mostrar "Cargando" si los filtros están cargando */}
           {loadingFiltros ? (
             <span className="border border-black italic p-1 rounded">Cargando...</span>
           ) : (
@@ -182,7 +181,6 @@ const TablaImportes = () => {
           <label htmlFor="selectBanco" className="italic">
             Banco:
           </label>
-          {/* Mostrar "Cargando" si los filtros están cargando */}
           {loadingFiltros ? (
             <span className="border border-black italic p-1 rounded">Cargando...</span>
           ) : (
@@ -345,16 +343,25 @@ const TablaImportes = () => {
         <tbody>
           {currentItems.map((socio, index) => (
             <tr key={index}>
-              <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap">
-                {socio.Socio}
+              <td className="border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white">
+                <Link
+                  to={`/tablas/historialSocios?DNI=${socio.CUIL.substring(2, 10)}`}
+                  target="_blank"
+                  className="block w-full h-full text-center"
+                  title="Buscar Historial"
+                >
+                  {socio.Socio}
+                </Link>
               </td>
               <td
                 className="border-2 border-black hover:text-white hover:bg-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap"
                 title={socio.CUIL.substring(2, 10)}
               >
                 <Link
-                  to={`/tablas/socio?numerosSocio=${socio.CUIL.substring(2, 10)}`}
+                  to={`/tablas/historialSocios?DNI=${socio.CUIL.substring(2, 10)}`}
                   target="_blank"
+                  className="block w-full h-full text-center"
+                  title="Buscar Historial"
                 >
                   {socio.CUIL.substring(2, 10)}
                 </Link>

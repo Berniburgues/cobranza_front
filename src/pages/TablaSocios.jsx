@@ -166,7 +166,7 @@ const TablaSocios = () => {
 
   return (
     <section className="mx-auto px-5">
-      <h2 className="text-2xl font-bold text-center my-5">
+      <h2 className="text-2xl font-bold text-center my-3 underline">
         Cantidad de Socios y Servicios
       </h2>
       <div className="overflow-x-auto">

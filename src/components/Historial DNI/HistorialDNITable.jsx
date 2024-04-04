@@ -240,8 +240,10 @@ const HistorialDNITable = ({ data, banco }) => {
                       className={`border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white cursor-pointer ${colorTexto}`}
                     >
                       <Link
-                        to={`/tablas/socio?numerosSocio=${socio.DNI}`}
+                        to={`/tablas/historialSocios?DNI=${socio.DNI}`}
                         target="_blank"
+                        className="block w-full h-full text-center"
+                        title="Buscar Historial"
                       >
                         {socio.Socio}
                       </Link>
@@ -250,9 +252,16 @@ const HistorialDNITable = ({ data, banco }) => {
                   {periodoIndex === 0 && (
                     <td
                       rowSpan={Object.keys(socio.Pagos).length}
-                      className={`border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap ${colorTexto}`}
+                      className={`border-2 border-black text-center font-semibold md:font-bold text-[0.50rem] md:text-xs truncate whitespace-nowrap hover:bg-black hover:text-white ${colorTexto}`}
                     >
-                      {socio.DNI}
+                      <Link
+                        to={`/tablas/historialSocios?DNI=${socio.DNI}`}
+                        target="_blank"
+                        className="block w-full h-full text-center"
+                        title="Buscar Historial"
+                      >
+                        {socio.DNI}
+                      </Link>
                     </td>
                   )}
                   <td

@@ -89,7 +89,6 @@ const Historial = ({ datosFijos, cobranza }) => {
                 {getNombrePeriodo(periodo)}
               </td>
               {diasCobro.map((dia, diaIndex) => {
-                const clave = `${periodo}-${dia}`;
                 const cobroDia = Object.values(datosAgrupados).filter(
                   (item) => item.dia === dia && item.periodo === periodo,
                 );
@@ -118,30 +117,6 @@ const Historial = ({ datosFijos, cobranza }) => {
 
                 let bordeClass = 'border border-black';
 
-                if (
-                  cobroDia.some(
-                    (item) => item.FechaAnses === item.fecCobro && item.codigo === 'ACE',
-                  )
-                ) {
-                  bordeClass = 'border-2 border-blue-800 bg-green-300 hover:bg-green-400';
-                } else if (
-                  cobroDia.some(
-                    (item) => item.FechaAnses === item.fecCobro && item.codigo === 'R10',
-                  )
-                ) {
-                  bordeClass =
-                    'border-2 border-orange-600 bg-yellow-200 hover:bg-yellow-300';
-                } else if (
-                  cobroDia.some(
-                    (item) =>
-                      item.FechaAnses === item.fecCobro &&
-                      item.codigo !== 'ACE' &&
-                      item.codigo !== 'R10',
-                  )
-                ) {
-                  bordeClass = 'border-2 border-red-900 hover:bg-red-400 bg-red-300';
-                }
-
                 let cellColorClass = '';
                 if (hasACE && isR10) {
                   cellColorClass = 'bg-gradient-to-b from-yellow-400 to-green-500';
@@ -162,7 +137,7 @@ const Historial = ({ datosFijos, cobranza }) => {
                   : '';
 
                 const titleText =
-                  cobroDia.length > 0
+                  codigosAplanados.length > 0
                     ? cobroDia
                         .map(
                           (item) =>

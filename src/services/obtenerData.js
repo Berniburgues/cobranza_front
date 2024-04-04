@@ -78,13 +78,13 @@ export const fetchSocios = async (documentos) => {
 };
 
 // Obtener Datos de Socio Individual
-export const fetchSociosData = async (numerosSocio) => {
+export const fetchSociosData = async (documento) => {
   try {
-    const numerosSocioArray = Array.isArray(numerosSocio) ? numerosSocio : [numerosSocio];
+    const documentoArray = Array.isArray(documento) ? documento : [documento];
 
-    // const response = await axios.post('http://localhost:8080/clientes/socio', {
+    //const response = await axios.post('http://localhost:8080/clientes/socio', {
     const response = await axios.post('https://cobranza.2.us-1.fl0.io/clientes/socio', {
-      numerosSocio: numerosSocioArray,
+      documento: documentoArray,
     });
     return response.data;
   } catch (error) {
