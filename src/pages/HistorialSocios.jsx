@@ -188,7 +188,8 @@ const HistorialSocios = () => {
                           idx === 0 && socio.CBU === '027'
                             ? 'bg-white'
                             : idx === 0 &&
-                              (socio.CBU === '004' ||
+                              (socio.CBU === '002' ||
+                                socio.CBU === '004' ||
                                 socio.CBU === '005' ||
                                 socio.CBU === '003' ||
                                 socio.CBU === '006')

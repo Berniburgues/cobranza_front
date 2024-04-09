@@ -811,6 +811,7 @@ const TablaPagos = () => {
                                 socio.CBU === '027'
                                   ? 'bg-white'
                                   : socio.CBU === '004' ||
+                                    socio.CBU === '002' ||
                                     socio.CBU === '005' ||
                                     socio.CBU === '003' ||
                                     socio.CBU === '006'
