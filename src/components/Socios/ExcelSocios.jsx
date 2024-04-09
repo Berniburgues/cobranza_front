@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import { getNombrePeriodo } from '../../utils/fechas';
+import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 
 const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
   const [exporting, setExporting] = useState(false);
@@ -21,7 +22,7 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
       const worksheet = workbook.addWorksheet(workName);
 
       // Encabezados de la tabla
-      const headerRow = ['SOCIO', 'CBU', 'DNI', 'CUIL', 'PERÍODO', ...[...diasCobro]];
+      const headerRow = ['SOCIO', 'BANCO', 'DNI', 'CUIL', 'PERÍODO', ...[...diasCobro]];
       worksheet.addRow(headerRow);
 
       // Aplicar negrita a las columnas
@@ -37,7 +38,7 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
         Object.entries(socio.Pagos).forEach(([periodo, pagos], idx) => {
           const rowData = [
             socio.Socio,
-            socio.CBU,
+            determinarBancoPorCBU(socio.CBU),
             socio.DNI,
             socio.CUIL,
             getNombrePeriodo(periodo),
