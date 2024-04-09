@@ -21,9 +21,16 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
       const worksheet = workbook.addWorksheet(workName);
 
       // Encabezados de la tabla
-      const headerRow = ['Socio', 'CBU', 'DNI', 'CUIL', 'Periodo', ...[...diasCobro]];
-
+      const headerRow = ['SOCIO', 'CBU', 'DNI', 'CUIL', 'PERÍODO', ...[...diasCobro]];
       worksheet.addRow(headerRow);
+
+      // Aplicar negrita a las columnas
+      worksheet.columns.forEach((column) => {
+        column.width = 12; // Ajustar el ancho de las columnas
+        column.eachCell((cell) => {
+          cell.font = { bold: true };
+        });
+      });
 
       // Datos de la tabla
       socios.forEach((socio, index) => {
@@ -49,84 +56,19 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
               return codigos; // Devolver los códigos para cada día
             }),
           ];
-          worksheet.addRow(rowData);
+          const row = worksheet.addRow(rowData);
+
+          // Aplicar estilos de texto según el índice
+          row.eachCell((cell, colIndex) => {
+            if (idx === 0) {
+              cell.font = { color: { argb: 'FF000000' } }; // Negro para el primer dato de cada socio
+            } else if (idx !== 0 && colIndex < 5) {
+              cell.font = { color: { argb: 'FFFFFFFF' } }; // Blanco para el resto de los datos
+            }
+          });
         });
       });
 
-      // Aplicar estilos de fondo a las celdas de códigos
-      worksheet.eachRow((row, rowIndex) => {
-        if (rowIndex > 1) {
-          row.eachCell((cell, colIndex) => {
-            if (colIndex > 5) {
-              const cellValue = cell.value;
-              if (cellValue) {
-                // Determinar el estilo de la celda según la lógica proporcionada
-                let gradient = null;
-                let fillColor = '';
-                const codes = cellValue.split('-');
-
-                if (codes.length === 1) {
-                  const codigo = codes[0];
-                  if (codigo === 'R10') {
-                    fillColor = 'FFFF99'; // Amarillo
-                  } else if (codigo === 'ACE') {
-                    fillColor = '66FF66'; // Verde
-                  } else {
-                    fillColor = 'FF9999'; // Rojo
-                  }
-                } else {
-                  const hasACE = codes.includes('ACE');
-                  const hasR10 = codes.includes('R10');
-
-                  if ((hasACE && hasR10) || (!hasACE && !hasR10)) {
-                    // Color sólido basado en el primer código encontrado
-                    const codigo = codes[0];
-                    if (codigo === 'ACE') {
-                      fillColor = '66FF66'; // Verde
-                    } else if (codigo === 'R10') {
-                      fillColor = 'FFFF99'; // Amarillo
-                    } else {
-                      fillColor = 'FF9999'; // Rojo
-                    }
-                  } else if (hasACE && !hasR10) {
-                    // Verde y Rojo
-                    gradient = {
-                      type: 'gradient',
-                      gradient: 'angle',
-                      degree: 45,
-                      stops: [
-                        { position: 0, color: { argb: '66FF66' } }, // Verde
-                        { position: 1, color: { argb: 'FF9999' } }, // Rojo
-                      ],
-                    };
-                  } else if (hasR10 && !hasACE) {
-                    // Amarillo y Rojo
-                    gradient = {
-                      type: 'gradient',
-                      gradient: 'angle',
-                      degree: 45,
-                      stops: [
-                        { position: 0, color: { argb: 'FFFF99' } }, // Amarillo
-                        { position: 1, color: { argb: 'FF9999' } }, // Rojo
-                      ],
-                    };
-                  }
-                }
-
-                if (fillColor) {
-                  cell.fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: fillColor },
-                  };
-                } else if (gradient) {
-                  cell.fill = gradient;
-                }
-              }
-            }
-          });
-        }
-      });
       // Aplicar estilos de fondo a las celdas de códigos
       worksheet.eachRow((row, rowIndex) => {
         if (rowIndex > 1) {
@@ -203,6 +145,11 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
         }
       });
 
+      // Centrar todos los valores de las celdas
+      worksheet.columns.forEach((column) => {
+        column.alignment = { horizontal: 'center' };
+      });
+
       // Crear un archivo blob
       const buffer = await workbook.xlsx.writeBuffer();
       const blob = new Blob([buffer], {
@@ -217,6 +164,7 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
       setExporting(false);
     }
   };
+
   return (
     <button
       id="excel-button"

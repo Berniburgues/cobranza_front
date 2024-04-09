@@ -80,7 +80,7 @@ const HistorialSocios = () => {
               htmlFor="dniInput"
               className="text-xs italic text-center flex justify-center mr-2"
             >
-              Ingresar el/los DNI's, uno por línea
+              Ingresar el/los DNI's, uno por línea (MÁX 1000)
             </label>
             <textarea
               id="dniInput"
