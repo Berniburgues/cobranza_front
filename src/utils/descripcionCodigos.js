@@ -17,7 +17,7 @@ export const descripcionCodigo = (codigo) => {
       description = 'Digito verificador de CBU incorrecto';
       break;
     case 'R05':
-      description = 'Stop debit';
+      description = 'Orden de no Pagar';
       break;
     case 'R06':
       description = 'Otro Error/Error Genérico';
@@ -26,7 +26,7 @@ export const descripcionCodigo = (codigo) => {
       description = 'Recoger Tarjeta (Fraude)';
       break;
     case 'R08':
-      description = 'Orden de no pagar';
+      description = 'STOP DEBIT';
       break;
     case 'R10':
       description = 'Falta de fondos';
