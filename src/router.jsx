@@ -15,6 +15,7 @@ import HistorialSocios from './pages/HistorialSocios';
 import Tablas from './pages/Tablas';
 import TablaPagos from './pages/TablaPagos';
 import TablaImportes from './pages/TablaImportes';
+import StopDebit from './pages/StopDebit';
 import Archivos from './pages/Archivos';
 import Bancos from './pages/Bancos';
 import Calendario from './pages/Calendario';
@@ -90,6 +91,10 @@ export const router = createBrowserRouter([
       {
         path: '/tablas/bancos',
         element: <Bancos />,
+      },
+      {
+        path: '/tablas/stopDebit',
+        element: <StopDebit />,
       },
     ],
   },

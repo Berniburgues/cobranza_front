@@ -249,6 +249,34 @@ export const fetchServicios = async (periodo, bco) => {
   }
 };
 
+//Obtener listado de Socios con Stop Debit (R08)
+export const stopDebit = async (periodo, bco) => {
+  try {
+    let url = `https://cobranza.2.us-1.fl0.io/clientes/stopDebit?periodo=${periodo}`;
+
+    if (bco) {
+      url += `&banco=${bco}`;
+    }
+
+    const res = await axios.get(url);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+//Obtener Filtros de Todos los Períodos
+export const filtroPeriodos = async () => {
+  try {
+    let url = `https://cobranza.2.us-1.fl0.io/filtros/periodos`;
+
+    const res = await axios.get(url);
+    return res.data.Periodos;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 //Obtener Filtros para Tabla Madre
 export const fetchFiltrosPagos = async () => {
   try {

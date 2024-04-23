@@ -9,6 +9,7 @@ export const permisosRoles = {
     '/tablas/historialSocios',
     '/tablas/historialACE',
     '/tablas/bancos',
+    '/tablas/stopDebit',
     '/reportes',
     '/reportes/directos',
     '/reportes/indirectos',

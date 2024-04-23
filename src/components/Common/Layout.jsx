@@ -72,11 +72,11 @@ const Layout = ({ children }) => {
             REPORTES
           </Link>
           <Link
-            to="/calendario"
-            className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform"
+            to="/tablas/stopDebit"
+            className="hover:text-red-400 text-red-500 border-b border-transparent hover:border-red-400 transition transform"
             target="_blank"
           >
-            CALENDARIO
+            STOP-DEBIT
           </Link>
         </div>
       </nav>
