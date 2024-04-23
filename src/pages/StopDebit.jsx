@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { stopDebit, filtroPeriodos } from '../services/obtenerData';
 import { getNombrePeriodo } from '../utils/fechas';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
@@ -39,7 +40,7 @@ const StopDebit = () => {
 
   const handleReset = async () => {
     setData([]);
-    setPeriodos([]);
+    setSelectedPeriodo('');
   };
 
   return (
@@ -108,17 +109,41 @@ const StopDebit = () => {
         <tbody>
           {data.map((item, index) => (
             <tr key={index}>
-              <td className="border border-gray-300 p-2">{item.NroSocio}</td>
+              <td className="border border-gray-300 p-2 hover:text-white hover:bg-black">
+                <Link
+                  to={`/tablas/historialSocios?DNI=${item.Documento}`}
+                  target="_blank"
+                  className="block w-auto h-full text-center "
+                  title="Buscar Historial"
+                >
+                  {item.NroSocio}
+                </Link>
+              </td>
               <td className="border border-gray-300 p-2 whitespace-nowrap">
                 {item.Nombre} {item.Apellido}
               </td>
-              <td className="border border-gray-300 p-2">{item.Documento}</td>
+              <td className="border border-gray-300 p-2 hover:text-white hover:bg-black">
+                <Link
+                  to={`/tablas/historialSocios?DNI=${item.Documento}`}
+                  target="_blank"
+                  className="block w-auto h-full text-center "
+                  title="Buscar Historial"
+                >
+                  {item.Documento}
+                </Link>
+              </td>
               <td className="border border-gray-300 p-2 whitespace-nowrap">
                 {determinarBancoPorCBU(item.CBU)}
               </td>
-              <td className="border border-gray-300 p-2">{item.Telefono}</td>
-              <td className="border border-gray-300 p-2">{item.Telefono2}</td>
-              <td className="border border-gray-300 p-2">{item.Email}</td>
+              <td className="border border-gray-300 p-2 font-semibold italic">
+                {item.Telefono}
+              </td>
+              <td className="border border-gray-300 p-2 font-semibold italic">
+                {item.Telefono2}
+              </td>
+              <td className="border border-gray-300 p-2 font-semibold italic">
+                {item.Email}
+              </td>
             </tr>
           ))}
         </tbody>
