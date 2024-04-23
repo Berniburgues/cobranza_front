@@ -10,6 +10,10 @@ const ReportesIndirectos = () => {
       title: 'DR. EN VIVO',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYjI5OGI1YWMtYTFhNS00OGM4LWJmM2ItMGE5NDkwZWJmMGY0IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
+    {
+      title: 'CRÉDITOS MUNICIPALES',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiNGJmYmY1ODEtMTViNi00MzBiLWJkM2ItOTNmN2ZlYzYwZWVkIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
   ];
   const informesPeriodos = [
     {
