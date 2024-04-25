@@ -14,7 +14,7 @@ const ReportesIndirectos = () => {
       title: 'CRÉDITOS MUNICIPALES',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiNGJmYmY1ODEtMTViNi00MzBiLWJkM2ItOTNmN2ZlYzYwZWVkIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
-     {
+    {
       title: 'CRÉDITOS POLICIA',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiZjYzZGM3ZDUtNzNkMi00N2U3LTljYjEtNTE3YjVlYThiYzE3IiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
