@@ -59,17 +59,20 @@ export const fetchDataPagos = async (
 };
 
 // Obtener Datos de Socios
-export const fetchSocios = async (documentos) => {
+export const fetchSocios = async (documentos, año) => {
   try {
     const documentosArray = Array.isArray(documentos) ? documentos : [documentos];
+    let url = 'https://cobranza.2.us-1.fl0.io/clientes/historialSocios';
 
-    //const response = await axios.post('http://localhost:8080/clientes/historialSocios', {
-    const response = await axios.post(
-      'https://cobranza.2.us-1.fl0.io/clientes/historialSocios',
-      {
-        documentos: documentosArray,
-      },
-    );
+    // Agregar el parámetro del año a la URL si está definido
+    if (año) {
+      url += `?año=${año}`;
+    }
+
+    const response = await axios.post(url, {
+      documentos: documentosArray,
+    });
+
     return response.data;
   } catch (error) {
     console.error('Error al obtener los datos de los socios:', error);

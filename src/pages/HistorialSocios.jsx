@@ -14,6 +14,7 @@ const HistorialSocios = () => {
   const [socios, setSocios] = useState([]);
   const [diasCobro, setDiasCobro] = useState(new Set());
   const [documentos, setDocumentos] = useState(dniFromParam);
+  const [selectedAño, setSelectedAño] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   //Función para cargar los archivos en el input File
@@ -36,13 +37,17 @@ const HistorialSocios = () => {
     handleFileUpload(file);
   };
 
+  const handleAñoChange = (e) => {
+    setSelectedAño(e.target.value);
+  };
+
   const handleBuscarClick = async () => {
     setIsLoading(true);
     try {
       // Dividir los documentos ingresados por líneas y eliminar líneas vacías
       const dnis = documentos.split('\n').filter((doc) => doc.trim() !== '');
       // Realizar la búsqueda de socios con los DNIs ingresados
-      const sociosData = await fetchSocios(dnis);
+      const sociosData = await fetchSocios(dnis, selectedAño);
       setSocios(sociosData);
       // Calcular los días de cobro y los períodos
       let diasSet = new Set();
@@ -65,6 +70,7 @@ const HistorialSocios = () => {
     setDocumentos('');
     setSocios([]);
     setIsLoading(false);
+    setSelectedAño('');
     const fileInput = document.getElementById('fileInput');
     if (fileInput) {
       fileInput.value = '';
@@ -110,6 +116,24 @@ const HistorialSocios = () => {
               onChange={onFileChange}
               className="border text-sm px-1 py-[1px] border-black rounded-md focus:outline-none focus:border-blue-500"
             />
+          </div>
+          <div className="flex flex-col">
+            <label
+              className="text-xs italic text-center  flex justify-center mr-2"
+              htmlFor="año"
+            >
+              Año:
+            </label>
+            <select
+              id="año"
+              value={selectedAño}
+              onChange={handleAñoChange}
+              className="flex-grow h-[28px] text-sm border border-black rounded-md p-1  focus:outline-none focus:border-blue-500"
+            >
+              <option value="">--Todos--</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+            </select>
           </div>
         </div>
         <div className="flex gap-5 mt-1">
