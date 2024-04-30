@@ -404,3 +404,18 @@ export const fetchCargaNovedades = async () => {
     console.error(error);
   }
 };
+
+//Llamada para obtener tabla de Servicios y sus correspondientes Beneficios
+export const getServiciosYBeneficios = async () => {
+  try {
+    const res = await axios.get('https://cobranza.2.us-1.fl0.io/servicios');
+    if (res.status === 200) {
+      console.log(res.data.data);
+      return res.data.data;
+    } else {
+      throw new Error(`Error en la solicitud: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
