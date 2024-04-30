@@ -4,6 +4,7 @@ import { stopDebit, filtroPeriodos } from '../services/obtenerData';
 import { getNombrePeriodo } from '../utils/fechas';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import { numerosDeBanco } from '../utils/bancos';
+import ExcelStopDebit from '../components/Stop Debit/ExcelStopDebit';
 
 const StopDebit = () => {
   const [data, setData] = useState([]);
@@ -92,23 +93,29 @@ const StopDebit = () => {
             ))}
           </select>
         </div>
-        <div className="pt-6">
+        <div className="pt-6 space-x-2">
           <button
             onClick={handleSearchClick}
-            className={`ml-2 bg-blue-500 text-white px-4 rounded hover:bg-blue-600 ${
-              loading ? 'cursor-not-allowed opacity-50' : ''
+            className={`bg-blue-500 text-white px-4 rounded hover:bg-blue-600 ${
+              loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
             }`}
           >
             {loading ? 'Cargando..' : 'Buscar'}
           </button>
           <button
             onClick={handleReset}
-            className={`ml-2 bg-yellow-500 text-white px-4 rounded hover:bg-yellow-600 ${
-              loading ? 'cursor-not-allowed opacity-50' : ''
+            className={`bg-yellow-500 text-white px-4 rounded hover:bg-yellow-600 ${
+              loading ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
             }`}
           >
             {loading ? 'Cargando..' : 'Nueva Búsqueda'}
           </button>
+          <ExcelStopDebit
+            data={data}
+            selectedBanco={selectedBanco}
+            selectedPeriodo={selectedPeriodo}
+            loading={loading}
+          />
         </div>
       </div>
       {data.length > 0 && (
@@ -143,42 +150,42 @@ const StopDebit = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {data.map((socio, index) => (
                 <tr key={index}>
                   <td className="border border-gray-300 p-2 hover:text-white hover:bg-black">
                     <Link
-                      to={`/tablas/historialSocios?DNI=${item.Documento}`}
+                      to={`/tablas/historialSocios?DNI=${socio.Documento}`}
                       target="_blank"
                       className="block w-auto h-full text-center cursor-pointer"
                       title="Buscar Historial"
                     >
-                      {item.NroSocio}
+                      {socio.NroSocio}
                     </Link>
                   </td>
                   <td className="border border-gray-300 p-2 whitespace-nowrap">
-                    {item.Nombre} {item.Apellido}
+                    {socio.Nombre} {socio.Apellido}
                   </td>
                   <td className="border border-gray-300 p-2 hover:text-white hover:bg-black">
                     <Link
-                      to={`/tablas/historialSocios?DNI=${item.Documento}`}
+                      to={`/tablas/historialSocios?DNI=${socio.Documento}`}
                       target="_blank"
                       className="block w-auto h-full text-center cursor-pointer"
                       title="Buscar Historial"
                     >
-                      {item.Documento}
+                      {socio.Documento}
                     </Link>
                   </td>
                   <td className="border border-gray-300 p-2 whitespace-nowrap">
-                    {determinarBancoPorCBU(item.CBU)}
+                    {determinarBancoPorCBU(socio.CBU)}
                   </td>
                   <td className="border border-gray-300 p-2 font-semibold italic">
-                    {item.Telefono}
+                    {socio.Telefono}
                   </td>
                   <td className="border border-gray-300 p-2 font-semibold italic">
-                    {item.Telefono2}
+                    {socio.Telefono2}
                   </td>
                   <td className="border border-gray-300 p-2 font-semibold italic">
-                    {item.Email}
+                    {socio.Email}
                   </td>
                 </tr>
               ))}

@@ -80,22 +80,6 @@ export const fetchSocios = async (documentos, año) => {
   }
 };
 
-// Obtener Datos de Socio Individual
-export const fetchSociosData = async (documento) => {
-  try {
-    const documentoArray = Array.isArray(documento) ? documento : [documento];
-
-    //const response = await axios.post('http://localhost:8080/clientes/socio', {
-    const response = await axios.post('https://cobranza.2.us-1.fl0.io/clientes/socio', {
-      documento: documentoArray,
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error al obtener los datos de los socios:', error);
-    return null;
-  }
-};
-
 // Obtener Datos para Historial de DNI
 export const fetchHistorialDNI = async (
   banco,
@@ -306,21 +290,6 @@ export const fetchFiltrosTablaImportes = async () => {
     );
     return res.data;
   } catch (error) {
-    throw error;
-  }
-};
-//Obtener Filtros para Historial de Socio
-export const fetchFiltroSocio = async (ace) => {
-  try {
-    let url = `https://cobranza.2.us-1.fl0.io/filtros/filtroSocios?ace=${ace}`;
-    const res = await axios.get(url);
-    if (res.status === 200) {
-      return res.data.documentos || [];
-    } else {
-      throw new Error(`Error en la solicitud: ${res.status}`);
-    }
-  } catch (error) {
-    console.error(error);
     throw error;
   }
 };

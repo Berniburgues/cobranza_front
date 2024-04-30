@@ -7,7 +7,6 @@ import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
 import ReportesParciales from './components/Reportes/ReportesParciales';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
-import Socio from './pages/Socio';
 import Login from './pages/Login';
 import Denegado from './pages/Denegado';
 import HistorialACE from './pages/historialACE';
@@ -75,10 +74,6 @@ export const router = createBrowserRouter([
       {
         path: 'tablaImportes',
         element: <TablaImportes />,
-      },
-      {
-        path: 'socio',
-        element: <Socio />,
       },
       {
         path: 'historialSocios',
