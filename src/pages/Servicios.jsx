@@ -18,14 +18,14 @@ const Servicios = () => {
   }, []);
 
   return (
-    <section className="text-gray-700 body-font text-base text-center">
-      <div className=" max-w-screen-3xl mx-auto">
+    <section className="px-2 text-gray-700 body-font max-w-full text-xs text-center">
+      <div className=" max-w-full mx-auto">
         <div className="flex flex-col text-center w-full mb-2">
-          <h2 className="font-medium  text-gray-900 text-3xl underline">
+          <h2 className="font-medium  text-gray-900 text-2xl underline">
             SERVICIOS Y BENEFICIOS
           </h2>
         </div>
-        <div className="overflow-auto max-h-[45rem]">
+        <div className="overflow-auto max-h-[35rem]">
           <table className="table-auto w-full">
             <thead>
               <tr className="bg-gray-200">
@@ -38,7 +38,7 @@ const Servicios = () => {
                     index !== 0 && ( // Evitar renderizar el primer beneficio como "Servicio"
                       <th
                         key={beneficio}
-                        className="p-2 sticky top-0 z-50 bg-black text-white border border-gray-300 title-font tracking-wider font-medium text-base"
+                        className="p-2 sticky top-0 z-50 bg-black text-white border border-gray-300 title-font tracking-wider font-medium text-xs"
                       >
                         {beneficio}
                       </th>
@@ -49,7 +49,7 @@ const Servicios = () => {
             <tbody>
               {servicios.map((servicio, index) => (
                 <tr key={index}>
-                  <td className="border bg-gray-200 border-gray-300 text-gray-900 font-medium p-2">
+                  <td className="border bg-gray-200 border-gray-300 text-gray-900 text-xs font-medium p-2">
                     {servicio.Servicio}
                   </td>
                   {Object.values(servicio).map(

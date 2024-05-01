@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   return (
     <section className="flex flex-col min-h-screen">
       <ScrollTop />
-      <nav className="bg-slate-800 border-b h-20 border-black p-2 text-white text-xl font-semibold flex justify-between items-center">
+      <nav className="bg-slate-800 border-b h-12 border-black p-2 text-white text-base font-semibold flex justify-between items-center">
         <div className="flex items-center">
           <Link
             to="/home"
@@ -41,7 +41,7 @@ const Layout = ({ children }) => {
             <img
               src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-9.png"
               alt="Logo Atsapra"
-              className="w-auto h-12"
+              className="w-auto h-8"
             />
           </a>
           <a
@@ -52,7 +52,7 @@ const Layout = ({ children }) => {
             <img
               src="https://www.asistirservicios.com.ar/assets/img/logo.png"
               alt="Logo Asistir"
-              className="w-auto h-16"
+              className="w-auto h-10"
             />
           </a>
         </div>
@@ -70,6 +70,13 @@ const Layout = ({ children }) => {
             target="_blank"
           >
             REPORTES
+          </Link>
+          <Link
+            to="/tablas/servicios"
+            className="hover:text-blue-400 text-blu-500 border-b border-transparent hover:border-blue-400 transition transform"
+            target="_blank"
+          >
+            SERVICIOS
           </Link>
           <Link
             to="/tablas/stopDebit"
