@@ -75,7 +75,7 @@ const Home = () => {
         ATSAPRA
         <p className="text-base md:text-xl lg:text-3xl">SISTEMA DE CONTROL Y COBRANZA</p>
       </h1>
-      <div className="grid grid-cols-2 items-center justify-center text-lg md:text-2xl gap-3 lg:w-full max-w-xl font-libre">
+      <div className="grid grid-cols-3 items-center justify-center text-lg md:text-2xl gap-3 lg:w-full max-w-xl font-libre">
         <Link to="/tablas">
           <button className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full">
             TABLAS
@@ -84,6 +84,11 @@ const Home = () => {
         <Link to="/reportes">
           <button className="bg-green-500 hover:bg-green-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full mt-3 md:mt-0">
             REPORTES
+          </button>
+        </Link>
+        <Link to="/tablas/servicios" target="_blank">
+          <button className="bg-orange-500 hover:bg-orange-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full">
+            SERVICIOS
           </button>
         </Link>
       </div>

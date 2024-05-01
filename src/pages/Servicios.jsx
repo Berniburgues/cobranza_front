@@ -18,14 +18,14 @@ const Servicios = () => {
   }, []);
 
   return (
-    <section className="text-gray-700 body-font text-xs text-center">
-      <div className=" max-w-6xl mx-auto">
+    <section className="text-gray-700 body-font text-base text-center">
+      <div className=" max-w-screen-3xl mx-auto">
         <div className="flex flex-col text-center w-full mb-2">
-          <h2 className="font-medium  text-gray-900 text-xl underline">
+          <h2 className="font-medium  text-gray-900 text-3xl underline">
             SERVICIOS Y BENEFICIOS
           </h2>
         </div>
-        <div className="overflow-auto max-h-[425px]">
+        <div className="overflow-auto max-h-[45rem]">
           <table className="table-auto w-full">
             <thead>
               <tr className="bg-gray-200">
@@ -38,7 +38,7 @@ const Servicios = () => {
                     index !== 0 && ( // Evitar renderizar el primer beneficio como "Servicio"
                       <th
                         key={beneficio}
-                        className="p-2 sticky top-0 z-50 bg-black text-white border border-gray-300 title-font tracking-wider font-medium text-xs"
+                        className="p-2 sticky top-0 z-50 bg-black text-white border border-gray-300 title-font tracking-wider font-medium text-base"
                       >
                         {beneficio}
                       </th>
