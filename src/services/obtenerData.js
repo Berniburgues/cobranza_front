@@ -13,7 +13,7 @@ export const fetchDataPagos = async (
 ) => {
   try {
     // let url = `http://localhost:8080/clientes/cobranzaSocios?periodo=${periodo}`;
-    let url = `http://190.228.131.15:8080/clientes/cobranzaSocios?periodo=${periodo}`;
+    let url = `https://back-atsapra.sytes.net:8080/clientes/cobranzaSocios?periodo=${periodo}`;
 
     if (cbu) {
       url += `&cbu=${cbu}`;
@@ -62,7 +62,7 @@ export const fetchDataPagos = async (
 export const fetchSocios = async (documentos, año) => {
   try {
     const documentosArray = Array.isArray(documentos) ? documentos : [documentos];
-    let url = 'http://190.228.131.15:8080/clientes/historialSocios';
+    let url = 'https://back-atsapra.sytes.net:8080/clientes/historialSocios';
 
     // Agregar el parámetro del año a la URL si está definido
     if (año) {
@@ -90,7 +90,7 @@ export const fetchHistorialDNI = async (
   try {
     // Construir la URL de la solicitud GET con los parámetros
     // const url = `http://localhost:8080/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
-    const url = `http://190.228.131.15:8080/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
+    const url = `https://back-atsapra.sytes.net:8080/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
       dniComienzaCon || ''
     }&${terminacionDni.map((value) => `terminacionDni=${value}`).join('&')}`;
 
@@ -113,7 +113,7 @@ export const fetchHistorialDNI = async (
 
 export const getTablaImportes = async (banco, periodo, codigo) => {
   try {
-    let url = `http://190.228.131.15:8080/clientes/tablaImportes?periodo=${periodo}&banco=${banco}`;
+    let url = `https://back-atsapra.sytes.net:8080/clientes/tablaImportes?periodo=${periodo}&banco=${banco}`;
     //let url = `http://localhost:8080/clientes/tablaImportes?periodo=${periodo}&banco=${banco}`;
 
     // Agregar la condición para el código
@@ -132,7 +132,7 @@ export const getTablaImportes = async (banco, periodo, codigo) => {
 export const getBanco = async (banco) => {
   try {
     // let url = `http://localhost:8080/bancos/data?banco=${banco}`;
-    let url = `http://190.228.131.15:8080/bancos/data?banco=${banco}`;
+    let url = `https://back-atsapra.sytes.net:8080/bancos/data?banco=${banco}`;
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
@@ -143,7 +143,7 @@ export const getBanco = async (banco) => {
 //Obtener Importes, Cuiles, Servicios
 export const fetchImportes = async (periodo, bco, exb) => {
   try {
-    let url = `http://190.228.131.15:8080/clientes/importes?periodo=${periodo}`;
+    let url = `https://back-atsapra.sytes.net:8080/clientes/importes?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -169,7 +169,7 @@ export const fetchImportes = async (periodo, bco, exb) => {
 };
 export const fetchImportesPorFecha = async (periodo, bco, exb) => {
   try {
-    let url = `http://190.228.131.15:8080/clientes/importesPorFecha?periodo=${periodo}`;
+    let url = `https://back-atsapra.sytes.net:8080/clientes/importesPorFecha?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -195,7 +195,7 @@ export const fetchImportesPorFecha = async (periodo, bco, exb) => {
 };
 export const fetchCuiles = async (periodo, bco) => {
   try {
-    let url = `http://190.228.131.15:8080/clientes/cuiles?periodo=${periodo}`;
+    let url = `https://back-atsapra.sytes.net:8080/clientes/cuiles?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -218,7 +218,7 @@ export const fetchCuiles = async (periodo, bco) => {
 };
 export const fetchServicios = async (periodo, bco) => {
   try {
-    let url = `http://190.228.131.15:8080/clientes/servicios?periodo=${periodo}`;
+    let url = `https://back-atsapra.sytes.net:8080/clientes/servicios?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -239,7 +239,7 @@ export const fetchServicios = async (periodo, bco) => {
 //Obtener listado de Socios con Stop Debit (R08)
 export const stopDebit = async (periodo, bco) => {
   try {
-    let url = `http://190.228.131.15:8080/clientes/stopDebit?periodo=${periodo}`;
+    let url = `https://back-atsapra.sytes.net:8080/clientes/stopDebit?periodo=${periodo}`;
 
     if (bco) {
       url += `&banco=${bco}`;
@@ -255,7 +255,7 @@ export const stopDebit = async (periodo, bco) => {
 //Obtener Filtros de Todos los Períodos
 export const filtroPeriodos = async () => {
   try {
-    let url = `http://190.228.131.15:8080/filtros/periodos`;
+    let url = `https://back-atsapra.sytes.net:8080/filtros/periodos`;
 
     const res = await axios.get(url);
     return res.data.Periodos;
@@ -267,7 +267,9 @@ export const filtroPeriodos = async () => {
 //Obtener Filtros para Tabla Madre
 export const fetchFiltrosPagos = async () => {
   try {
-    const res = await axios.get('http://190.228.131.15:8080/filtros/filtrosPagos');
+    const res = await axios.get(
+      'https://back-atsapra.sytes.net:8080/filtros/filtrosPagos',
+    );
     return res.data;
   } catch (error) {
     console.error(error);
@@ -276,7 +278,7 @@ export const fetchFiltrosPagos = async () => {
 //Obtener Filtros para Tabla Historial DNI
 export const fetchFiltrosDNI = async () => {
   try {
-    const res = await axios.get('http://190.228.131.15:8080/filtros/DNI');
+    const res = await axios.get('https://back-atsapra.sytes.net:8080/filtros/DNI');
     return res.data;
   } catch (error) {
     throw error;
@@ -286,7 +288,7 @@ export const fetchFiltrosDNI = async () => {
 export const fetchFiltrosTablaImportes = async () => {
   try {
     const res = await axios.get(
-      'http://190.228.131.15:8080/filtros/filtrosTablaImportes',
+      'https://back-atsapra.sytes.net:8080/filtros/filtrosTablaImportes',
     );
     return res.data;
   } catch (error) {
@@ -297,7 +299,7 @@ export const fetchFiltrosTablaImportes = async () => {
 //Servicio para los contadores del Home
 export const fetchInfoHome = async () => {
   try {
-    const res = await axios.get('http://190.228.131.15:8080/clientes/infoHome');
+    const res = await axios.get('https://back-atsapra.sytes.net:8080/clientes/infoHome');
     if (res.status === 200) {
       return res.data;
     } else {
@@ -311,7 +313,9 @@ export const fetchInfoHome = async () => {
 //Servicio para los contadores del Home
 export const fetchDatosTarjeta = async () => {
   try {
-    const res = await axios.get('http://190.228.131.15:8080/clientes/fetchDatosTarjeta');
+    const res = await axios.get(
+      'https://back-atsapra.sytes.net:8080/clientes/fetchDatosTarjeta',
+    );
     if (res.status === 200) {
       return res.data;
     } else {
@@ -325,7 +329,9 @@ export const fetchDatosTarjeta = async () => {
 // Servicio para insertar datos en la tabla de Tarjetas Web
 export const insertDatosTarjeta = async () => {
   try {
-    const res = await axios.post('http://190.228.131.15:8080/clientes/datosTarjeta');
+    const res = await axios.post(
+      'https://back-atsapra.sytes.net:8080/clientes/datosTarjeta',
+    );
     console.log(res.data); // Muestra la respuesta del servidor en la consola
     return res.data; // Retorna los datos de la respuesta si es necesario
   } catch (error) {
@@ -338,7 +344,7 @@ export const insertDatosTarjeta = async () => {
 export const eliminarFilaTarjeta = async (ids) => {
   try {
     const res = await axios.delete(
-      `http://190.228.131.15:8080/clientes/deleteFilaTarjeta/${ids}`, // Incluir los IDs en la URL
+      `https://back-atsapra.sytes.net:8080/clientes/deleteFilaTarjeta/${ids}`, // Incluir los IDs en la URL
     );
     console.log(res.data); // Muestra la respuesta del servidor en la consola
     return res.data; // Retorna los datos de la respuesta si es necesario
@@ -351,7 +357,9 @@ export const eliminarFilaTarjeta = async (ids) => {
 //Eliminar todas las filas del historial de Tarjetas
 export const eliminarTodasLasFilasTarjeta = async (id) => {
   try {
-    const res = await axios.delete('http://190.228.131.15:8080/clientes/deleteAllFilas');
+    const res = await axios.delete(
+      'https://back-atsapra.sytes.net:8080/clientes/deleteAllFilas',
+    );
     console.log(res.data); // Muestra la respuesta del servidor en la consola
     return res.data; // Retorna los datos de la respuesta si es necesario
   } catch (error) {
@@ -363,7 +371,7 @@ export const eliminarTodasLasFilasTarjeta = async (id) => {
 //Servicio para el Login
 export const loginService = async (email, password) => {
   try {
-    const res = await axios.post('http://190.228.131.15:8080/users/login', {
+    const res = await axios.post('https://back-atsapra.sytes.net:8080/users/login', {
       email,
       password,
     });
@@ -380,7 +388,7 @@ export const uploadFile = async (file) => {
     formData.append('file', file);
 
     const response = await axios.post(
-      'http://190.228.131.15:8080/archivos/subir_archivo',
+      'https://back-atsapra.sytes.net:8080/archivos/subir_archivo',
       formData,
     );
     return response.data;
@@ -394,7 +402,9 @@ export const uploadFile = async (file) => {
 //Servicio para carga de Archivos de Novedades
 export const fetchCargaNovedades = async () => {
   try {
-    const res = await axios.get('http://190.228.131.15:8080/archivos/cargaNovedades');
+    const res = await axios.get(
+      'https://back-atsapra.sytes.net:8080/archivos/cargaNovedades',
+    );
     return res.data;
   } catch (error) {
     console.error(error);
@@ -404,7 +414,7 @@ export const fetchCargaNovedades = async () => {
 //Llamada para obtener tabla de Servicios y sus correspondientes Beneficios
 export const getServiciosYBeneficios = async () => {
   try {
-    const res = await axios.get('http://190.228.131.15:8080/servicios');
+    const res = await axios.get('https://back-atsapra.sytes.net:8080/servicios');
     if (res.status === 200) {
       return res.data.data;
     } else {
