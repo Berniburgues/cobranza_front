@@ -62,6 +62,10 @@ const ReportesIndirectos = () => {
       title: 'EVOLUCIÓN COBRANZA ATSAPRA',
       url: 'https://app.powerbi.com/view?r=eyJrIjoiYTM2M2MyZGUtMzIwYi00MTJjLTkwMGUtZWM0Y2E3M2RmNzEyIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
     },
+    {
+      title: 'REPORTE CUOTAS',
+      url: 'https://app.powerbi.com/view?r=eyJrIjoiNWU1NDFlMTEtNDJjZC00ODFmLTgwMTUtNWY0ZjMyMDVmNDczIiwidCI6IjJiMmUxNjVjLTY3NDItNDY3NC05ZWJmLTkxY2QwYTcwMWE4ZiIsImMiOjR9',
+    },
   ];
   return (
     <div className="grid grid-cols-3 gap-5">
