@@ -40,7 +40,7 @@ const TablaPagos = () => {
   const [dniFilter, setDniFilter] = useState('');
   const [terminacionDni, setTerminacionDni] = useState([]);
   const [uniqueDates, setUniqueDates] = useState([]);
-  const [pageSize, setPageSize] = useState(5000);
+  const [pageSize, setPageSize] = useState(2500);
   const [pageNumber, setPageNumber] = useState(1);
   const [showLoader, setShowLoader] = useState(true);
   const [count, setCount] = useState(0);

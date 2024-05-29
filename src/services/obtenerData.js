@@ -424,3 +424,19 @@ export const getServiciosYBeneficios = async () => {
     console.error(error);
   }
 };
+
+//Obtener Socios y sus Servicios
+export const getSociosYServicios = async () => {
+  try {
+    const res = await axios.get('http://localhost:8080/servicios/sociosServicios');
+    if (res.status === 200) {
+      console.log(res.data.data);
+      return res.data.data;
+    } else {
+      throw new Error(`Error en la solicitud: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
