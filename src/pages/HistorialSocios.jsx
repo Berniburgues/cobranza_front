@@ -159,12 +159,12 @@ const HistorialSocios = () => {
         </div>
       </div>
       {socios.length > 0 ? (
-        <div className="overflow-x-auto h-[24rem] px-1 mt-2">
+        <div className="overflow-x-auto h-[50rem] px-1 mt-2">
           <h3 className="text-center font-bold text-sm mb-2">
             <span className="italic underline font-semibold">Socios Encontrados:</span>{' '}
             {socios.length}
           </h3>
-          <table className="border-collapse text-center table-auto text-xs md:text-sm whitespace-nowrap">
+          <table className="border-collapse text-center table-auto text-xs whitespace-nowrap">
             <thead>
               <tr>
                 <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
@@ -172,6 +172,9 @@ const HistorialSocios = () => {
                 </th>
                 <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
                   CBU
+                </th>
+                <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
+                  Banco
                 </th>
                 <th className="border-2 border-gray-800 bg-black text-white truncate whitespace-normal md:whitespace-nowrap text-xs md:text-sm font-semibold md:font-bold sticky top-0">
                   DNI
@@ -208,6 +211,21 @@ const HistorialSocios = () => {
                       <td
                         className={`p-1 text-xs text-center ${
                           idx === 0 ? 'border-2 font-bold border-black' : 'bg-slate-500'
+                        } `}
+                      >
+                        {idx === 0 && (
+                          <>
+                            <span className="bg-yellow-300">
+                              {socio.CBU_Completo.slice(0, 3)}
+                            </span>
+                            <span>{socio.CBU_Completo.slice(3)}</span>
+                          </>
+                        )}
+                      </td>
+
+                      <td
+                        className={`p-1 text-xs text-center ${
+                          idx === 0 ? 'border-2 font-bold border-black' : 'bg-slate-500'
                         } ${
                           idx === 0 && socio.CBU === '027'
                             ? 'bg-white'
@@ -225,7 +243,7 @@ const HistorialSocios = () => {
                         title={`${idx === 0 ? determinarBancoPorCBU(socio.CBU) : ''}`}
                       >
                         <Link to={`/tablas/bancos?banco=${socio.CBU}`} target="_blank">
-                          {idx === 0 && socio.CBU}
+                          {idx === 0 && determinarBancoPorCBU(socio.CBU)}
                         </Link>
                       </td>
 

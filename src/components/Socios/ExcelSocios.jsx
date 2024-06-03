@@ -22,12 +22,20 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
       const worksheet = workbook.addWorksheet(workName);
 
       // Encabezados de la tabla
-      const headerRow = ['SOCIO', 'BANCO', 'DNI', 'CUIL', 'PERÍODO', ...[...diasCobro]];
+      const headerRow = [
+        'SOCIO',
+        'CBU',
+        'BANCO',
+        'DNI',
+        'CUIL',
+        'PERÍODO',
+        ...[...diasCobro],
+      ];
       worksheet.addRow(headerRow);
 
       // Aplicar negrita a las columnas
       worksheet.columns.forEach((column) => {
-        column.width = 12; // Ajustar el ancho de las columnas
+        column.width = 20; // Ajustar el ancho de las columnas
         column.eachCell((cell) => {
           cell.font = { bold: true };
         });
@@ -38,6 +46,7 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
         Object.entries(socio.Pagos).forEach(([periodo, pagos], idx) => {
           const rowData = [
             socio.Socio,
+            socio.CBU_Completo,
             determinarBancoPorCBU(socio.CBU),
             socio.DNI,
             socio.CUIL,
@@ -63,7 +72,7 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
           row.eachCell((cell, colIndex) => {
             if (idx === 0) {
               cell.font = { color: { argb: 'FF000000' } }; // Negro para el primer dato de cada socio
-            } else if (idx !== 0 && colIndex < 5) {
+            } else if (idx !== 0 && colIndex < 6) {
               cell.font = { color: { argb: 'FFFFFFFF' } }; // Blanco para el resto de los datos
             }
           });
@@ -74,7 +83,7 @@ const ExcelSocios = ({ socios, diasCobro, isLoading }) => {
       worksheet.eachRow((row, rowIndex) => {
         if (rowIndex > 1) {
           row.eachCell((cell, colIndex) => {
-            if (colIndex > 5) {
+            if (colIndex > 6) {
               const cellValue = cell.value;
               if (cellValue) {
                 // Determinar el estilo de la celda según la lógica proporcionada
