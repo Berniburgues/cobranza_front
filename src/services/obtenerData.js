@@ -426,12 +426,31 @@ export const getServiciosYBeneficios = async () => {
 };
 
 //Obtener Socios y sus Servicios
-export const getSociosYServicios = async () => {
+export const getSociosYServicios = async (banco, ExB, titular) => {
   try {
-    const res = await axios.get('http://localhost:8080/servicios/sociosServicios');
+    let url = `https://back-atsapra.sytes.net:8080/servicios/sociosServicios?`;
+
+    const queryParams = [];
+    if (banco) {
+      queryParams.push(`banco=${banco}`);
+    }
+
+    if (ExB) {
+      queryParams.push(`ExB=${ExB}`);
+    }
+
+    if (titular) {
+      queryParams.push(`titular=${titular}`);
+    }
+
+    if (queryParams.length > 0) {
+      url += queryParams.join('&');
+    }
+
+    const res = await axios.get(url);
+
     if (res.status === 200) {
-      console.log(res.data.data);
-      return res.data.data;
+      return res.data.data[0];
     } else {
       throw new Error(`Error en la solicitud: ${res.status}`);
     }
