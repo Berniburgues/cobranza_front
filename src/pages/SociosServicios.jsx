@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { getSociosYServicios } from '../services/obtenerData';
 import { numerosDeBanco } from '../utils/bancos';
+import { serviciosMap } from '../utils/nombreServicios';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCBU';
+import { Link } from 'react-router-dom';
+import './TablaPagos.css';
 
 const SociosServicios = () => {
   const [socios, setSocios] = useState([]);
@@ -58,96 +61,172 @@ const SociosServicios = () => {
   const totalPages = Math.ceil(socios.length / itemsPerPage);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4 text-center">Socios y Servicios</h1>
+    <div className="container mx-auto">
+      <h1 className="text-xl font-bold mb-1 text-center underline">SOCIOS Y SERVICIOS</h1>
+      <div className="flex justify-center items-center mb-1 space-x-4">
+        <div className="flex flex-col items-center">
+          <label htmlFor="Banco" className="italic text-base">
+            Banco
+          </label>
+          <select
+            name="Banco"
+            value={banco}
+            onChange={(e) => setBanco(e.target.value)}
+            className="p-1 border rounded-md"
+          >
+            <option value="">--Todos--</option>
+            {numerosDeBanco.map((banco, index) => (
+              <option key={index} value={banco}>
+                {determinarBancoPorCBU(banco)}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      {/* Selectors */}
-      <div className="flex justify-around mb-4">
-        <select
-          value={banco}
-          onChange={(e) => setBanco(e.target.value)}
-          className="p-2 border rounded"
+        <div className="flex flex-col items-center">
+          <label htmlFor="ExB" className="italic text-base">
+            Banco Envío
+          </label>
+          <select
+            name="ExB"
+            value={ExB}
+            onChange={(e) => setExB(e.target.value)}
+            className="p-1 border rounded-md"
+          >
+            <option value="">--Todos--</option>
+            <option value="027">Supervielle</option>
+            <option value="TAR">First Data</option>
+          </select>
+        </div>
+
+        <div className="flex flex-col items-center">
+          <label htmlFor="Titularidad" className="italic text-base">
+            Titularidad
+          </label>
+          <select
+            name="Titularidad"
+            value={titular}
+            onChange={(e) => setTitular(e.target.value)}
+            className="p-1 border rounded-md"
+          >
+            <option value="">--Todos--</option>
+            <option value="Titular">Titular</option>
+            <option value="Adherente">Adherente</option>
+          </select>
+        </div>
+
+        <button
+          onClick={fetchData}
+          className="bg-blue-500 text-white  hover:bg-blue-600 focus:outline-none mt-5 px-4 border border-black rounded-md"
         >
-          <option value="">Seleccione Banco</option>
-          {numerosDeBanco.map((banco, index) => (
-            <option key={index} value={banco}>
-              {determinarBancoPorCBU(banco)}
-            </option>
-          ))}
-        </select>
-
-        <select
-          value={ExB}
-          onChange={(e) => setExB(e.target.value)}
-          className="p-2 border rounded"
-        >
-          <option value="">Seleccione ExB</option>
-          <option value="027">Supervielle</option>
-          <option value="TAR">First Data</option>
-          {/* Añade más opciones según sea necesario */}
-        </select>
-
-        <select
-          value={titular}
-          onChange={(e) => setTitular(e.target.value)}
-          className="p-2 border rounded"
-        >
-          <option value="">Titularidad</option>
-          <option value="Titular">Titular</option>
-          <option value="Adherente">Adherente</option>
-        </select>
-
-        <button onClick={fetchData} className="p-2 bg-blue-500 text-white rounded">
           Buscar
         </button>
 
-        <button onClick={handleReset} className="p-2 bg-yellow-500 text-white rounded">
+        <button
+          onClick={handleReset}
+          className="bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none mt-5 px-4 border border-black rounded-md"
+        >
           Nueva Consulta
         </button>
       </div>
 
-      {loading && <div className="text-center py-4">Cargando...</div>}
+      {loading && (
+        <div className="text-center font-bold text-lg boton_parpadeo">Cargando...</div>
+      )}
 
-      {error && <div className="text-center py-4 text-red-500">Error: {error}</div>}
+      {error && (
+        <div className="text-center font-bold text-lg text-red-500">Error: {error}</div>
+      )}
 
       {!loading && !error && (
         <>
-          <div className="overflow-x-auto overflow-y-auto max-h-[500px] border border-gray-200 rounded">
+          <div className="overflow-x-auto overflow-y-auto max-h-[475px] border border-gray-200 rounded">
             <table className="min-w-full bg-white text-sm">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="py-2 px-4 border">Socio</th>
-                  <th className="py-2 px-4 border">Nombre</th>
-                  <th className="py-2 px-4 border">Documento</th>
-                  <th className="py-2 px-4 border">Titular</th>
-                  <th className="py-2 px-4 border">Banco</th>
-                  <th className="py-2 px-4 border">ExB</th>
-                  {serviciosColumns.map((servicio, index) => (
-                    <th key={index} className="py-2 px-4 border">
-                      {servicio}
-                    </th>
-                  ))}
+              <thead className="bg-black text-white sticky top-0 z-50">
+                <tr className="">
+                  <th className="p-1 sticky top-0 z-50 border border-white">N°S</th>
+                  <th className="p-1 sticky top-0 z-50 border border-white">
+                    Nombre Completo
+                  </th>
+                  <th className="p-1 sticky top-0 z-50 border border-white">DNI</th>
+                  <th className="p-1 sticky top-0 z-50 border border-white">Titular</th>
+                  <th className="p-1 sticky top-0 z-50 border border-white">Banco</th>
+                  <th
+                    className="p-1 sticky top-0 z-50 border border-white"
+                    title="Enviado Por"
+                  >
+                    ExB
+                  </th>
+                  {serviciosColumns.map((servicio, index) => {
+                    const nombreServicio = serviciosMap[servicio] || 'Nombre desconocido';
+                    return (
+                      <th
+                        key={index}
+                        className="p-1 sticky top-0 z-50 border border-white"
+                        title={nombreServicio}
+                      >
+                        <Link to={`/tablas/servicios`} target="_blank">
+                          {servicio}
+                        </Link>
+                      </th>
+                    );
+                  })}
                 </tr>
               </thead>
               <tbody>
                 {currentItems.map((socio, index) => (
                   <tr key={index} className="text-center">
-                    <td className="py-2 px-4 border">{socio.SOCIO}</td>
-                    <td className="py-2 px-4 border">{socio.NOMBRE}</td>
-                    <td className="py-2 px-4 border">{socio.DOCUMENTO}</td>
-                    <td className="py-2 px-4 border">
-                      {socio.ESADHERENTE === 0 ? 'Sí' : 'No'}
+                    <td className="p-1 border border-black">{socio.SOCIO}</td>
+                    <td className="p-1 border border-black uppercase">{socio.NOMBRE}</td>
+                    <td className="p-1 border border-black hover:bg-black hover:text-white">
+                      <Link
+                        to={`/tablas/historialSocios?DNI=${socio.DOCUMENTO}`}
+                        target="_blank"
+                        className="block w-full h-full text-center"
+                        title="Buscar Historial"
+                      >
+                        {socio.DOCUMENTO}
+                      </Link>
                     </td>
-                    <td className="py-2 px-4 border">{socio.BANCO}</td>
-                    <td className="py-2 px-4 border">{socio.ENVIOBCO}</td>
+                    <td
+                      className={`p-1 border border-black text-base ${
+                        socio.ESADHERENTE === 0 ? 'bg-green-100' : 'bg-red-100'
+                      }`}
+                    >
+                      {socio.ESADHERENTE === 0 ? '✅' : '❌'}
+                    </td>
+                    <td
+                      className={`p-1 border border-black font-semibold ${
+                        socio.BANCO === '027'
+                          ? 'bg-white'
+                          : socio.BANCO === '004' ||
+                            socio.BANCO === '002' ||
+                            socio.BANCO === '005' ||
+                            socio.BANCO === '003' ||
+                            socio.BANCO === '006'
+                          ? 'bg-violet-500'
+                          : 'bg-blue-500'
+                      }`}
+                      title={socio.BANCO}
+                    >
+                      {determinarBancoPorCBU(socio.BANCO)}
+                    </td>
+                    <td
+                      className={`p-1 border border-black font-semibold ${
+                        socio.ENVIOBCO === '027' ? 'bg-white' : 'bg-violet-500'
+                      }`}
+                      title={socio.ENVIOBCO}
+                    >
+                      {determinarBancoPorCBU(socio.ENVIOBCO)}
+                    </td>
                     {serviciosColumns.map((servicio, index) => (
                       <td
                         key={index}
-                        className={`py-2 px-4 border ${
-                          socio[servicio] === 1 ? 'text-green-500' : 'text-red-500'
-                        }`}
+                        className={`p-1 text-base border border-black ${
+                          socio[servicio] === 1 ? 'bg-green-200' : 'bg-red-200'
+                        } text-center`}
                       >
-                        {socio[servicio] === 1 ? 'Sí' : 'No'}
+                        {socio[servicio] === 1 ? '✅' : '❌'}
                       </td>
                     ))}
                   </tr>
@@ -155,12 +234,12 @@ const SociosServicios = () => {
               </tbody>
             </table>
           </div>
-          <div className="flex justify-center mt-4">
+          <div className="flex justify-center mt-2">
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index}
                 onClick={() => handleClick(index + 1)}
-                className={`mx-1 px-2 py-1 text-sm rounded ${
+                className={`mx-1 px-2 py-1 text-sm rounded hover:bg-black hover:text-white ${
                   currentPage === index + 1
                     ? 'bg-blue-500 text-white'
                     : 'bg-gray-200 text-gray-700'
