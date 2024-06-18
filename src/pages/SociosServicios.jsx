@@ -100,7 +100,7 @@ const SociosServicios = () => {
             <option value="027">Supervielle</option>
             <option value="TAR">First Data</option>
             <option value="PRI">Prisma</option>
-            <option value="XXX">Sin Envío por No Cobrar</option>
+            <option value="XXX">Pendiente de Envío</option>
           </select>
         </div>
 
@@ -227,7 +227,11 @@ const SociosServicios = () => {
                     </td>
                     <td
                       className={`p-1 border border-black font-semibold ${
-                        socio.ENVIOBCO === '027' ? 'bg-white' : 'bg-violet-500'
+                        socio.ENVIOBCO === '027'
+                          ? 'bg-white'
+                          : socio.ENVIOBCO === 'XXX'
+                          ? 'bg-gray-300'
+                          : 'bg-violet-500'
                       }`}
                       title={socio.ENVIOBCO}
                     >
