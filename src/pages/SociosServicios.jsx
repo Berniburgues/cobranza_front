@@ -3,6 +3,7 @@ import { getSociosYServicios } from '../services/obtenerData';
 import { numerosDeBanco } from '../utils/bancos';
 import { serviciosMap } from '../utils/nombreServicios';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCBU';
+import ExcelSociosYServicios from '../components/Socios y Servicios/ExcelSociosYServicios';
 import { Link } from 'react-router-dom';
 import './TablaPagos.css';
 
@@ -124,10 +125,19 @@ const SociosServicios = () => {
 
         <button
           onClick={handleReset}
-          className="bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none mt-5 px-4 border border-black rounded-md"
+          className="bg-yellow-500 text-white hover:bg-yellow-600 max-h-[25px] text-ellipsis focus:outline-none mt-5 px-4 border border-black rounded-md"
         >
           Nueva Consulta
         </button>
+
+        <ExcelSociosYServicios
+          banco={banco}
+          ExB={ExB}
+          titular={titular}
+          socios={socios}
+          serviciosColumns={serviciosColumns}
+          loading={loading}
+        />
       </div>
 
       {loading && (
