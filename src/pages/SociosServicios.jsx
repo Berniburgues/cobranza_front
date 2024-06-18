@@ -99,6 +99,8 @@ const SociosServicios = () => {
             <option value="">--Todos--</option>
             <option value="027">Supervielle</option>
             <option value="TAR">First Data</option>
+            <option value="PRI">Prisma</option>
+            <option value="XXX">Sin Envío por No Cobrar</option>
           </select>
         </div>
 
@@ -202,7 +204,7 @@ const SociosServicios = () => {
                     </td>
                     <td
                       className={`p-1 border border-black text-base ${
-                        socio.ESADHERENTE === 0 ? 'bg-green-100' : 'bg-red-100'
+                        socio.ESADHERENTE === 0 ? 'bg-green-200' : ''
                       }`}
                     >
                       {socio.ESADHERENTE === 0 ? '✅' : '❌'}
@@ -235,7 +237,7 @@ const SociosServicios = () => {
                       <td
                         key={index}
                         className={`p-1 text-base border border-black ${
-                          socio[servicio] === 1 ? 'bg-green-200' : 'bg-red-200'
+                          socio[servicio] === 1 ? 'bg-green-200' : ''
                         } text-center`}
                       >
                         {socio[servicio] === 1 ? '✅' : '❌'}

@@ -107,6 +107,8 @@ export function determinarBancoPorCBU(cbu) {
     return 'First Data';
   } else if (primerosDigitos === 'PRI') {
     return 'Prisma';
+  } else if (primerosDigitos === 'XXX') {
+    return 'Sin Envío por No Cobrar';
   } else if (primerosDigitos === '001') {
     return 'Tarjeta Grupo 1';
   } else if (primerosDigitos === '002') {

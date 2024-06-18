@@ -33,11 +33,11 @@ const ExcelSociosYServicios = ({
       // Encabezados tabla
       const encabezados = [
         'N°S',
-        'Nombre Completo',
+        'NOMBRE',
         'DNI',
-        'Titular',
-        'Banco',
-        'Banco Envío',
+        'TITULAR',
+        'BANCO',
+        'BANCO ENVÍO',
         ...serviciosColumns.map((servicio) => serviciosMap[servicio]),
       ];
 
@@ -78,35 +78,35 @@ const ExcelSociosYServicios = ({
           if (colNumber > 6) {
             // Las columnas de servicios comienzan en la columna 7
             if (cell.value === 'SÍ') {
-              cell.font = { color: { argb: 'FF008000' } }; // Texto verde
+              cell.font = { color: { argb: 'FF008000' }, bold: true }; // Texto verde y negrita
               cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
                 fgColor: { argb: 'FFC6EFCE' }, // Fondo verde claro
               };
             } else if (cell.value === 'NO') {
-              cell.font = { color: { argb: 'FFFF0000' } }; // Texto rojo
+              cell.font = { bold: true }; // Texto negrita
               cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
-                fgColor: { argb: 'FFF4CCCC' }, // Fondo rojo claro
+                fgColor: { argb: 'FFFF3333' }, // Fondo rojo intermedio más oscuro
               };
             }
           }
-          if ((colNumber = 4)) {
+          if (colNumber === 4) {
             if (cell.value === 'SÍ') {
-              cell.font = { color: { argb: 'FF008000' } }; // Texto verde
+              cell.font = { color: { argb: 'FF008000' }, bold: true }; // Texto verde y negrita
               cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
                 fgColor: { argb: 'FFC6EFCE' }, // Fondo verde claro
               };
             } else if (cell.value === 'NO') {
-              cell.font = { color: { argb: 'FFFF0000' } }; // Texto rojo
+              cell.font = { bold: true }; // Texto negrita
               cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
-                fgColor: { argb: 'FFF4CCCC' }, // Fondo rojo claro
+                fgColor: { argb: 'FFFF3333' }, // Fondo rojo intermedio más oscuro
               };
             }
           }
@@ -124,9 +124,20 @@ const ExcelSociosYServicios = ({
         },
         columns: encabezados.map((encabezado) => ({
           name: encabezado,
+          filterButton: true,
         })),
         rows: hoja.getRows(2, socios.length).map((row) => row.values.slice(1)),
       });
+
+      //Función para calcular el ancho de las columnas automaticamente
+      const AdjustColumnWidth = (worksheet) => {
+        worksheet.columns.forEach((column) => {
+          const lengths = column.values.map((v) => v.toString().length);
+          const maxLength = Math.max(...lengths.filter((v) => typeof v === 'number'));
+          column.width = maxLength + 2; // Adding some extra space for padding
+        });
+      };
+      AdjustColumnWidth(hoja);
 
       // Guardar el archivo Excel
       const buffer = await excel.xlsx.writeBuffer();
