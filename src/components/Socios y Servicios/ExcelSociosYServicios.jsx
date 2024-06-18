@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
-import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCBU';
+import { determinarBancoPorCBU } from '../../utils/determinarBancoPorCbu';
 import { serviciosMap } from '../../utils/nombreServicios';
 
 const ExcelSociosYServicios = ({
