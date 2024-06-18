@@ -28,7 +28,9 @@ const ExcelSociosYServicios = ({
         titular ? `- Tipo Socio ${titular}` : ''
       }`;
       // Nombre de Hoja
-      const hoja = excel.addWorksheet(nombreExcel);
+      const hoja = excel.addWorksheet(nombreExcel, {
+        views: [{ state: 'frozen', xSplit: 0, ySplit: 1 }],
+      });
 
       // Encabezados tabla
       const encabezados = [

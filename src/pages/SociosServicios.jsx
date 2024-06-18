@@ -98,6 +98,7 @@ const SociosServicios = () => {
           >
             <option value="">--Todos--</option>
             <option value="027">Supervielle</option>
+            <option value="014">Provincia</option>
             <option value="TAR">First Data</option>
             <option value="PRI">Prisma</option>
             <option value="XXX">Pendiente de Envío</option>
