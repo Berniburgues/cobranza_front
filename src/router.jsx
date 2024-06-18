@@ -12,11 +12,12 @@ import Denegado from './pages/Denegado';
 import HistorialACE from './pages/historialACE';
 import HistorialSocios from './pages/HistorialSocios';
 import Tablas from './pages/Tablas';
+import Servicios from './pages/Servicios';
 import TablaPagos from './pages/TablaPagos';
 import TablaImportes from './pages/TablaImportes';
 import StopDebit from './pages/StopDebit';
 import Archivos from './pages/Archivos';
-import Servicios from './pages/Servicios';
+import BeneficiosServicios from './pages/BeneficiosServicios';
 import SociosServicios from './pages/SociosServicios';
 import Bancos from './pages/Bancos';
 import Calendario from './pages/Calendario';
@@ -93,12 +94,24 @@ export const router = createBrowserRouter([
         path: '/tablas/stopDebit',
         element: <StopDebit />,
       },
+    ],
+  },
+  {
+    path: '/servicios',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Servicios />
+        </ProtectedRoute>
+      </Layout>
+    ),
+    children: [
       {
-        path: '/tablas/servicios',
-        element: <Servicios />,
+        path: '/servicios/beneficiosServicios',
+        element: <BeneficiosServicios />,
       },
       {
-        path: '/tablas/sociosServicios',
+        path: '/servicios/sociosServicios',
         element: <SociosServicios />,
       },
     ],

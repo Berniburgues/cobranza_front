@@ -1,79 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { getServiciosYBeneficios } from '../services/obtenerData';
+import React from 'react';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 
 const Servicios = () => {
-  const [servicios, setServicios] = useState([]);
-
-  useEffect(() => {
-    const fetchServicios = async () => {
-      try {
-        const data = await getServiciosYBeneficios();
-        setServicios(data);
-      } catch (error) {
-        console.error('Error fetching servicios:', error);
-      }
-    };
-
-    fetchServicios();
-  }, []);
-
+  const location = useLocation();
   return (
-    <section className="px-2 text-gray-700 body-font max-w-full text-xs text-center">
-      <div className=" max-w-full mx-auto">
-        <div className="flex flex-col text-center w-full mb-2">
-          <h2 className="font-medium  text-gray-900 text-2xl underline">
-            SERVICIOS Y BENEFICIOS
-          </h2>
-        </div>
-        <div className="overflow-auto max-h-[35rem]">
-          <table className="table-auto w-full">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-2 border bg-black text-white border-gray-300 tracking-wider font-medium text-xs">
-                  SERVICIO\BENEFICIO
-                </th>
-                {/* Iterar sobre los nombres de los beneficios para crear las columnas */}
-                {Object.keys(servicios[0] || {}).map(
-                  (beneficio, index) =>
-                    index !== 0 && ( // Evitar renderizar el primer beneficio como "Servicio"
-                      <th
-                        key={beneficio}
-                        className="p-2 sticky top-0 z-50 bg-black text-white border border-gray-300 title-font tracking-wider font-medium text-xs"
-                      >
-                        {beneficio}
-                      </th>
-                    ),
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {servicios.map((servicio, index) => (
-                <tr key={index}>
-                  <td className="border bg-gray-200 border-gray-300 text-gray-900 text-xs font-medium p-2">
-                    {servicio.Servicio}
-                  </td>
-                  {Object.values(servicio).map(
-                    (tieneBeneficio, index) =>
-                      index !== 0 && (
-                        <td
-                          key={index}
-                          className={`border border-gray-200 p-2 ${
-                            tieneBeneficio
-                              ? 'text-green-500 font-semibold'
-                              : 'text-red-500 font-light'
-                          }`}
-                        >
-                          {tieneBeneficio ? 'SI' : 'NO'}
-                        </td>
-                      ),
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="flex flex-col items-center h-full mt-1 mb-10">
+      <div className="space-x-5 mt-1 mb-10">
+        <Link
+          to="beneficiosServicios"
+          className={`bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+            location.pathname === '/servicios/beneficiosServicios'
+              ? 'opacity-50 cursor-not-allowed'
+              : ''
+          }`}
+        >
+          BENEFICIOS Y SERVICIOS
+        </Link>
+
+        <Link
+          to="sociosServicios"
+          className={`bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+            location.pathname === '/servicios/sociosServicios'
+              ? 'opacity-50 cursor-not-allowed'
+              : ''
+          }`}
+        >
+          SOCIOS Y SERVICIOS
+        </Link>
       </div>
-    </section>
+      <Outlet />
+    </div>
   );
 };
 

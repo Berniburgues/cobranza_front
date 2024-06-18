@@ -63,7 +63,9 @@ const SociosServicios = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-xl font-bold mb-1 text-center underline">SOCIOS Y SERVICIOS</h1>
+      <h1 className="font-bold  text-gray-900 text-2xl text-center underline">
+        SOCIOS Y SERVICIOS
+      </h1>
       <div className="flex justify-center items-center mb-1 space-x-4">
         <div className="flex flex-col items-center">
           <label htmlFor="Banco" className="italic text-base">
@@ -118,7 +120,7 @@ const SociosServicios = () => {
 
         <button
           onClick={fetchData}
-          className="bg-blue-500 text-white  hover:bg-blue-600 focus:outline-none mt-5 px-4 border border-black rounded-md"
+          className="bg-orange-500 text-white  hover:bg-orange-600 focus:outline-none mt-5 px-4 border border-black rounded-md"
         >
           Buscar
         </button>

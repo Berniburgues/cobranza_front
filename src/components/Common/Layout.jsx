@@ -72,7 +72,7 @@ const Layout = ({ children }) => {
             REPORTES
           </Link>
           <Link
-            to="/tablas/servicios"
+            to="/servicios"
             className="hover:text-blue-400 text-blu-500 border-b border-transparent hover:border-blue-400 transition transform"
             target="_blank"
           >

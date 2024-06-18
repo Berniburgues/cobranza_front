@@ -67,8 +67,8 @@ const ExcelSociosYServicios = ({
           socio.NOMBRE,
           socio.DOCUMENTO,
           socio.ESADHERENTE === 0 ? 'SÍ' : 'NO',
-          socio.BANCO,
-          socio.ENVIOBCO,
+          determinarBancoPorCBU(socio.BANCO),
+          determinarBancoPorCBU(socio.ENVIOBCO),
           ...serviciosColumns.map((servicio) => (socio[servicio] === 1 ? 'SÍ' : 'NO')),
         ];
         const newRow = hoja.addRow(fila);

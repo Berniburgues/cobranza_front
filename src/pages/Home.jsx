@@ -86,7 +86,7 @@ const Home = () => {
             REPORTES
           </button>
         </Link>
-        <Link to="/tablas/servicios" target="_blank">
+        <Link to="/servicios" target="_blank">
           <button className="bg-orange-500 hover:bg-orange-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full">
             SERVICIOS
           </button>
