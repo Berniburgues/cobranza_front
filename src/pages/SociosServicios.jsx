@@ -177,7 +177,7 @@ const SociosServicios = () => {
                         className="p-1 sticky top-0 z-50 border border-white"
                         title={nombreServicio}
                       >
-                        <Link to={`/tablas/servicios`} target="_blank">
+                        <Link to={`/servicios/beneficiosServicios`} target="_blank">
                           {servicio}
                         </Link>
                       </th>
