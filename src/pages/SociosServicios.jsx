@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { getSociosYServicios } from '../services/obtenerData';
 import { numerosDeBanco } from '../utils/bancos';
 import { serviciosMap } from '../utils/nombreServicios';
-import { determinarBancoPorCBU } from '../utils/determinarBancoPorCBU';
+import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
 import ExcelSociosYServicios from '../components/Socios y Servicios/ExcelSociosYServicios';
 import { Link } from 'react-router-dom';
 import './TablaPagos.css';
