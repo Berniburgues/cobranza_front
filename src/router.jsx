@@ -22,6 +22,7 @@ import SociosServicios from './pages/SociosServicios';
 import Bancos from './pages/Bancos';
 import Calendario from './pages/Calendario';
 import TablaSocios from './pages/TablaSocios';
+import Padron from './pages/Padron';
 
 export const router = createBrowserRouter([
   {
@@ -139,6 +140,16 @@ export const router = createBrowserRouter([
         element: <ReportesParciales />,
       },
     ],
+  },
+  {
+    path: '/padron',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Padron />
+        </ProtectedRoute>
+      </Layout>
+    ),
   },
   {
     path: '/archivos',

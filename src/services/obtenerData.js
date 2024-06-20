@@ -459,3 +459,12 @@ export const getSociosYServicios = async (banco, ExB, titular) => {
     return [];
   }
 };
+
+//Obtener padrones
+export const fetchPadronData = async (params) => {
+  const queryParams = new URLSearchParams(params);
+  const response = await axios.get(
+    `https://back-atsapra.sytes.net:8080/padron?${queryParams.toString()}`,
+  );
+  return response.data.data;
+};
