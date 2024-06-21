@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fetchPadronData } from '../services/obtenerData';
 import ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
@@ -10,43 +10,65 @@ const Padron = () => {
   const [opcionSeleccionada, setOpcionSeleccionada] = useState(''); // Puede ser 'total' o 'fechas'
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
+  const [hastaHoy, setHastaHoy] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(''); // Estado para el mensaje de error
+
+  useEffect(() => {
+    if (hastaHoy) {
+      setFechaFin(format(new Date(), 'yyyy-MM-dd'));
+    }
+  }, [hastaHoy]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    let excel = false;
-    let txt = false;
+    setError(''); // Limpiar cualquier error previo
 
-    if (opcionSeleccionada === 'total') {
-      excel = true;
-    } else if (opcionSeleccionada === 'fechas') {
-      excel = true;
-      txt = true;
+    if (fechaInicio && fechaFin && new Date(fechaInicio) > new Date(fechaFin)) {
+      setError('La fecha de inicio debe ser menor a la fecha de fin');
+      setLoading(false);
+      return;
     }
 
-    const params = {
-      padron,
-      excel: excel ? 'true' : undefined,
-      txt: txt ? 'true' : undefined,
-      fechaInicio: opcionSeleccionada === 'fechas' ? fechaInicio : undefined,
-      fechaFin: opcionSeleccionada === 'fechas' ? fechaFin : undefined,
-    };
-
     try {
-      const data = await fetchPadronData(params);
+      let excelData = null;
+      let txtData = null;
 
-      if (excel && data) {
-        handleExcelDownload(data);
+      if (opcionSeleccionada === 'total') {
+        const params = {
+          padron,
+          excel: 'true',
+        };
+        excelData = await fetchPadronData(params);
+      } else if (opcionSeleccionada === 'fechas') {
+        const params = {
+          padron,
+          fechaInicio,
+          fechaFin,
+        };
+        [excelData, txtData] = await Promise.all([
+          fetchPadronData({ ...params, excel: 'true' }),
+          fetchPadronData({ ...params, txt: 'true' }),
+        ]);
       }
 
-      if (txt && data) {
-        handleTxtDownload(data);
+      if (excelData && excelData.length === 0) {
+        setError('No existen altas entre las fechas seleccionadas.');
+      } else if (excelData) {
+        handleExcelDownload(excelData);
+      }
+
+      if (txtData && txtData.length === 0) {
+        setError('No existen altas entre las fechas seleccionadas.');
+      } else if (txtData) {
+        handleTxtDownload(txtData);
       }
     } catch (error) {
       console.error('Error fetching data', error);
+      setError('Error al obtener los datos. Por favor, intenta de nuevo.');
     } finally {
-      setLoading(false); // Cambiar el estado de loading al finalizar la solicitud
+      setLoading(false);
     }
   };
 
@@ -55,17 +77,15 @@ const Padron = () => {
     setOpcionSeleccionada('');
     setFechaFin('');
     setFechaInicio('');
+    setHastaHoy(false);
     setLoading(false);
+    setError(''); // Limpiar el mensaje de error
   };
 
   const handleExcelDownload = (data) => {
-    if (!data || data.length === 0) {
-      console.error('No existen altas entre las fechas seleccionadas');
-      return;
-    }
-
     const workbook = new ExcelJS.Workbook();
-    const nombreHoja = `Padrón ${padron}${
+    const nombreHoja = `Padrón ${padron}`;
+    const nombreExcel = `Padrón ${padron}${
       opcionSeleccionada === 'fechas'
         ? ` Altas entre ${format(parseISO(fechaInicio), 'dd-MM-yy', {
             locale: arLocale,
@@ -80,8 +100,8 @@ const Padron = () => {
       headerRow: true,
       totalsRow: false,
       style: {
-        theme: 'TableStyleMedium9', // Estilo de tabla
-        showRowStripes: true, // Mostrar rayas en las filas
+        theme: 'TableStyleMedium9',
+        showRowStripes: true,
       },
       columns: Object.keys(data[0] || {}).map((key) => ({
         name: key,
@@ -93,19 +113,15 @@ const Padron = () => {
     workbook.xlsx
       .writeBuffer()
       .then((buffer) => {
-        saveAs(new Blob([buffer]), `${nombreHoja}.xlsx`);
+        saveAs(new Blob([buffer]), `${nombreExcel}.xlsx`);
       })
       .catch((error) => {
         console.error('Error generating Excel file', error);
+        setError('Error al generar el archivo Excel.'); // Mostrar error en pantalla
       });
   };
 
   const handleTxtDownload = (data) => {
-    if (!data || data.length === 0) {
-      console.error('No existen altas entre las fechas seleccionadas');
-      return;
-    }
-
     const fechaInicioFormateada = fechaInicio
       ? format(parseISO(fechaInicio), 'dd-MM-yy', { locale: arLocale })
       : '';
@@ -125,45 +141,44 @@ const Padron = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 border rounded shadow">
-      <h1 className="text-2xl font-bold mb-4 text-center">Padrones</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-2">
-            Selecciona el Padrón:
-            <select
-              value={padron}
-              onChange={(e) => setPadron(e.target.value)}
-              className="w-full p-2 border rounded"
-            >
-              <option value="">Selecciona una opción</option>
-              <option value="ATSAPRA">ATSAPRA</option>
-              <option value="CONSUMAS">Consumas</option>
-              <option value="RAMA PLUS">RAMA PLUS</option>
-              <option value="MPHG">MPHG</option>
-            </select>
-          </label>
+    <section className="max-w-md mx-auto mt-5 p-6 border rounded-lg shadow-lg bg-white">
+      <h3 className="text-2xl font-bold mb-3 text-center underline text-gray-700">
+        Padrones
+      </h3>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="block mb-2 bg-blue-200 p-2 rounded-md">
+          <select
+            value={padron}
+            onChange={(e) => setPadron(e.target.value)}
+            className="w-full p-2 border text-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Selecciona un Padrón</option>
+            <option value="ATSAPRA">ATSAPRA</option>
+            <option value="CONSUMAS">Consumas</option>
+            <option value="RAMA PLUS">RAMA PLUS</option>
+            <option value="MPHG">MPHG</option>
+          </select>
         </div>
         <div>
-          <label className="block mb-2">Opción de Descarga:</label>
-          <div>
-            <label className="mr-4">
+          <label className="block mb-2 italic text-gray-600">Opción de Descarga:</label>
+          <div className="flex items-center space-x-4">
+            <label className="flex items-center">
               <input
                 type="radio"
                 value="total"
                 checked={opcionSeleccionada === 'total'}
                 onChange={() => setOpcionSeleccionada('total')}
-                className="mr-2"
+                className="mr-1 focus:ring-blue-500"
               />
               Padrón Total
             </label>
-            <label>
+            <label className="flex items-center">
               <input
                 type="radio"
                 value="fechas"
                 checked={opcionSeleccionada === 'fechas'}
                 onChange={() => setOpcionSeleccionada('fechas')}
-                className="mr-2"
+                className="mr-1 focus:ring-blue-500"
               />
               Altas entre Fechas
             </label>
@@ -172,50 +187,74 @@ const Padron = () => {
         {opcionSeleccionada === 'fechas' && (
           <>
             <div>
-              <label className="block mb-2">
-                Fecha Inicio:
+              <label className="block italic text-gray-600">
+                Desde:
                 <input
                   type="date"
                   value={fechaInicio}
                   onChange={(e) => setFechaInicio(e.target.value)}
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1"
                 />
               </label>
             </div>
             <div>
-              <label className="block mb-2">
-                Fecha Fin:
+              <label className="block mb-2 italic text-gray-600">
+                Hasta:
                 <input
                   type="date"
                   value={fechaFin}
                   onChange={(e) => setFechaFin(e.target.value)}
-                  className="w-full p-2 border rounded"
+                  disabled={hastaHoy}
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 mt-1"
                 />
+              </label>
+              <label className="inline-flex items-center text-gray-600">
+                <input
+                  type="checkbox"
+                  checked={hastaHoy}
+                  onChange={() => setHastaHoy(!hastaHoy)}
+                  className="mr-2 focus:ring-blue-500"
+                />
+                Hasta hoy
               </label>
             </div>
           </>
         )}
+        {error && (
+          <div className="text-red-500 italic bg-red-100 p-1 rounded-md text-center">
+            {error}
+          </div>
+        )}
         <div className="flex gap-5 justify-center items-center">
           <button
             type="submit"
-            className={`w-full p-2 bg-blue-500 hover:bg-blue-700 text-white rounded ${
-              !padron || !opcionSeleccionada || loading
+            className={`w-full p-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition duration-200 ${
+              !padron ||
+              !opcionSeleccionada ||
+              loading ||
+              (opcionSeleccionada === 'fechas' && (!fechaInicio || !fechaFin))
                 ? 'opacity-50 cursor-not-allowed'
                 : ''
             }`}
-            disabled={!padron || !opcionSeleccionada || loading}
+            disabled={
+              !padron ||
+              !opcionSeleccionada ||
+              loading ||
+              (opcionSeleccionada === 'fechas' && (!fechaInicio || !fechaFin))
+            }
           >
             {loading ? 'DESCARGANDO...' : 'DESCARGAR'}
           </button>
           <button
-            className="w-full p-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded"
+            type="button"
+            className="w-full p-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded-md transition duration-200"
             onClick={handleReset}
           >
             NUEVA CONSULTA
           </button>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
 
