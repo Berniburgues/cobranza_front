@@ -83,7 +83,7 @@ const BeneficiosServicios = () => {
               cell.fill = {
                 type: 'pattern',
                 pattern: 'solid',
-                fgColor: { argb: 'FFFFCCCC' }, // Fondo rojo claro
+                fgColor: { argb: 'FFFF3333' }, // Fondo rojo claro
               };
             } else {
               // Establecer el fondo blanco para otras celdas
