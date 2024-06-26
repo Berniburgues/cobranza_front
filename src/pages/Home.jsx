@@ -2,13 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useReactToPrint } from 'react-to-print';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import EnviosFuturos from '../components/Reportes/EnviosFuturos';
 import { fetchInfoHome, insertDatosTarjeta } from '../services/obtenerData';
 import Tarjetas from '../components/Home/Tarjetas';
 import { RefreshIcon } from '@heroicons/react/solid';
 
 const Home = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [fechaActual, setFechaActual] = useState('');
   const [infoHome, setInfoHome] = useState({
     SociosActivos: '',
@@ -67,15 +65,12 @@ const Home = () => {
   };
 
   return (
-    <section
-      className="flex flex-col justify-center items-center"
-      style={{ height: '75vh' }}
-    >
+    <section className="flex flex-col justify-center items-center my-20">
       <h1 className="text-xl md:text-2xl lg:text-4xl  font-bold font-libre mb-2 text-center italic underline">
         ATSAPRA
         <p className="text-base md:text-xl lg:text-3xl">SISTEMA DE CONTROL Y COBRANZA</p>
       </h1>
-      <div className="grid grid-cols-3 items-center justify-center text-lg md:text-2xl gap-3 lg:w-full max-w-xl font-libre">
+      <div className="grid grid-cols-2 items-center justify-center text-lg md:text-2xl gap-3 lg:w-full max-w-xl font-libre">
         <Link to="/tablas">
           <button className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full">
             TABLAS
@@ -89,6 +84,11 @@ const Home = () => {
         <Link to="/servicios" target="_blank">
           <button className="bg-orange-500 hover:bg-orange-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full">
             SERVICIOS
+          </button>
+        </Link>
+        <Link to="/padron" target="_blank">
+          <button className="bg-yellow-500 hover:bg-yellow-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full">
+            PADRONES
           </button>
         </Link>
       </div>
@@ -122,9 +122,6 @@ const Home = () => {
           </button>
         </Link>
       </div>
-      {modalIsOpen && (
-        <EnviosFuturos isOpen={modalIsOpen} closeModal={() => setModalIsOpen(false)} />
-      )}
     </section>
   );
 };

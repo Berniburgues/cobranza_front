@@ -40,17 +40,18 @@ const Padron = () => {
           padron,
           excel: 'true',
         };
-        excelData = await fetchPadronData(params);
+        [excelData, txtData] = await Promise.all([
+          fetchPadronData(params),
+          fetchPadronData({ padron, txt: 'true' }),
+        ]);
       } else if (opcionSeleccionada === 'fechas') {
         const params = {
           padron,
           fechaInicio,
           fechaFin,
+          txt: 'true',
         };
-        [excelData, txtData] = await Promise.all([
-          fetchPadronData({ ...params, excel: 'true' }),
-          fetchPadronData({ ...params, txt: 'true' }),
-        ]);
+        txtData = await fetchPadronData(params);
       }
 
       if (excelData && excelData.length === 0) {
@@ -110,6 +111,16 @@ const Padron = () => {
       rows: data.map((row) => Object.values(row)),
     });
 
+    //Función para calcular el ancho de las columnas automaticamente
+    //const AdjustColumnWidth = (worksheet) => {
+    //worksheet.columns.forEach((column) => {
+    //const lengths = column.values.map((v) => v.toString().length);
+    //const maxLength = Math.max(...lengths.filter((v) => typeof v === 'number'));
+    //column.width = maxLength + 1; // Adding some extra space for padding
+    //});
+    //};
+    //AdjustColumnWidth(worksheet);
+
     workbook.xlsx
       .writeBuffer()
       .then((buffer) => {
@@ -122,16 +133,11 @@ const Padron = () => {
   };
 
   const handleTxtDownload = (data) => {
-    const fechaInicioFormateada = fechaInicio
-      ? format(parseISO(fechaInicio), 'dd-MM-yy', { locale: arLocale })
-      : '';
-    const fechaFinFormateada = fechaFin
-      ? format(parseISO(fechaFin), 'dd-MM-yy', { locale: arLocale })
-      : '';
-
-    const nombreTxt = `Altas ${padron}${
+    const nombreTxt = `Padrón ${padron}${
       opcionSeleccionada === 'fechas'
-        ? ` Entre ${fechaInicioFormateada} y ${fechaFinFormateada}`
+        ? ` Altas entre ${format(parseISO(fechaInicio), 'dd-MM-yy', {
+            locale: arLocale,
+          })} y ${format(parseISO(fechaFin), 'dd-MM-yy', { locale: arLocale })}`
         : ''
     }.txt`;
 

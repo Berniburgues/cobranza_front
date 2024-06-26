@@ -32,7 +32,7 @@ const Layout = ({ children }) => {
             </button>
           )}
         </div>
-        <div className="flex items-center justify-center gap-20">
+        <div className="flex items-center justify-center gap-10 ml-56">
           <a
             href="https://atsapra.com.ar/"
             target="blank"
@@ -56,7 +56,7 @@ const Layout = ({ children }) => {
             />
           </a>
         </div>
-        <div className="space-x-5">
+        <div className="space-x-3">
           <Link
             to="/tablas"
             className="hover:text-blue-400 border-b border-transparent hover:border-blue-400 transition transform"
@@ -77,6 +77,13 @@ const Layout = ({ children }) => {
             target="_blank"
           >
             SERVICIOS
+          </Link>
+          <Link
+            to="/padron"
+            className="hover:text-blue-400 text-blu-500 border-b border-transparent hover:border-blue-400 transition transform"
+            target="_blank"
+          >
+            PADRONES
           </Link>
           <Link
             to="/tablas/stopDebit"
