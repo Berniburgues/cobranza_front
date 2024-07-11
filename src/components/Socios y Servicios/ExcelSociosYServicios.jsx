@@ -159,7 +159,7 @@ const ExcelSociosYServicios = ({
     <button
       onClick={exportarExcel}
       disabled={exporting || loading}
-      className=" bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none mt-5 px-4 border border-black"
+      className=" bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none px-4 border border-black"
     >
       Excel
     </button>

@@ -426,8 +426,9 @@ export const getServiciosYBeneficios = async () => {
 };
 
 //Obtener Socios y sus Servicios
-export const getSociosYServicios = async (banco, ExB, titular) => {
+export const getSociosYServicios = async (banco, ExB, titular, documentos) => {
   try {
+    const documentosArray = Array.isArray(documentos) ? documentos : [documentos];
     let url = `https://back-atsapra.sytes.net:8080/servicios/sociosServicios?`;
 
     const queryParams = [];
@@ -447,7 +448,9 @@ export const getSociosYServicios = async (banco, ExB, titular) => {
       url += queryParams.join('&');
     }
 
-    const res = await axios.get(url);
+    const res = await axios.post(url, {
+      documentos: documentosArray,
+    });
 
     if (res.status === 200) {
       return res.data.data[0];

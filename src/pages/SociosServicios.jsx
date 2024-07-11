@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getSociosYServicios } from '../services/obtenerData';
+import { getSociosYServicios, uploadFile } from '../services/obtenerData';
 import { numerosDeBanco } from '../utils/bancos';
 import { serviciosMap } from '../utils/nombreServicios';
 import { determinarBancoPorCBU } from '../utils/determinarBancoPorCbu';
@@ -12,15 +12,38 @@ const SociosServicios = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [documentos, setDocumentos] = useState('');
   const [banco, setBanco] = useState('');
   const [ExB, setExB] = useState('');
   const [titular, setTitular] = useState('');
   const itemsPerPage = 5000;
 
+  //Función para cargar los archivos en el input File
+  const handleFileUpload = async (file) => {
+    setLoading(true);
+    try {
+      const dnis = await uploadFile(file);
+      // Dividir los DNIs por líneas
+      const dnisSeparatedByLine = dnis.documentos ? dnis.documentos.join('\n') : '';
+      setDocumentos(dnisSeparatedByLine);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onFileChange = (event) => {
+    const file = event.target.files[0];
+    handleFileUpload(file);
+  };
+
   const fetchData = async () => {
     setLoading(true);
     try {
-      const data = await getSociosYServicios(banco, ExB, titular);
+      // Dividir los documentos ingresados por líneas y eliminar líneas vacías
+      const dnis = documentos.split('\n').filter((doc) => doc.trim() !== '');
+      const data = await getSociosYServicios(banco, ExB, titular, dnis);
       setSocios(data);
       setLoading(false);
       setCurrentPage(1);
@@ -53,6 +76,11 @@ const SociosServicios = () => {
     setExB('');
     setTitular('');
     setLoading(false);
+    setDocumentos('');
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+      fileInput.value = '';
+    }
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -66,83 +94,111 @@ const SociosServicios = () => {
       <h1 className="font-bold  text-gray-900 text-2xl text-center underline">
         SOCIOS Y SERVICIOS
       </h1>
-      <div className="flex justify-center items-center mb-1 space-x-4">
-        <div className="flex flex-col items-center">
-          <label htmlFor="Banco" className="italic text-base">
-            Banco
-          </label>
-          <select
-            name="Banco"
-            value={banco}
-            onChange={(e) => setBanco(e.target.value)}
-            className="p-1 border rounded-md"
-          >
-            <option value="">--Todos--</option>
-            {numerosDeBanco.map((banco, index) => (
-              <option key={index} value={banco}>
-                {determinarBancoPorCBU(banco)}
-              </option>
-            ))}
-          </select>
+      <div className="flex flex-col justify-center items-center space-y-2">
+        <div className="flex flex-wrap justify-center items-center space-x-5">
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor="dniInput"
+              className="text-base italic text-center flex justify-center"
+            >
+              DNI - Uno por línea (MÁX 1000)
+            </label>
+            <textarea
+              id="dniInput"
+              className="flex-grow h-[31px] w-full text-sm border rounded-md p-1 focus:outline-none focus:border-blue-500"
+              value={documentos}
+              onChange={(e) => setDocumentos(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor="fileInput"
+              className="text-base italic text-center flex justify-center"
+            >
+              Seleccionar archivo (.txt, .csv, excel)
+            </label>
+            <input
+              id="fileInput"
+              type="file"
+              accept=".txt, .csv, .xlsx, .xls"
+              onChange={onFileChange}
+              className="text-sm italic border rounded-md py-[0.18rem] focus:outline-none focus:border-blue-500"
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label htmlFor="Banco" className="italic text-base">
+              Banco
+            </label>
+            <select
+              name="Banco"
+              value={banco}
+              onChange={(e) => setBanco(e.target.value)}
+              className="p-1 border rounded-md"
+            >
+              <option value="">--Todos--</option>
+              {numerosDeBanco.map((banco, index) => (
+                <option key={index} value={banco}>
+                  {determinarBancoPorCBU(banco)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col items-center">
+            <label htmlFor="ExB" className="italic text-base">
+              Banco Envío
+            </label>
+            <select
+              name="ExB"
+              value={ExB}
+              onChange={(e) => setExB(e.target.value)}
+              className="p-1 border rounded-md"
+            >
+              <option value="">--Todos--</option>
+              <option value="027">Supervielle</option>
+              <option value="014">Provincia</option>
+              <option value="TAR">First Data</option>
+              <option value="PRI">Prisma</option>
+              <option value="XXX">Pendiente de Envío</option>
+            </select>
+          </div>
+          <div className="flex flex-col items-center">
+            <label htmlFor="Titularidad" className="italic text-base">
+              Titularidad
+            </label>
+            <select
+              name="Titularidad"
+              value={titular}
+              onChange={(e) => setTitular(e.target.value)}
+              className="p-1 border rounded-md"
+            >
+              <option value="">--Todos--</option>
+              <option value="Titular">Titular</option>
+              <option value="Adherente">Adherente</option>
+            </select>
+          </div>
         </div>
-
-        <div className="flex flex-col items-center">
-          <label htmlFor="ExB" className="italic text-base">
-            Banco Envío
-          </label>
-          <select
-            name="ExB"
-            value={ExB}
-            onChange={(e) => setExB(e.target.value)}
-            className="p-1 border rounded-md"
+        <div className="flex justify-center items-center space-x-5">
+          <button
+            onClick={fetchData}
+            className="bg-orange-500 text-white hover:bg-orange-600 focus:outline-none px-4 border border-black rounded-md"
           >
-            <option value="">--Todos--</option>
-            <option value="027">Supervielle</option>
-            <option value="014">Provincia</option>
-            <option value="TAR">First Data</option>
-            <option value="PRI">Prisma</option>
-            <option value="XXX">Pendiente de Envío</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <label htmlFor="Titularidad" className="italic text-base">
-            Titularidad
-          </label>
-          <select
-            name="Titularidad"
-            value={titular}
-            onChange={(e) => setTitular(e.target.value)}
-            className="p-1 border rounded-md"
+            Buscar
+          </button>
+          <button
+            onClick={handleReset}
+            className="bg-yellow-500 text-white hover:bg-yellow-600 focus:outline-none px-4 border border-black rounded-md"
           >
-            <option value="">--Todos--</option>
-            <option value="Titular">Titular</option>
-            <option value="Adherente">Adherente</option>
-          </select>
+            Nueva Consulta
+          </button>
+          <ExcelSociosYServicios
+            banco={banco}
+            ExB={ExB}
+            titular={titular}
+            socios={socios}
+            serviciosColumns={serviciosColumns}
+            loading={loading}
+          />
         </div>
-
-        <button
-          onClick={fetchData}
-          className="bg-orange-500 text-white  hover:bg-orange-600 focus:outline-none mt-5 px-4 border border-black rounded-md"
-        >
-          Buscar
-        </button>
-
-        <button
-          onClick={handleReset}
-          className="bg-yellow-500 text-white hover:bg-yellow-600 max-h-[25px] text-ellipsis focus:outline-none mt-5 px-4 border border-black rounded-md"
-        >
-          Nueva Consulta
-        </button>
-
-        <ExcelSociosYServicios
-          banco={banco}
-          ExB={ExB}
-          titular={titular}
-          socios={socios}
-          serviciosColumns={serviciosColumns}
-          loading={loading}
-        />
       </div>
 
       {loading && (
@@ -155,7 +211,7 @@ const SociosServicios = () => {
 
       {!loading && !error && (
         <>
-          <div className="overflow-x-auto overflow-y-auto max-h-[475px] border border-gray-200 rounded">
+          <div className="overflow-x-auto overflow-y-auto max-h-[475px] border border-gray-200 rounded mt-2">
             <table className="min-w-full bg-white text-sm">
               <thead className="bg-black text-white sticky top-0 z-50">
                 <tr className="">
