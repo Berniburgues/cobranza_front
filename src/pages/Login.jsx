@@ -28,7 +28,11 @@ const Login = () => {
       setLoading(false);
       navigate('/home');
     } catch (error) {
-      setError('Credenciales inválidas');
+      if (error.message === 'Usuario bloqueado') {
+        setError('Tu cuenta está bloqueada, contacta con el soporte.');
+      } else {
+        setError('Credenciales inválidas');
+      }
       setLoading(false);
     }
   };
