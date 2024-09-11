@@ -61,7 +61,7 @@ const Reportes = () => {
                   : ''
               }`}
             >
-              PDF's
+              GENERALES
             </Link>
           </>
         )}
