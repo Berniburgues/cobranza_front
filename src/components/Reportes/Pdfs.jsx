@@ -8,7 +8,7 @@ const Pdfs = () => {
     },
     {
       title: 'SEGUIMIENTO WEB/APPS/MARCAS',
-      url: 'https://drive.google.com/file/d/1A92RjTb128O5ySyr6TywBGdIxOdx7rdh/view?usp=sharing',
+      url: 'https://drive.google.com/file/d/10UHehWypXJcVaHoFLlQfqdzqR5C7iXWF/view?usp=drive_link',
     },
   ];
 
