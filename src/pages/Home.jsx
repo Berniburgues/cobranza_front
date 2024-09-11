@@ -70,6 +70,27 @@ const Home = () => {
         ATSAPRA
         <p className="text-base md:text-xl lg:text-3xl">SISTEMA DE CONTROL Y COBRANZA</p>
       </h1>
+      <div className="flex justify-center items-center mb-5 gap-5">
+        <h3 className="font-bold text-center underline text-lg">Descargar PDF:</h3>
+        <a
+          href="https://drive.google.com/uc?export=download&id=1Nnnr4tuvlCUg0boL9htt6ZJhxwrkVIvj"
+          className="text-blue-600 font-semibold hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+        >
+          Campañas/Redes
+        </a>
+        <a
+          href="https://drive.google.com/uc?export=download&id=1A92RjTb128O5ySyr6TywBGdIxOdx7rdh"
+          className="text-blue-600 font-semibold hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+          download
+        >
+          Seguimiento Web/App/Marcas
+        </a>
+      </div>
       <div className="grid grid-cols-2 items-center justify-center text-lg md:text-2xl gap-3 lg:w-full max-w-xl font-libre">
         <Link to="/tablas">
           <button className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black p-2 rounded-lg shadow-md w-full">
