@@ -66,15 +66,15 @@ const Home = () => {
 
   return (
     <section className="flex flex-col justify-center items-center my-20">
-      <h1 className="text-xl md:text-2xl lg:text-4xl  font-bold font-libre mb-2 text-center italic underline">
+      <h1 className="text-xl md:text-2xl lg:text-4xl  font-bold font-libre text-center italic underline">
         ATSAPRA
         <p className="text-base md:text-xl lg:text-3xl">SISTEMA DE CONTROL Y COBRANZA</p>
       </h1>
-      <div className="flex justify-center items-center mb-5 gap-5">
-        <h3 className="font-bold text-center underline text-lg">Descargar PDF:</h3>
+      <h3 className="font-bold text-center text-lg underline my-1">Descargar PDF's:</h3>
+      <div className="flex flex-col md:flex-row justify-center items-center gap-5 mb-2">
         <a
           href="https://drive.google.com/uc?export=download&id=1Nnnr4tuvlCUg0boL9htt6ZJhxwrkVIvj"
-          className="text-blue-600 font-semibold hover:underline"
+          className="text-blue-600 hover:underline bg-gray-100 border p-1 rounded-md text-center shadow-md"
           target="_blank"
           rel="noopener noreferrer"
           download
@@ -83,7 +83,7 @@ const Home = () => {
         </a>
         <a
           href="https://drive.google.com/uc?export=download&id=1A92RjTb128O5ySyr6TywBGdIxOdx7rdh"
-          className="text-blue-600 font-semibold hover:underline"
+          className="text-blue-600 hover:underline bg-gray-100 border p-1 rounded-md text-center shadow-md"
           target="_blank"
           rel="noopener noreferrer"
           download
