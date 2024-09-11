@@ -5,6 +5,7 @@ import ProtectedRoute from './components/Common/ProtectedRoute';
 import ReportesDirectos from './components/Reportes/ReportesDirectos';
 import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
 import ReportesParciales from './components/Reportes/ReportesParciales';
+import Pdfs from './components/Reportes/Pdfs';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
 import Login from './pages/Login';
@@ -138,6 +139,10 @@ export const router = createBrowserRouter([
       {
         path: 'parciales',
         element: <ReportesParciales />,
+      },
+      {
+        path: 'pdfs',
+        element: <Pdfs />,
       },
     ],
   },

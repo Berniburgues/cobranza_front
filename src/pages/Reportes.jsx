@@ -53,6 +53,16 @@ const Reportes = () => {
             >
               PARCIALES
             </Link>
+            <Link
+              to="pdfs"
+              className={`bg-red-500 hover:bg-red-700 text-white border-2 border-black font-bold p-1 text-base font-libre rounded-md w-72 text-center ${
+                location.pathname === '/reportes/pdfs'
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              }`}
+            >
+              PDF's
+            </Link>
           </>
         )}
 
