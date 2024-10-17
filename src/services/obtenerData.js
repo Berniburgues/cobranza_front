@@ -471,3 +471,44 @@ export const fetchPadronData = async (params) => {
   );
   return response.data.data;
 };
+
+//ENVIOS
+const baseURL = 'http://localhost:8080/archivos'; // URL base de tu backend
+
+// Llamada 1: Obtener periodos y envíos
+export const obtenerEnvios = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/envios`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener periodos y envíos:', error);
+    throw error;
+  }
+};
+
+// Llamada 2: Obtener archivos por envioId
+export const obtenerArchivos = async (envioId) => {
+  try {
+    const response = await axios.get(`${baseURL}/envios/${envioId}/archivos`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener archivos para el envioId ${envioId}:`, error);
+    throw error;
+  }
+};
+
+// Llamada 3: Obtener contenido del archivo TXT
+export const obtenerContenidoTXT = async (envioId, archivo) => {
+  try {
+    const response = await axios.get(
+      `${baseURL}/envios/${envioId}/archivos/${archivo}/txt`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(
+      `Error al obtener el contenido del archivo ${archivo} para el envioId ${envioId}:`,
+      error,
+    );
+    throw error;
+  }
+};

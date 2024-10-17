@@ -20,6 +20,7 @@ export const permisosRoles = {
     '/servicios',
     '/servicios/beneficiosServicios',
     '/servicios/sociosServicios',
+    '/envios',
   ],
   parcial: [
     '/',

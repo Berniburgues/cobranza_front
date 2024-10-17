@@ -18,6 +18,7 @@ import TablaPagos from './pages/TablaPagos';
 import TablaImportes from './pages/TablaImportes';
 import StopDebit from './pages/StopDebit';
 import Archivos from './pages/Archivos';
+import Envios from './pages/Envios';
 import BeneficiosServicios from './pages/BeneficiosServicios';
 import SociosServicios from './pages/SociosServicios';
 import Bancos from './pages/Bancos';
@@ -162,6 +163,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute>
           <Archivos />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: '/envios',
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Envios />
         </ProtectedRoute>
       </Layout>
     ),
