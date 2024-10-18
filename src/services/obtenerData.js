@@ -473,7 +473,7 @@ export const fetchPadronData = async (params) => {
 };
 
 //ENVIOS
-const baseURL = 'http://localhost:8080/archivos'; // URL base de tu backend
+const baseURL = 'https://back-cobranza-1n55.onrender.com/archivos'; // URL base de tu backend
 
 // Llamada 1: Obtener periodos y envíos
 export const obtenerEnvios = async () => {
