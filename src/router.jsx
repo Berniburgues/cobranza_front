@@ -5,6 +5,7 @@ import ProtectedRoute from './components/Common/ProtectedRoute';
 import ReportesDirectos from './components/Reportes/ReportesDirectos';
 import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
 import ReportesParciales from './components/Reportes/ReportesParciales';
+import EditorReportes from './components/Reportes/EditorReportes';
 import Pdfs from './components/Reportes/Pdfs';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
@@ -132,18 +133,42 @@ export const router = createBrowserRouter([
       {
         path: 'directos',
         element: <ReportesDirectos />,
+        children: [
+          {
+            path: 'editor',
+            element: <EditorReportes />,
+          },
+        ],
       },
       {
         path: 'indirectos',
         element: <ReportesIndirectos />,
+        children: [
+          {
+            path: 'editor',
+            element: <EditorReportes />,
+          },
+        ],
       },
       {
         path: 'parciales',
         element: <ReportesParciales />,
+        children: [
+          {
+            path: 'editor',
+            element: <EditorReportes />,
+          },
+        ],
       },
       {
         path: 'pdfs',
         element: <Pdfs />,
+        children: [
+          {
+            path: 'editor',
+            element: <EditorReportes />,
+          },
+        ],
       },
     ],
   },

@@ -1,42 +1,91 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { obtenerReportes } from '../../services/obtenerData';
+import EditorReportes from './EditorReportes';
+import { UserContext } from '../../contexts/UserContext';
+import { permisosRoles } from '../../utils/roles';
 
 const ReportesDirectos = () => {
-  const informes = [
-    {
-      title: 'RATIOS',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiODVkM2E5NjAtODI2My00ZDlhLThjYjEtY2FlYmFiZjk5OTk2IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
-    },
-    {
-      title: 'COBRANZA POR PERÍODO',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiZTZhM2JkZDAtMDFmYy00OGI1LWEwMTYtZjI2Y2UzZWRiZGE1IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
-    },
-    {
-      title: 'INFO BANCOS',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiZjRkMGZlYjYtMWY1OS00ODMyLWJjZjEtZTEyOTgyNWE0NjgzIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
-    },
-    {
-      title: 'IMPORTES ENVIADOS',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiNWEyNDg1Y2ItMTg3Yi00YWM5LWI2NDMtNDVkZGJlOWNlNTVkIiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
-    },
-    {
-      title: 'CUILES POR BANCO',
-      url: 'https://app.powerbi.com/view?r=eyJrIjoiN2UxMTA1MGMtYzI0Zi00ZTViLWJlMGYtNWQ5ZDZhODkzNjI2IiwidCI6IjUxZDRjMzBhLTIzZjMtNDk5Mi04M2VkLWU4N2NhNzk0NzNmYiIsImMiOjR9',
-    },
-  ];
+  const [informes, setInformes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [editorVisible, setEditorVisible] = useState(false);
+  //Verificacion de rol
+  const { user } = useContext(UserContext);
+  const rolesPermitidos = permisosRoles[user.rol];
+  const editor = rolesPermitidos.includes('/reportes/directos/editor');
+
+  useEffect(() => {
+    const fetchReportes = async () => {
+      try {
+        const data = await obtenerReportes();
+        const reportesFiltrados = data.filter((informe) => informe.tipo === 'directo');
+        setInformes(reportesFiltrados);
+      } catch (error) {
+        console.error('Error al obtener reportes:', error);
+        setError('Error al cargar los reportes.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReportes();
+  }, []);
+
+  const openEditor = () => {
+    setEditorVisible(true);
+  };
+
+  const closeEditor = () => {
+    setEditorVisible(false);
+  };
+
+  const handleInformesChange = (updatedInformes) => {
+    setInformes(updatedInformes);
+  };
+
+  if (loading) {
+    return <div>Cargando reportes...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
-    <ul className="flex flex-col">
-      {informes.map((informe, index) => (
-        <li key={index} className="mb-2">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold font-libre p-2 rounded-md w-full"
-            onClick={() => window.open(informe.url, '_blank')}
-          >
-            {informe.title}
-          </button>
-        </li>
-      ))}
-    </ul>
+    <div>
+      {editor && (
+        <button
+          className="fixed bottom-4 right-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full z-50"
+          onClick={openEditor} // Abre el editor
+          title="Crear/Editar Reportes"
+        >
+          ➕✏️
+        </button>
+      )}
+
+      <ul className="flex flex-col">
+        {informes.map((informe) => (
+          <li key={informe.id} className="mb-2">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white border-2 border-black font-bold font-libre p-2 rounded-md w-full"
+              onClick={() => {
+                window.open(informe.url, '_blank'); // Abrir el editor
+              }}
+            >
+              {informe.title}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {editorVisible && (
+        <EditorReportes
+          reportes={informes} // Pasar la lista de reportes al editor
+          onClose={closeEditor}
+          onInformesChange={handleInformesChange} // Pasar función para manejar cambios en informes
+        />
+      )}
+    </div>
   );
 };
 

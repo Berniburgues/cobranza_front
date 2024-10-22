@@ -473,12 +473,13 @@ export const fetchPadronData = async (params) => {
 };
 
 //ENVIOS
-const baseURL = 'https://back-cobranza-1n55.onrender.com/archivos'; // URL base de tu backend
+const baseURL = 'https://back-cobranza-1n55.onrender.com'; // URL base de tu backend
+//const localURL = 'http://localhost:8080';
 
 // Llamada 1: Obtener periodos y envíos
 export const obtenerEnvios = async () => {
   try {
-    const response = await axios.get(`${baseURL}/envios`);
+    const response = await axios.get(`${baseURL}/archivos/envios`);
     return response.data;
   } catch (error) {
     console.error('Error al obtener periodos y envíos:', error);
@@ -489,7 +490,7 @@ export const obtenerEnvios = async () => {
 // Llamada 2: Obtener archivos por envioId
 export const obtenerArchivos = async (envioId) => {
   try {
-    const response = await axios.get(`${baseURL}/envios/${envioId}/archivos`);
+    const response = await axios.get(`${baseURL}/archivos/envios/${envioId}/archivos`);
     return response.data;
   } catch (error) {
     console.error(`Error al obtener archivos para el envioId ${envioId}:`, error);
@@ -501,7 +502,7 @@ export const obtenerArchivos = async (envioId) => {
 export const obtenerContenidoTXT = async (envioId, archivo) => {
   try {
     const response = await axios.get(
-      `${baseURL}/envios/${envioId}/archivos/${archivo}/txt`,
+      `${baseURL}/archivos/envios/${envioId}/archivos/${archivo}/txt`,
     );
     return response.data;
   } catch (error) {
@@ -509,6 +510,51 @@ export const obtenerContenidoTXT = async (envioId, archivo) => {
       `Error al obtener el contenido del archivo ${archivo} para el envioId ${envioId}:`,
       error,
     );
+    throw error;
+  }
+};
+
+//REPORTES
+// Obtener todos los reportes
+export const obtenerReportes = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/reportes/reportes`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener reportes:', error);
+    throw error;
+  }
+};
+
+// Insertar un nuevo reporte
+export const insertarReporte = async (reporte) => {
+  try {
+    const response = await axios.post(`${baseURL}/reportes/reportes`, reporte);
+    return response.data;
+  } catch (error) {
+    console.error('Error al insertar el reporte:', error);
+    throw error;
+  }
+};
+
+// Actualizar un reporte existente
+export const actualizarReporte = async (id, reporte) => {
+  try {
+    const response = await axios.put(`${baseURL}/reportes/reportes/${id}`, reporte);
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar el reporte:', error);
+    throw error;
+  }
+};
+
+// Eliminar un reporte
+export const eliminarReporte = async (id) => {
+  try {
+    const response = await axios.delete(`${baseURL}/reportes/reportes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar el reporte:', error);
     throw error;
   }
 };

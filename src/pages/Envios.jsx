@@ -16,6 +16,7 @@ const FormularioEnvios = () => {
   const [contenidoArchivo, setContenidoArchivo] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [cargandoArchivo, setCargandoArchivo] = useState(false);
+  const [cargandoPeriodos, setCargandoPeriodos] = useState(true); // Estado para el cargando de periodos
 
   useEffect(() => {
     const fetchEnvios = async () => {
@@ -28,6 +29,8 @@ const FormularioEnvios = () => {
         setEnvios(enviosData);
       } catch (error) {
         console.error('Error al obtener los envíos:', error);
+      } finally {
+        setCargandoPeriodos(false); // Terminar el cargando de periodos
       }
     };
     fetchEnvios();
@@ -108,40 +111,46 @@ const FormularioEnvios = () => {
         FORMULARIO DE ENVÍOS
       </h2>
 
-      <div className="mb-2">
-        <label
-          htmlFor="periodos"
-          className="block text-md font-medium text-gray-700 mb-1"
-        >
-          Selecciona el Periodo:
-        </label>
-        <div className="flex space-x-4">
-          <select
-            id="periodos"
-            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-            value={periodoSeleccionado}
-            onChange={(e) => handlePeriodoSeleccionado(e.target.value)}
+      {cargandoPeriodos ? (
+        <p className="text-center text-xl italic font-semibold text-indigo-600">
+          Cargando...
+        </p>
+      ) : (
+        <div className="mb-2">
+          <label
+            htmlFor="periodos"
+            className="block text-md font-medium text-gray-700 mb-1"
           >
-            <option value="">Seleccionar</option>
-            {periodos.map((periodo, index) => (
-              <option key={index} value={periodo}>
-                {getNombrePeriodo(periodo)}
-              </option>
-            ))}
-          </select>
-          {periodoSeleccionado && (
-            <button
-              className={`bg-red-600 text-white p-2 rounded-md shadow hover:bg-red-700 ${
-                cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-              onClick={limpiarPeriodoSeleccionado}
-              disabled={cargando || cargandoArchivo}
+            Selecciona el Periodo:
+          </label>
+          <div className="flex space-x-4">
+            <select
+              id="periodos"
+              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              value={periodoSeleccionado}
+              onChange={(e) => handlePeriodoSeleccionado(e.target.value)}
             >
-              Limpiar
-            </button>
-          )}
+              <option value="">Seleccionar</option>
+              {periodos.map((periodo, index) => (
+                <option key={index} value={periodo}>
+                  {getNombrePeriodo(periodo)}
+                </option>
+              ))}
+            </select>
+            {periodoSeleccionado && (
+              <button
+                className={`bg-red-600 text-white p-2 rounded-md shadow hover:bg-red-700 ${
+                  cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                onClick={limpiarPeriodoSeleccionado}
+                disabled={cargando || cargandoArchivo}
+              >
+                Limpiar
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       {periodoSeleccionado && (
         <div className="mb-2 mt-4">
@@ -182,7 +191,11 @@ const FormularioEnvios = () => {
         </div>
       )}
 
-      {cargando && <p className="text-center text-indigo-600">Cargando archivos..</p>}
+      {cargando && (
+        <p className="text-center font-semibold italic text-indigo-600">
+          Cargando Archivos...
+        </p>
+      )}
 
       {archivos.length > 0 && (
         <div className="mb-2 mt-5">
@@ -221,12 +234,16 @@ const FormularioEnvios = () => {
         </div>
       )}
 
-      {cargandoArchivo && <p className="text-center text-indigo-600">Cargando TXT..</p>}
+      {cargandoArchivo && (
+        <p className="text-center font-semibold italic text-indigo-600">
+          Cargando TXT...
+        </p>
+      )}
 
       {contenidoArchivo && (
         <div className="flex justify-center items-center mt-4 space-x-4">
           <button
-            className={`bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700 ${
+            className={`bg-indigo-600 text-white px-4 py-2 font-semibold rounded-md shadow hover:bg-indigo-700 ${
               cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             onClick={descargarArchivo}
@@ -236,13 +253,13 @@ const FormularioEnvios = () => {
           </button>
 
           <button
-            className={`bg-gray-600 text-white px-4 py-2 rounded-md shadow hover:bg-gray-700 ${
+            className={`bg-orange-500 text-white px-4 py-2 rounded-md font-semibold shadow hover:bg-orange-600 ${
               cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             onClick={reiniciarConsulta}
             disabled={cargando || cargandoArchivo}
           >
-            Reiniciar
+            Reiniciar consulta
           </button>
         </div>
       )}
