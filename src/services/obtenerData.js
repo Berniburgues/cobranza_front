@@ -474,7 +474,7 @@ export const fetchPadronData = async (params) => {
 
 //ENVIOS
 const baseURL = 'https://back-cobranza-1n55.onrender.com'; // URL base de tu backend
-const localURL = 'http://localhost:8080';
+//const localURL = 'http://localhost:8080';
 
 // Llamada 1: Obtener periodos y envíos
 export const obtenerEnvios = async () => {
@@ -529,7 +529,7 @@ export const obtenerReportes = async () => {
 // Insertar un nuevo reporte
 export const insertarReporte = async (reporte) => {
   try {
-    const response = await axios.post(`${localURL}/reportes/reportes`, reporte);
+    const response = await axios.post(`${baseURL}/reportes/reportes`, reporte);
     return response.data;
   } catch (error) {
     console.error('Error al insertar el reporte:', error);
@@ -540,7 +540,7 @@ export const insertarReporte = async (reporte) => {
 // Actualizar un reporte existente
 export const actualizarReporte = async (id, reporte) => {
   try {
-    const response = await axios.put(`${localURL}/reportes/reportes/${id}`, reporte);
+    const response = await axios.put(`${baseURL}/reportes/reportes/${id}`, reporte);
     return response.data;
   } catch (error) {
     console.error('Error al actualizar el reporte:', error);
