@@ -12,11 +12,9 @@ const FormularioEnvios = () => {
   const [envios, setEnvios] = useState([]);
   const [envioIdSeleccionado, setEnvioIdSeleccionado] = useState('');
   const [archivos, setArchivos] = useState([]);
-  const [archivoSeleccionado, setArchivoSeleccionado] = useState('');
-  const [contenidoArchivo, setContenidoArchivo] = useState(null);
   const [cargando, setCargando] = useState(false);
-  const [cargandoArchivo, setCargandoArchivo] = useState(false);
-  const [cargandoPeriodos, setCargandoPeriodos] = useState(true); // Estado para el cargando de periodos
+  const [cargandoPeriodos, setCargandoPeriodos] = useState(true);
+  const [archivoEnDescarga, setArchivoEnDescarga] = useState(null); // Estado para archivo en descarga
 
   useEffect(() => {
     const fetchEnvios = async () => {
@@ -30,7 +28,7 @@ const FormularioEnvios = () => {
       } catch (error) {
         console.error('Error al obtener los envíos:', error);
       } finally {
-        setCargandoPeriodos(false); // Terminar el cargando de periodos
+        setCargandoPeriodos(false);
       }
     };
     fetchEnvios();
@@ -40,53 +38,36 @@ const FormularioEnvios = () => {
     setPeriodoSeleccionado(periodo);
     setEnvioIdSeleccionado('');
     setArchivos([]);
-    setArchivoSeleccionado('');
-    setContenidoArchivo(null);
   };
 
   const handleEnvioSeleccionado = async (envioId) => {
     setEnvioIdSeleccionado(envioId);
-    setArchivoSeleccionado('');
-    setContenidoArchivo(null);
-    setCargando(true);
+    setCargando(true); // Iniciar cargando
+    setArchivos([]); // Limpiar archivos al seleccionar un nuevo envío
+
     try {
       const archivosData = await obtenerArchivos(envioId);
       setArchivos(archivosData);
     } catch (error) {
       console.error('Error al obtener los archivos:', error);
     }
-    setCargando(false);
+    setCargando(false); // Finalizar cargando
   };
 
-  const handleArchivoSeleccionado = async (archivo) => {
-    setArchivoSeleccionado(archivo);
-    setCargandoArchivo(true);
+  const descargarArchivo = async (archivo) => {
+    setArchivoEnDescarga(archivo); // Marcar el archivo como en descarga
     try {
       const txtData = await obtenerContenidoTXT(envioIdSeleccionado, archivo);
       const contenidoTXT = txtData.map((linea) => linea.TXT).join('\n');
-      setContenidoArchivo(contenidoTXT);
+      const blob = new Blob([contenidoTXT], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = archivo; // Usar el nombre del archivo como descarga
+      link.click();
     } catch (error) {
-      console.error('Error al obtener el contenido del archivo:', error);
+      console.error('Error al descargar el archivo:', error);
     }
-    setCargandoArchivo(false);
-  };
-
-  const descargarArchivo = () => {
-    if (!contenidoArchivo) return;
-
-    const blob = new Blob([contenidoArchivo], { type: 'text/plain' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${archivoSeleccionado}`;
-    link.click();
-  };
-
-  const reiniciarConsulta = () => {
-    setPeriodoSeleccionado('');
-    setEnvioIdSeleccionado('');
-    setArchivos([]);
-    setArchivoSeleccionado('');
-    setContenidoArchivo(null);
+    setArchivoEnDescarga(null); // Reiniciar el estado después de la descarga
   };
 
   const limpiarPeriodoSeleccionado = () => {
@@ -96,13 +77,6 @@ const FormularioEnvios = () => {
   const limpiarEnvioSeleccionado = () => {
     setEnvioIdSeleccionado('');
     setArchivos([]);
-    setArchivoSeleccionado('');
-    setContenidoArchivo(null);
-  };
-
-  const limpiarArchivoSeleccionado = () => {
-    setArchivoSeleccionado('');
-    setContenidoArchivo(null);
   };
 
   return (
@@ -140,10 +114,10 @@ const FormularioEnvios = () => {
             {periodoSeleccionado && (
               <button
                 className={`bg-red-600 text-white p-2 rounded-md shadow hover:bg-red-700 ${
-                  cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
+                  cargando ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
                 onClick={limpiarPeriodoSeleccionado}
-                disabled={cargando || cargandoArchivo}
+                disabled={cargando}
               >
                 Limpiar
               </button>
@@ -179,10 +153,10 @@ const FormularioEnvios = () => {
             {envioIdSeleccionado && (
               <button
                 className={`bg-red-600 text-white p-2 rounded-md shadow hover:bg-red-700 ${
-                  cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
+                  cargando ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
                 onClick={limpiarEnvioSeleccionado}
-                disabled={cargando || cargandoArchivo}
+                disabled={cargando}
               >
                 Limpiar
               </button>
@@ -199,68 +173,72 @@ const FormularioEnvios = () => {
 
       {archivos.length > 0 && (
         <div className="mb-2 mt-5">
-          <label
-            htmlFor="archivos"
-            className="block text-md font-medium text-gray-700 mb-1"
-          >
-            Selecciona el Archivo:
-          </label>
-          <div className="flex space-x-4">
-            <select
-              id="archivos"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              value={archivoSeleccionado}
-              onChange={(e) => handleArchivoSeleccionado(e.target.value)}
-            >
-              <option value="">Seleccionar</option>
-              {archivos.map((archivo) => (
-                <option key={archivo.ARCHIVO} value={archivo.ARCHIVO}>
-                  {archivo.ARCHIVO}
-                </option>
-              ))}
-            </select>
-            {archivoSeleccionado && (
-              <button
-                className={`bg-red-600 text-white p-2 rounded-md shadow hover:bg-red-700 ${
-                  cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-                onClick={limpiarArchivoSeleccionado}
-                disabled={cargando || cargandoArchivo}
-              >
-                Limpiar
-              </button>
-            )}
+          <h3 className="block text-md font-medium text-gray-700 mb-1">
+            Archivos disponibles:
+          </h3>
+          <div className="overflow-y-auto max-h-80">
+            <table className="min-w-full bg-white border border-gray-300 rounded-md">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border border-gray-300 px-2 py-1 text-sm text-gray-600">
+                    Orden
+                  </th>
+                  <th className="border border-gray-300 px-2 py-1 text-sm text-gray-600">
+                    Archivo
+                  </th>
+                  <th className="border border-gray-300 px-2 py-1 text-sm text-gray-600">
+                    Registros
+                  </th>
+                  <th className="border border-gray-300 px-2 py-1 text-sm text-gray-600">
+                    Importe
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {archivos.map((archivo, index) => (
+                  <tr key={archivo.ARCHIVO}>
+                    <td className="border border-gray-300 px-2 py-1 text-sm text-center">
+                      {index + 1}
+                    </td>
+                    <td
+                      className="border border-gray-300 px-2 py-1 text-sm text-center"
+                      title="Descargar TXT"
+                    >
+                      {archivoEnDescarga === archivo.ARCHIVO ? (
+                        <span className="italic text-blue-500">Descargando...</span>
+                      ) : (
+                        <span
+                          className={`${
+                            archivoEnDescarga
+                              ? 'text-gray-500 cursor-not-allowed'
+                              : 'cursor-pointer text-blue-500 hover:underline'
+                          }`}
+                          onClick={() => {
+                            if (!archivoEnDescarga) {
+                              descargarArchivo(archivo.ARCHIVO);
+                            }
+                          }}
+                        >
+                          {archivo.ARCHIVO}
+                        </span>
+                      )}
+                    </td>
+                    <td className="border border-gray-300 px-2 py-1 text-sm text-center">
+                      {archivo.Registros}
+                    </td>
+                    <td className="border border-gray-300 px-2 py-1 text-sm text-center">
+                      {new Intl.NumberFormat('es-AR', {
+                        style: 'currency',
+                        currency: 'ARS',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(archivo.Importe)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
-      )}
-
-      {cargandoArchivo && (
-        <p className="text-center font-semibold italic text-indigo-600">
-          Cargando TXT...
-        </p>
-      )}
-
-      {contenidoArchivo && (
-        <div className="flex justify-center items-center mt-4 space-x-4">
-          <button
-            className={`bg-indigo-600 text-white px-4 py-2 font-semibold rounded-md shadow hover:bg-indigo-700 ${
-              cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            onClick={descargarArchivo}
-            disabled={cargando || cargandoArchivo}
-          >
-            Descargar TXT
-          </button>
-
-          <button
-            className={`bg-orange-500 text-white px-4 py-2 rounded-md font-semibold shadow hover:bg-orange-600 ${
-              cargando || cargandoArchivo ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            onClick={reiniciarConsulta}
-            disabled={cargando || cargandoArchivo}
-          >
-            Reiniciar consulta
-          </button>
         </div>
       )}
     </div>

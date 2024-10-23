@@ -97,7 +97,9 @@ const EditorReportes = ({ reportes, onClose, onInformesChange }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white p-6 rounded-md shadow-xl shadow-black w-96">
+      <div className="bg-white p-6 rounded-md shadow-xl shadow-black w-96 max-h-[100vh] overflow-auto">
+        {' '}
+        {/* Ajusta la altura máxima aquí */}
         <h2 className="text-base italic text-center font-bold mb-2">
           EDITOR DE REPORTES
         </h2>
@@ -145,7 +147,9 @@ const EditorReportes = ({ reportes, onClose, onInformesChange }) => {
         <h3 className="text-sm text-center italic underline font-semibold mb-1">
           Reportes:
         </h3>
-        <ul className="mb-2">
+        <ul className="mb-2 max-h-48 overflow-y-auto">
+          {' '}
+          {/* Aquí se aplica el scroll vertical */}
           {reportes.map((informe) => (
             <li
               key={informe.id}
