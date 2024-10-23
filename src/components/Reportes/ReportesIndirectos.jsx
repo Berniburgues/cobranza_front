@@ -64,8 +64,6 @@ const ReportesIndirectos = () => {
       )}
       {informes.map((informe, index) => (
         <div key={index} className="mb-1">
-          {' '}
-          {/* Cambiado de li a div */}
           <button
             className="bg-green-500 hover:bg-green-700 text-white border-2 border-black font-bold font-libre p-2 rounded-md w-full"
             onClick={() => window.open(informe.url, '_blank')}

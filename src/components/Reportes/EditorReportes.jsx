@@ -8,7 +8,7 @@ import {
 const EditorReportes = ({ reportes, onClose, onInformesChange }) => {
   const [titulo, setTitulo] = useState('');
   const [url, setUrl] = useState('');
-  const [tipo, setTipo] = useState('directo');
+  const [tipo, setTipo] = useState('');
   const [esParcial, setEsParcial] = useState(false);
   const [editando, setEditando] = useState(false);
   const [error, setError] = useState(''); // Manejo de errores
@@ -30,40 +30,43 @@ const EditorReportes = ({ reportes, onClose, onInformesChange }) => {
   const resetForm = () => {
     setTitulo('');
     setUrl('');
-    setTipo('directo');
+    setTipo('');
     setEsParcial(false);
     setEditando(false);
     setError(''); // Reseteo de error
   };
 
   const handleSave = async () => {
-    if (!titulo || !url) {
-      setError('Por favor, completa todos los campos.');
+    if (!titulo || !url || !tipo) {
+      setError('Por favor, completa todos los campos y selecciona un tipo.');
       return;
     }
 
     const nuevoReporte = { title: titulo, url, tipo, parcial: esParcial ? 1 : 0 };
-    setLoading(true); // Inicio de carga
+    setLoading(true);
 
     try {
       if (editando && reporteSeleccionado) {
-        await actualizarReporte(reporteSeleccionado.id, nuevoReporte);
+        const actualizado = await actualizarReporte(reporteSeleccionado.id, nuevoReporte);
         onInformesChange((prevInformes) =>
           prevInformes.map((informe) =>
-            informe.id === reporteSeleccionado.id
-              ? { ...informe, ...nuevoReporte }
+            informe.id === actualizado.data.id // Asegúrate de usar `actualizado.data.id`
+              ? { ...informe, ...actualizado.data } // Usa el objeto actualizado
               : informe,
           ),
         );
       } else {
         const insertado = await insertarReporte(nuevoReporte);
-        onInformesChange((prevInformes) => [...prevInformes, insertado]);
+        onInformesChange((prevInformes) => [
+          ...prevInformes,
+          { id: insertado.id, ...nuevoReporte },
+        ]);
       }
       handleClose();
     } catch (error) {
-      setError('Error al guardar el reporte. Intenta nuevamente.'); // Mensaje de error
+      setError('Error al guardar el reporte. Intenta nuevamente.');
     } finally {
-      setLoading(false); // Final de carga
+      setLoading(false);
     }
   };
 
@@ -130,6 +133,9 @@ const EditorReportes = ({ reportes, onClose, onInformesChange }) => {
             onChange={(e) => setTipo(e.target.value)}
             className="border p-1 rounded-md w-full"
           >
+            <option value="" disabled>
+              Seleccionar
+            </option>
             <option value="directo">Directo</option>
             <option value="indirecto">Indirecto</option>
             <option value="general">General</option>
@@ -148,8 +154,6 @@ const EditorReportes = ({ reportes, onClose, onInformesChange }) => {
           Reportes:
         </h3>
         <ul className="mb-2 max-h-48 overflow-y-auto">
-          {' '}
-          {/* Aquí se aplica el scroll vertical */}
           {reportes.map((informe) => (
             <li
               key={informe.id}
