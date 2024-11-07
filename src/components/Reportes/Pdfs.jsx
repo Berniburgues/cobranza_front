@@ -18,7 +18,9 @@ const Pdfs = () => {
     const fetchReportes = async () => {
       try {
         const data = await obtenerReportes();
-        const reportesFiltrados = data.filter((informe) => informe.tipo === 'general');
+        const reportesFiltrados = data
+          .filter((informe) => informe.tipo === 'general')
+          .sort((a, b) => a.orden - b.orden);
         setInformes(reportesFiltrados); // Asignar los datos filtrados al estado
       } catch (error) {
         console.error('Error al obtener reportes:', error);
