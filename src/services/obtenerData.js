@@ -473,13 +473,14 @@ export const fetchPadronData = async (params) => {
 };
 
 //ENVIOS
-const baseURL = 'https://back-cobranza-1n55.onrender.com'; // URL base de tu backend
+const baseURL = 'https://back-atsapra.sytes.net:8080';
+const desarrolloURL = 'https://back-cobranza-1n55.onrender.com';
 //const localURL = 'http://localhost:8080';
 
 // Llamada 1: Obtener periodos y envíos
 export const obtenerEnvios = async () => {
   try {
-    const response = await axios.get(`${baseURL}/archivos/envios`);
+    const response = await axios.get(`${desarrolloURL}/archivos/envios`);
     return response.data;
   } catch (error) {
     console.error('Error al obtener periodos y envíos:', error);
@@ -490,7 +491,9 @@ export const obtenerEnvios = async () => {
 // Llamada 2: Obtener archivos por envioId
 export const obtenerArchivos = async (envioId) => {
   try {
-    const response = await axios.get(`${baseURL}/archivos/envios/${envioId}/archivos`);
+    const response = await axios.get(
+      `${desarrolloURL}/archivos/envios/${envioId}/archivos`,
+    );
     return response.data;
   } catch (error) {
     console.error(`Error al obtener archivos para el envioId ${envioId}:`, error);
@@ -502,7 +505,7 @@ export const obtenerArchivos = async (envioId) => {
 export const obtenerContenidoTXT = async (envioId, archivo) => {
   try {
     const response = await axios.get(
-      `${baseURL}/archivos/envios/${envioId}/archivos/${archivo}/txt`,
+      `${desarrolloURL}/archivos/envios/${envioId}/archivos/${archivo}/txt`,
     );
     return response.data;
   } catch (error) {
