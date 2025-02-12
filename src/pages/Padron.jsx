@@ -12,7 +12,7 @@ const Padron = () => {
   const [fechaFin, setFechaFin] = useState('');
   const [hastaHoy, setHastaHoy] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(''); // Estado para el mensaje de error
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (hastaHoy) {
@@ -160,9 +160,10 @@ const Padron = () => {
           >
             <option value="">Selecciona un Padrón</option>
             <option value="ATSAPRA">ATSAPRA</option>
-            <option value="CONSUMAS">Consumas</option>
+            <option value="CONSUMAS">CONSUMAS</option>
             <option value="RAMA PLUS">RAMA PLUS</option>
             <option value="MPHG">MPHG</option>
+            <option value="NUEVAS FRANQUICIAS">NUEVAS FRANQUICIAS</option>
           </select>
         </div>
         <div>

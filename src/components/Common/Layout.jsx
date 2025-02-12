@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
             className="mx-auto hover:filter hover:saturate-200 transition transform hover:scale-105"
           >
             <img
-              src="https://atsapra.com.ar/wp-content/uploads/2023/09/Mesa-de-trabajo-9.png"
+              src="https://atsapra.com.ar/wp-content/uploads/2025/01/cropped-cropped-Mesa-de-trabajo-5-1-1-300x68.png"
               alt="Logo Atsapra"
               className="w-auto h-8"
             />
