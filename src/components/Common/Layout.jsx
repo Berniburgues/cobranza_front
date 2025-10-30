@@ -1,17 +1,8 @@
-import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importa useNavigate
-import { UserContext } from '../../contexts/UserContext';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import ScrollTop from '../Common/ScrollTop';
 
 const Layout = ({ children }) => {
-  const { user, removeUser } = useContext(UserContext); // Obtén el usuario y la función removeUser del contexto
-  const navigate = useNavigate(); // Obtén la función de navegación
-
-  const handleLogout = () => {
-    removeUser(); // Llama a la función de deslogueo al hacer clic en el botón
-    navigate('/'); // Utiliza la función navigate para redirigir al usuario a la página de inicio
-  };
-
   return (
     <section className="flex flex-col min-h-screen">
       <ScrollTop />
@@ -23,14 +14,6 @@ const Layout = ({ children }) => {
           >
             INICIO
           </Link>
-          {user && (
-            <button
-              onClick={handleLogout}
-              className="text-red-500 hover:text-red-400 ml-4 border-b border-transparent hover:border-red-400 transition"
-            >
-              SALIR
-            </button>
-          )}
         </div>
         <div className="flex items-center justify-center gap-10 ml-56">
           <a

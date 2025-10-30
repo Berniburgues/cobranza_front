@@ -1,7 +1,6 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../src/components/Common/Layout';
-import ProtectedRoute from './components/Common/ProtectedRoute';
 import ReportesDirectos from './components/Reportes/ReportesDirectos';
 import ReportesIndirectos from './components/Reportes/ReportesIndirectos';
 import ReportesParciales from './components/Reportes/ReportesParciales';
@@ -9,7 +8,6 @@ import EditorReportes from './components/Reportes/EditorReportes';
 import Pdfs from './components/Reportes/Pdfs';
 import Home from './pages/Home';
 import Reportes from './pages/Reportes';
-import Login from './pages/Login';
 import Denegado from './pages/Denegado';
 import HistorialACE from './pages/historialACE';
 import HistorialSocios from './pages/HistorialSocios';
@@ -32,7 +30,7 @@ export const router = createBrowserRouter([
     path: '/',
     element: (
       <Layout>
-        <Login />
+        <Home />
       </Layout>
     ),
   },
@@ -48,9 +46,7 @@ export const router = createBrowserRouter([
     path: '/home',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Home />
-        </ProtectedRoute>
+        <Home />
       </Layout>
     ),
   },
@@ -58,9 +54,7 @@ export const router = createBrowserRouter([
     path: '/tablaSocios',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <TablaSocios />
-        </ProtectedRoute>
+        <TablaSocios />
       </Layout>
     ),
   },
@@ -68,9 +62,7 @@ export const router = createBrowserRouter([
     path: '/tablas',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Tablas />
-        </ProtectedRoute>
+        <Tablas />
       </Layout>
     ),
     children: [
@@ -104,9 +96,7 @@ export const router = createBrowserRouter([
     path: '/servicios',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Servicios />
-        </ProtectedRoute>
+        <Servicios />
       </Layout>
     ),
     children: [
@@ -124,9 +114,7 @@ export const router = createBrowserRouter([
     path: '/reportes',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Reportes />
-        </ProtectedRoute>
+        <Reportes />
       </Layout>
     ),
     children: [
@@ -176,9 +164,7 @@ export const router = createBrowserRouter([
     path: '/padron',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Padron />
-        </ProtectedRoute>
+        <Padron />
       </Layout>
     ),
   },
@@ -186,9 +172,7 @@ export const router = createBrowserRouter([
     path: '/archivos',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Archivos />
-        </ProtectedRoute>
+        <Archivos />
       </Layout>
     ),
   },
@@ -196,9 +180,7 @@ export const router = createBrowserRouter([
     path: '/envios',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Envios />
-        </ProtectedRoute>
+        <Envios />
       </Layout>
     ),
   },
@@ -206,9 +188,7 @@ export const router = createBrowserRouter([
     path: '/calendario',
     element: (
       <Layout>
-        <ProtectedRoute>
-          <Calendario />
-        </ProtectedRoute>
+        <Calendario />
       </Layout>
     ),
   },
