@@ -13,7 +13,7 @@ export const fetchDataPagos = async (
 ) => {
   try {
     // let url = `http://localhost:8080/clientes/cobranzaSocios?periodo=${periodo}`;
-    let url = `https://back-atsapra.sytes.net/api/clientes/cobranzaSocios?periodo=${periodo}`;
+    let url = `https://api.prestamoslink.com/api/clientes/cobranzaSocios?periodo=${periodo}`;
 
     if (cbu) {
       url += `&cbu=${cbu}`;
@@ -62,7 +62,7 @@ export const fetchDataPagos = async (
 export const fetchSocios = async (documentos, año) => {
   try {
     const documentosArray = Array.isArray(documentos) ? documentos : [documentos];
-    let url = 'https://back-atsapra.sytes.net/api/clientes/historialSocios';
+    let url = 'https://api.prestamoslink.com/api/clientes/historialSocios';
 
     // Agregar el parámetro del año a la URL si está definido
     if (año) {
@@ -90,7 +90,7 @@ export const fetchHistorialDNI = async (
   try {
     // Construir la URL de la solicitud GET con los parámetros
     // const url = `http://localhost:8080/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
-    const url = `https://back-atsapra.sytes.net/api/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
+    const url = `https://api.prestamoslink.com/api/clientes/historialDNI?banco=${banco}&periodo=${periodo}&dniComienzaCon=${
       dniComienzaCon || ''
     }&${terminacionDni.map((value) => `terminacionDni=${value}`).join('&')}`;
 
@@ -113,7 +113,7 @@ export const fetchHistorialDNI = async (
 
 export const getTablaImportes = async (banco, periodo, codigo) => {
   try {
-    let url = `https://back-atsapra.sytes.net/api/clientes/tablaImportes?periodo=${periodo}&banco=${banco}`;
+    let url = `https://api.prestamoslink.com/api/clientes/tablaImportes?periodo=${periodo}&banco=${banco}`;
     //let url = `http://localhost:8080/clientes/tablaImportes?periodo=${periodo}&banco=${banco}`;
 
     // Agregar la condición para el código
@@ -132,7 +132,7 @@ export const getTablaImportes = async (banco, periodo, codigo) => {
 export const getBanco = async (banco) => {
   try {
     // let url = `http://localhost:8080/bancos/data?banco=${banco}`;
-    let url = `https://back-atsapra.sytes.net/api/bancos/data?banco=${banco}`;
+    let url = `https://api.prestamoslink.com/api/bancos/data?banco=${banco}`;
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
@@ -143,7 +143,7 @@ export const getBanco = async (banco) => {
 //Obtener Importes, Cuiles, Servicios
 export const fetchImportes = async (periodo, bco, exb) => {
   try {
-    let url = `https://back-atsapra.sytes.net/api/clientes/importes?periodo=${periodo}`;
+    let url = `https://api.prestamoslink.com/api/clientes/importes?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -169,7 +169,7 @@ export const fetchImportes = async (periodo, bco, exb) => {
 };
 export const fetchImportesPorFecha = async (periodo, bco, exb) => {
   try {
-    let url = `https://back-atsapra.sytes.net/api/clientes/importesPorFecha?periodo=${periodo}`;
+    let url = `https://api.prestamoslink.com/api/clientes/importesPorFecha?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -195,7 +195,7 @@ export const fetchImportesPorFecha = async (periodo, bco, exb) => {
 };
 export const fetchCuiles = async (periodo, bco) => {
   try {
-    let url = `https://back-atsapra.sytes.net/api/clientes/cuiles?periodo=${periodo}`;
+    let url = `https://api.prestamoslink.com/api/clientes/cuiles?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -218,7 +218,7 @@ export const fetchCuiles = async (periodo, bco) => {
 };
 export const fetchServicios = async (periodo, bco) => {
   try {
-    let url = `https://back-atsapra.sytes.net/api/clientes/servicios?periodo=${periodo}`;
+    let url = `https://api.prestamoslink.com/api/clientes/servicios?periodo=${periodo}`;
 
     if (bco) {
       url += `&bco=${bco}`;
@@ -239,7 +239,7 @@ export const fetchServicios = async (periodo, bco) => {
 //Obtener listado de Socios con Stop Debit (R08)
 export const stopDebit = async (periodo, bco) => {
   try {
-    let url = `https://back-atsapra.sytes.net/api/clientes/stopDebit?periodo=${periodo}`;
+    let url = `https://api.prestamoslink.com/api/clientes/stopDebit?periodo=${periodo}`;
 
     if (bco) {
       url += `&banco=${bco}`;
@@ -255,7 +255,7 @@ export const stopDebit = async (periodo, bco) => {
 //Obtener Filtros de Todos los Períodos
 export const filtroPeriodos = async () => {
   try {
-    let url = `https://back-atsapra.sytes.net/api/filtros/periodos`;
+    let url = `https://api.prestamoslink.com/api/filtros/periodos`;
 
     const res = await axios.get(url);
     return res.data.Periodos;
@@ -267,9 +267,7 @@ export const filtroPeriodos = async () => {
 //Obtener Filtros para Tabla Madre
 export const fetchFiltrosPagos = async () => {
   try {
-    const res = await axios.get(
-      'https://back-atsapra.sytes.net/api/filtros/filtrosPagos',
-    );
+    const res = await axios.get('https://api.prestamoslink.com/api/filtros/filtrosPagos');
     return res.data;
   } catch (error) {
     console.error(error);
@@ -278,7 +276,7 @@ export const fetchFiltrosPagos = async () => {
 //Obtener Filtros para Tabla Historial DNI
 export const fetchFiltrosDNI = async () => {
   try {
-    const res = await axios.get('https://back-atsapra.sytes.net/api/filtros/DNI');
+    const res = await axios.get('https://api.prestamoslink.com/api/filtros/DNI');
     return res.data;
   } catch (error) {
     throw error;
@@ -288,7 +286,7 @@ export const fetchFiltrosDNI = async () => {
 export const fetchFiltrosTablaImportes = async () => {
   try {
     const res = await axios.get(
-      'https://back-atsapra.sytes.net/api/filtros/filtrosTablaImportes',
+      'https://api.prestamoslink.com/api/filtros/filtrosTablaImportes',
     );
     return res.data;
   } catch (error) {
@@ -299,7 +297,7 @@ export const fetchFiltrosTablaImportes = async () => {
 //Servicio para los contadores del Home
 export const fetchInfoHome = async () => {
   try {
-    const res = await axios.get('https://back-atsapra.sytes.net/api/clientes/infoHome');
+    const res = await axios.get('https://api.prestamoslink.com/api/clientes/infoHome');
     if (res.status === 200) {
       return res.data;
     } else {
@@ -314,7 +312,7 @@ export const fetchInfoHome = async () => {
 export const fetchDatosTarjeta = async () => {
   try {
     const res = await axios.get(
-      'https://back-atsapra.sytes.net/api/clientes/fetchDatosTarjeta',
+      'https://api.prestamoslink.com/api/clientes/fetchDatosTarjeta',
     );
     if (res.status === 200) {
       return res.data;
@@ -330,7 +328,7 @@ export const fetchDatosTarjeta = async () => {
 export const insertDatosTarjeta = async () => {
   try {
     const res = await axios.post(
-      'https://back-atsapra.sytes.net/api/clientes/datosTarjeta',
+      'https://api.prestamoslink.com/api/clientes/datosTarjeta',
     );
     console.log(res.data); // Muestra la respuesta del servidor en la consola
     return res.data; // Retorna los datos de la respuesta si es necesario
@@ -344,7 +342,7 @@ export const insertDatosTarjeta = async () => {
 export const eliminarFilaTarjeta = async (ids) => {
   try {
     const res = await axios.delete(
-      `https://back-atsapra.sytes.net/api/clientes/deleteFilaTarjeta/${ids}`, // Incluir los IDs en la URL
+      `https://api.prestamoslink.com/api/clientes/deleteFilaTarjeta/${ids}`, // Incluir los IDs en la URL
     );
     console.log(res.data); // Muestra la respuesta del servidor en la consola
     return res.data; // Retorna los datos de la respuesta si es necesario
@@ -358,7 +356,7 @@ export const eliminarFilaTarjeta = async (ids) => {
 export const eliminarTodasLasFilasTarjeta = async (id) => {
   try {
     const res = await axios.delete(
-      'https://back-atsapra.sytes.net/api/clientes/deleteAllFilas',
+      'https://api.prestamoslink.com/api/clientes/deleteAllFilas',
     );
     console.log(res.data); // Muestra la respuesta del servidor en la consola
     return res.data; // Retorna los datos de la respuesta si es necesario
@@ -371,7 +369,7 @@ export const eliminarTodasLasFilasTarjeta = async (id) => {
 //Servicio para el Login
 export const loginService = async (email, password) => {
   try {
-    const res = await axios.post('https://back-atsapra.sytes.net/api/users/login', {
+    const res = await axios.post('https://api.prestamoslink.com/api/users/login', {
       email,
       password,
     });
@@ -388,7 +386,7 @@ export const uploadFile = async (file) => {
     formData.append('file', file);
 
     const response = await axios.post(
-      'https://back-atsapra.sytes.net/api/archivos/subir_archivo',
+      'https://api.prestamoslink.com/api/archivos/subir_archivo',
       formData,
     );
     return response.data;
@@ -403,7 +401,7 @@ export const uploadFile = async (file) => {
 export const fetchCargaNovedades = async () => {
   try {
     const res = await axios.get(
-      'https://back-atsapra.sytes.net/api/archivos/cargaNovedades',
+      'https://api.prestamoslink.com/api/archivos/cargaNovedades',
     );
     return res.data;
   } catch (error) {
@@ -414,7 +412,7 @@ export const fetchCargaNovedades = async () => {
 //Llamada para obtener tabla de Servicios y sus correspondientes Beneficios
 export const getServiciosYBeneficios = async () => {
   try {
-    const res = await axios.get('https://back-atsapra.sytes.net/api/servicios');
+    const res = await axios.get('https://api.prestamoslink.com/api/servicios');
     if (res.status === 200) {
       return res.data.data;
     } else {
@@ -429,7 +427,7 @@ export const getServiciosYBeneficios = async () => {
 export const getSociosYServicios = async (banco, ExB, titular, documentos) => {
   try {
     const documentosArray = Array.isArray(documentos) ? documentos : [documentos];
-    let url = `https://back-atsapra.sytes.net/api/servicios/sociosServicios?`;
+    let url = `https://api.prestamoslink.com/api/servicios/sociosServicios?`;
 
     const queryParams = [];
     if (banco) {
@@ -467,14 +465,14 @@ export const getSociosYServicios = async (banco, ExB, titular, documentos) => {
 export const fetchPadronData = async (params) => {
   const queryParams = new URLSearchParams(params);
   const response = await axios.get(
-    `https://back-atsapra.sytes.net/api/padron?${queryParams.toString()}`,
+    `https://api.prestamoslink.com/api/padron?${queryParams.toString()}`,
   );
   return response.data.data;
 };
 
 //ENVIOS
-const baseURL = 'https://back-atsapra.sytes.net/api';
-const desarrolloURL = 'https://back-cobranza-1n55.onrender.com';
+const baseURL = 'https://api.prestamoslink.com/api';
+const desarrolloURL = 'https://api.prestamoslink.com';
 //const localURL = 'http://localhost:8080';
 
 // Llamada 1: Obtener periodos y envíos
